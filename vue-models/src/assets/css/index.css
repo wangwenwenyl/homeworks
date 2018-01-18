@@ -1,0 +1,93 @@
+*{margin:0px;padding:0px;box-sizing:border-box;font-family:΢���ź�;}
+a,button,input{
+    -webkit-tap-highlight-color:rgba(0,0,0,0) ;
+}
+body{margin:auto;background:#fff;}
+.box-heads{width:100%;background:#fbaf37;height:44px;}
+.box-head{width:100%;height:44px;color:#000;line-height:44px;text-align: center;font-size: 18px;position:relative;}
+.info{width:100%;height:38px;padding-left:30px;line-height: 38px;color:#333;font-size: 14px;border-bottom:1px solid #ddd;background:#fff;}
+.info img{margin-right:8px;vertical-align: middle;}
+.contract-find{background:#fff;width:100%;height:168px;border-bottom:1px solid #ddd;}
+.contract-middle{float:left;width:33%;text-align: center;padding-top:22px;}
+.contract-middle div,.contract-left div{font-size: 24px;color:#555;margin-left:-24px;margin-top:5px;}
+.contract-right{float:left;width:33%;text-align: center;padding-top:22px;}
+.contract-left{float:left;width:33%;text-align: center;padding-top:22px;}
+.contract-right div{font-size: 24px;color:#555;}
+.contract-right img,.contract-left img,.contract-middle img{margin-bottom:5px;}
+.tool,.news{width:100%;margin-top:10px;background:#fff;border-top:1px solid #ddd;}
+.tool-title,.news-title{height:52px;padding-left:30px;font-size: 24px;color:#333;line-height:52px;}
+.tools{width:100%;height:114px;border-top:1px solid #ddd;}
+/*.tools{width:100%;height:114px;}*/
+.tools-iterm{width:33.3%;float:left;text-align: center;margin-top:18px;border-right:1px solid #ddd;}
+.tools-iterm p{font-size: 18px;color:#333;margin-top:5px;}
+.news-iterm{border-top:1px solid #ddd;height:133px;border-top:1px solid #ddd;float:left;background:#fff;width:100%;}
+.news-iterm:after{display:table;content:"";clear: both;}
+.news-img{width:128px;height:85px;background:#dfdfdf;border-radius:8px;line-height: 133px;margin-top:24px;margin-left:52px;float:left;}
+.news-text{float:left;margin-left:55px;width:59%; padding-top:40px;height:100%;overflow: hidden;}
+.news-text p:first-child{font-size:18px; color:#000;margin-bottom:5px;}
+.news-text p:nth-child(2){font-size:18px; color:#666;}
+.preview button{border:none;background:#1b88ed;width:19%;height:34px;border-radius:5px;color:#fff;font-size: 18px;margin-top:33px;}
+
+.contract-leixing{width:100%;height:148px;border-bottom:1px solid #ddd;background:#fff;}
+.contract-leixing button{border:none;background:#1b88ed;width:110px;height:33px;border-radius:5px;color:#fff;font-size: 18px;float:right;margin-top:57px;margin-left:20px;margin-right:50px;}
+.mycontract-left{float:left;}
+.mycontract-left:after{display:table;content:"";clear: both;}
+.mycontract-img{width:68px;height:88px;border:1px solid #999999;margin:30px 30px 0px;float:left;}
+.mycontract-form{float:left;margin-top:23px;}
+.mycontract-form input{border:none;border-bottom:1px solid #000;padding-left:10px;width:236px;}
+.mycontract-form input:focus{outline:none;}
+.mycontract-form p{font-size:18px;line-height:34px;}
+.mycontract-form p input{font-size:18px;}
+.company-title{height:52px;padding-left:30px;font-size: 24px;color:#333;line-height:52px;border-bottom:1px solid #ddd;}
+.company{margin-left:34px;margin-right:34px;border-bottom:1px solid #ddd;padding:24px 30px;position: relative;}
+.company p{font-size:18px;color:#333;line-height: 35px;width:60%;}
+.company p:last-child{position: absolute;width:230px;top:24px;right:20px;}
+.yewu{padding-left:30px;font-size: 20px;color:#333;margin:28px 0px 14px;}
+.yewu-detail{font-size:20px;color:#666;padding:0px 30px;text-indent:2em;line-height:33px;}
+
+
+.website-title{width:768px;height:44px;line-height:44px;text-align: center;border-bottom:1px solid #ddd;position:relative;font-size:18px;color:#333;background:rgba(255,255,255,1);z-index:9999;}
+.website-title img{width:9px;position:absolute;left:25px;top:14px;}
+.website-tab{width:768px;height:290px;background:#fff;padding-left:10px;padding-top:63px;}
+.website-iterm{width:100%;margin-top:10px;background:#fff;}
+.iterm-title{height:50px;border-top:1px solid #ddd;padding-left:30px;line-height:50px;font-size:18px;color:#333;}
+.website-detail{border-top:1px solid #ddd;padding-left:56px;padding-top:16px;padding-bottom:16px;}
+.website-detail:after{display:table;content: "";clear:both;}
+.iterm1{float:left;margin-top:14px;}
+.iterm2{float:right;margin-top:14px;margin-right:70px;}
+.iterm1 img,.iterm2 img{vertical-align:top;margin-right:8px;margin-top:3px;}
+.column-box:after{display:table;content:'';clear:both;}
+.column-box{border-bottom:2px solid #ccc;border-left:2px solid #ccc;width:734px;margin:auto;}
+
+.progress{width:100%;height:252px;background:#fff;}
+.progress-img{float:left;width:126px;height:164px;background:#ddd;margin-left:44px;margin-top:61px;}
+.progress-detail{height:164px;width:300px;float:left;margin-left:38px;margin-top:61px;}
+.progress-detail{float:left;color:#333;}
+.progress-detail:before{display:table;content:'';}
+.progress-name{margin-top:15px;font-size:18px;color:#333;}
+.progress-introduce,.progress-place,.progress-year,.progress-remark{font-size:14px;line-height: 25px;}
+.progress-year span{margin-right:28px;}
+.progress-box{width:100%;background:#fff;height:100%;}
+.tools-iterm a{text-decoration: none;width:100%;height:100%;display:inline-block;}
+.list-box{position:absolute;top:50px;right:15px;border:1px solid #aaa;max-height:242px;overflow:scroll;z-index: 9;font-size: 15px;}
+.list-detail{width:205px;height:45px;color:#333;border-bottom:1px solid #aaa;line-height:45px;text-align: center;background:#fff;}
+.list-active{background:#f5f5f5;color:#fbaf37;}
+
+.exit{position:absolute;right:20px;bottom:0px;}
+
+#bg{width:100%;position:fixed;height:100%;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:none;}
+#signaborder{width:500px;height:298px;border:1px solid #f5f5f5;background:#fff;position:absolute;left:50%;top:50%;margin-left:-250px;margin-top:-250px;}
+#close{float:right;text-align:right;padding-right:10px;display:inline-block;width:100%;height:30px;background:#f5f5f5;}
+#signature{width: 100% !important;height:220px !important; border:2px solid #f0f0f0; margin-top:30px;margin-bottom:45px;}
+.progress-img img{width:126px;height:164px;}
+
+.mask{
+    background-image: url("../img/comlogo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index:99;
+    width:100%;
+    height:90%;
+    position:fixed;
+}
+#qrcode{width:210px;height:210px;}

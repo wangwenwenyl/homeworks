@@ -1,0 +1,229 @@
+<!doctype html>
+<!--
+	编辑者：宋亚男
+	模块：消息模块
+-->
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../css/syn.css" />
+	</head>
+		<style type="text/css">
+			.titlebar{
+				width: 100%;
+				height: 44px;
+				border-bottom: 1px solid #efefef;
+				line-height: 44px;
+				text-align: center; 
+				background: white;
+				font-family: "微软雅黑";
+				font-size: 18px;
+				font-weight: bold;
+				position: fixed;
+				top: 0px;
+			}
+			.slider{
+				position: fixed;
+				top: 44px;
+			}
+			.marginBottom9{
+				margin-bottom: 9px;
+			}
+			.mui-slider-progress-bar{
+				background:none !important;
+			}
+			.prepareMsg{
+				width: 100%;
+				/*height: 67px;*/
+				position: relative;
+				padding-right: 4%;
+				padding-top: 16px;
+				padding-bottom: 14px;
+			}
+			.prepareTitle{
+				font-size: 14px;
+				font-family: "微软雅黑";
+				margin-left: 10%;
+				line-height: 14px;
+			}
+			.prepareContent{
+				font-family: "微软雅黑";
+				font-size: 12px;
+				margin-left: 10%;
+				color: #666666;
+				margin-top: 9px;
+			}
+			.mui-active{
+				color: #FBAF37 !important;
+			}
+			.imgBack{
+				position: fixed;
+				left: 10px;
+				top: 10px;
+				width: 9px;
+				height: 16px;
+				z-index: 10;
+				color: black;
+			}
+			.msgImg{
+				width: 15px !important;
+				height: 13px;
+				position: absolute;
+				top: 17px;
+				left: 4.13%;
+			}
+		</style>
+	<body>
+		<!--<a  class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left imgBack" ></a>--> 
+		<div class="box">
+			<!--标题栏-->
+			<div class="titlebar">消息</div>
+		</div>
+		
+		<!---->
+		<div class="slider  mui-slider">
+		    <div style="background: white; " class=" mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+		        <a class="mui-control-item mui-active" href="#item1">未读</a>
+		        <a class="mui-control-item" href="#item2">已读</a>
+		    </div>
+		    <div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+		    <div class="mui-slider-group">
+		        <div id="item1" style="margin-top: 9px; border-top: none;" class="mui-slider-item mui-control-content mui-active">
+		            <ul id="prepareUl" class="back-ef prepareUl" style="height: 505px; overflow: scroll;">
+		                <div id="prepareTips" style="display: none; text-align: center; color: #999999;">
+		                	<img style="width: 121px;height: 120px;margin-top: 75px;" src="../img/暂无数据.png" alt="" />
+		                	<div style="margin-top: 25px;">
+		                		<span>暂无数据</span>
+		                	</div>	
+		                </div>
+		            </ul>
+		        </div>
+		        <div id="item2" style="margin-top: 9px; border-top: none;" class="mui-slider-item mui-control-content">
+		            <ul id="alreadyUl" class="back-ef alreadyUl" style="height: 515px; overflow: scroll;">
+		                 <div id="alreadyTips" style="display: none; text-align: center; color: #999999;">
+		                 	<img style="width: 121px;height: 120px;margin-top: 75px;" src="../img/暂无数据.png" alt="" />
+		                	<div style="margin-top: 25px;">
+		                		<span>暂无数据</span>
+		                	</div>	
+		                 </div>
+		            </ul>
+		        </div>
+		    </div>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script src="../js/checkht.js"></script>
+		<script type="text/javascript">
+			var baseUrl=host+'/app/';
+			var userId='';
+			var usertype='';
+			var uuid='';
+			var account='';
+			var userName='';
+			var getInfo = function(){
+				var searchURL = window.location.search;
+				searchURL = searchURL.substring(1, searchURL.length);
+				searchURL=searchURL.split("&");
+				userId = searchURL[0].split("=")[1];
+				usertype=searchURL[1].split("=")[1];
+				userName=searchURL[2].split("=")[1];
+				uuid= searchURL[3].split("=")[1];
+				account=searchURL[4].split("=")[1];
+				$.cookie('uid',userId,{ expires: 365 });
+				$.cookie('utype',usertype,{ expires: 365 });
+				$.cookie('uname',userName,{ expires: 365});
+				$.cookie('uaccount',account,{expires:365});
+				$.cookie('uuid',uuid,{expires:365});
+				userId=$.cookie('uid');
+				uuid=$.cookie('uuid');
+				usertype = $.cookie('utype');
+				console.log(userId);
+			}
+			
+			/*已读未读消息回显*/
+			var getAllMsg= function(){
+				mui.getJSON(baseUrl+'msglist',{userid:userId},function(data){
+					 
+						var strPrepare='';
+						var strAlready='';
+						
+						$.each(data, function(index,item) {
+
+							if(item.pmsglist.length==0){
+								$('#prepareTips').show();
+							}
+							if(item.readlist.length==0){
+								$('#alreadyTips').show();
+							}
+							$.each(item.pmsglist,function(infoIndex,info){
+								
+								strPrepare+='<li id="prepareLi" class=" back-white marginBottom9 prepareMsg">'+
+									'<img class="msgImg" src="../img/message.png" alt="" />'+
+				                	'<div class="prepareTitle" style="color: #666666;">'+info.title+'</div>'+
+				                	'<div class="prepareContent" style="color: #999999;">'+
+				                		'<span>'+info.content+'</span>'+
+				                		'<span id="prepareSpan" style="display: none;">&'+info.id+'</span>'+
+				                	'</div>'+
+				                '</li>'				               	
+							});
+							$.each(item.readlist, function(infoIndex,info) {
+								console.log(info);
+								strAlready+='<li class=" back-white marginBottom9 prepareMsg">'+
+												'<img class="msgImg" src="../img/message.png" alt="" />'+
+							                	'<div class="prepareTitle" style="color: #666666;">'+info.title+'</div>'+
+							                	'<div class="prepareContent" style="color: #999999;">'+
+							                		'<span>'+info.content+'</span>'+
+							                	'</div>'+
+							                '</li>'
+							});
+							$(strPrepare).appendTo('#prepareUl');
+							$(strAlready).appendTo('#alreadyUl');
+						});
+					}
+				);
+			}
+			/*未读消息点击事件*/
+			$('#prepareUl').on('click','li',function(){
+				var searchURL = $(this).text();
+				searchURL=searchURL.split("&");
+				var nId = searchURL[1];
+				if(checkYh($(this))){
+					mui.get(baseUrl+'readmsg',{userid:userId,msgid:nId},function(data){						
+							window.location.reload();
+						},'json'
+					);
+					
+					return true;
+				}else{
+					mui.alert('用户已经离线，请重新登录');
+					return false;
+				}
+				
+			});
+			
+			mui.init({
+				preloadPages:[
+					getInfo(),
+					getAllMsg(),
+				]
+			});
+			mui('.prepareUl').on('tap','prepareMsg',function(){
+			  	mui.alert('未读消息','提示','确认','','')
+			});
+			mui('.alreadyUl').on('tap','prepareMsg',function(){
+			  	mui.alert('已读消息','提示','确认','','')
+			});
+			mui('.mui-table-view').on('tap','.industry-content',function(){
+			  mui.alert('这是新闻资讯点击事件','点击事件','确认','','')
+			})
+
+		</script>
+	</body>
+
+</html>

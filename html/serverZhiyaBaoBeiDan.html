@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="../css/mui.min.css"/>
+    <link rel="stylesheet" href="../css/contract.css"/>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/jquery.min-1.11.1.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+    <script src="../js/serialize.js"></script>
+    <script src="../js/checkdata.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/loadingSyn.css"/>
+    <style>
+        #fangbaobei,#chebaobei{display:none;}
+        .hide{display: none;}
+        .show{display:block;}
+        *{color:#333;}
+        input{color:#666;}
+        input[disabled],input:disabled{
+            /*border:1px solid #;*/
+            background-color:#fff;
+            color:#666;
+            opacity:1 !important;
+            -webkit-opacity:1 !important;
+        }
+        textarea[disabled],textarea:disabled{
+            background-color:#fff;
+            color:#666;
+            opacity:1 !important;
+            -webkit-opacity:1 !important;
+        }
+        .ret:before{
+            height: 16px;
+            width: 9px;
+            display: inline-block;
+            float: left;
+            vertical-align: middle;
+            /*background: url("../img/return.png") no-repeat;*/
+            /*background-size:100% 100% ;*/
+            /*margin-left: 4%;*/
+            position: absolute;
+            margin: auto 0;
+            left: 4%;
+            top:9px;
+        }
+    </style>
+    <script>
+        function verifyNum(formname,name,text,reg){
+            $('#'+formname).find('input[name="'+name+'"]').blur(function(){
+                if($(this).val()!='') {
+                    if (!reg.test($(this).val())) {
+                        mui.alert(text);
+                    }
+                }
+            })
+        }
+        function tjverifyNum(formname,name,text,reg){
+            var flag=true;
+            $('#'+formname).find('input[name="'+name+'"]').each(function(){
+                if($(this).val()!=''){
+                    if(!reg.test($(this).val())){
+                        mui.alert(text);
+                        flag=false;
+                    }
+                }
+            })
+            return flag;
+        }
+    </script>
+    <script>
+        var jlsftj=false;
+        var success1,success2,success3;
+        var userid=$.cookie("uid");
+        var contaracthetongbianhao;
+        var contaracthetongid;
+        var baobeitype;//房0   车1
+        var baobeirole;
+        var typeid=2;
+        var state1;
+        var state2;
+        var state3;
+        var userid=$.cookie("uid");
+        var uname=$.cookie("uname");
+        var uuid=$.cookie("uuid");
+        uname=decodeURI(uname);
+        var usertype=$.cookie("utype");
+        mui.init();
+        mui.ready(function(){
+            //合同的回显，只读
+            $("#contract").find("input").attr("disabled",true);
+            $("input").attr("autocomplete","off");
+            //获取合同编号和获取角色
+            var searchURL = window.location.search;
+            searchURL = searchURL.substring(1, searchURL.length);
+            searchURL=searchURL.split("&");
+            var step=searchURL[1].split("=")[1];
+            baobeirole=step;
+            var processinstanceid=searchURL[3].split("=")[1];
+            var contractnumber=searchURL[4].split("=")[1];
+            contaracthetongbianhao=contractnumber;
+            if(step==0){
+                $("header h1").text("签单");
+                $(".big-save").show();
+                $("#approve-tab").hide();
+                $("h1").text("报备签单");
+                //签字角色
+//                $(".qianZiRole").text("业务员签字：");
+            }else if(step==1){
+                $("header h1").text("审批");
+                $(".big-save").hide();
+                $("#approve-tab").show();
+                $('#formFangBao-submit').show();
+                $('#formCheBao-submit').show();
+                $('#formzong-submit').hide();
+                $("h1").text("报备审批");
+                //签字角色
+//                $(".qianZiRole").text("业务经理签字：");
+                $("#approve input[name='approvePerson']").val(uname);
+            }
+            //委托协议的回显
+            mui.ajax(host+"/app/loadTrustContractMain?contractnum="+contractnumber,{
+                data:contractnumber,
+                dataType: 'JSON',
+                type: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success:function(data){
+                    if(data){
+                        success1=true;
+                        data = $.parseJSON(data);
+                        $("#contract").setForm(document.getElementById("contract"),data.data.zhiya);
+                        console.log(data);
+                        if(success1==true&&success2==true&&success3==true){
+                            $('.main').hide();
+                            mask.close();
+                        }
+                        //判断报备类型
+//                        if(data.data.zhiya.firstHousePropertyCardNum!=""||data.data.zhiya.firstHousePropertyCardNum!="undefined"){
+//                            console.log(typeof data.data.zhiya.firstHousePropertyCardNum);
+//                            alert(1);
+//                            baobeitype=0;
+                        contaracthetongid=data.data.zhiya.contractId;
+//                        }
+                        console.log(typeof data.data.zhiya.firstHousePropertyCardNum);
+                        console.log(typeof data.data.zhiya.carPropertyModel);
+                        if(typeof(data.data.zhiya.carPropertyModel)!="object"){
+                            baobeitype=1;
+                            $("#fangbaobei-tab").hide();
+                            $("fangbaobei").hide();
+                            $("#chebaobei-tab").show();
+                            $("#chebaobeo").show();
+                            //报备单的回显
+                            mui.ajax(host+"/app/loadCarReport?contractid="+$("input[name='contractId']").val(),{
+                                data:$("input[name='contractId']").val(),
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                success:function(data){
+                                    if(data){
+                                        success2=true;
+                                        data = $.parseJSON(data);
+                                        console.log(data);
+                                        if(success1==true&&success2==true&&success3==true){
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                        $("#chebaobei").setForm(document.getElementById("chebaobei"),data.data);
+                                        //字段不存在时input值置空
+                                        ziduan("chebaobei");
+                                        //点位判断
+                                        if(data.data.pointandback>1.8){
+                                            contractPoint=0;
+                                        }else{
+                                            contractPoint=2;
+                                        }
+                                    }
+                                }
+                            })
+                        }else{
+                            baobeitype=0;
+                            $("#fangbaobei-tab").show();
+                            $("fangbaobei").show();
+                            $("#chebaobei-tab").hide();
+                            $("#chebaobeo").hide();
+                            //报备单的回显
+                            mui.ajax(host+"/app/loadReport?contractid="+$("input[name='contractId']").val(),{
+                                data:$("input[name='contractId']").val(),
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                success:function(data){
+                                    if(data){
+                                        success2=true;
+                                        data = $.parseJSON(data);
+                                        console.log(data);
+                                        if(success1==true&&success2==true&&success3==true){
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                        $("#fangbaobei").setForm(document.getElementById("fangbaobei"),data.data);
+                                        //字段不存在时input值置空
+                                        ziduan("fangbaobei");
+                                        //点位判断
+                                        if(data.data.pointandback>1.8){
+                                            contractPoint=0;
+                                        }else{
+                                            contractPoint=2;
+                                        }
+                                    }
+                                }
+                            })
+                        }
+                        if(baobeitype==0){
+                           //图片回显
+                            mui.ajax(host+"/getaccessory?contractid="+data.data.zhiya.contractId,{
+                                data:'',
+                                dataType: 'JSON',
+                                type: 'GET',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                success:function(data){
+                                    success3=true;
+                                    var data = JSON.parse(data);
+                                    if(success1==true&&success2==true&&success3==true){
+                                        $('.main').hide();
+                                        mask.close();
+                                    }
+                                    for(var i=0;i<data['houseprolist'].length;i++){
+                                        var img = $('<img src="'+data['houseprolist'][i]['path']+'">')
+                                        var imgC = $('<div class="imgCC"></div>');
+                                        imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                        $('#report1').prepend(imgC);
+                                    }
+                                    $('#report1').find("img").click(function(){
+                                        $('#imgfd').find('img').attr('src',$(this).attr('src').substr(0,$(this).attr('src').length-4));
+                                        // $('#imgfd').css('padding-top',($('#imgfd').height()-$('#imgfd').find('img:eq(0)').height())/2);
+                                        $('#imgfd').css('display','block');
+                                        $('#imgfd').click(function(){
+                                            $('#imgfd').css('display','none');
+                                        })
+                                    })
+                                }
+                            })
+                        }else{
+                            $('#fangbaobei-tab').remove();
+                            mui.ajax(host+"/getaccessory?contractid="+data.data.zhiya.contractId,{
+                                data:'',
+                                dataType: 'JSON',
+                                type: 'GET',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                success:function(data){
+                                    success3=true;
+                                    var data = JSON.parse(data);
+                                    if(success1==true&&success2==true&&success3==true){
+                                        $('.main').hide();
+                                        mask.close();
+                                    }
+                                    for(var i=0;i<data['drivinglist'].length;i++){
+                                        var img = $('<img src="'+data['drivinglist'][i]['path']+'">')
+                                        var imgC = $('<div class="imgCC"></div>');
+                                        imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);.
+                                        $('#report1').prepend(imgC);
+                                    }
+                                    $('#report1').find("img").click(function(){
+                                        $('#imgfd').find('img').attr('src',$(this).attr('src').substr(0,$(this).attr('src').length-4));
+                                        // $('#imgfd').css('padding-top',($('#imgfd').height()-$('#imgfd').find('img:eq(0)').height())/2);
+                                        $('#imgfd').css('display','block');
+                                        $('#imgfd').click(function(){
+                                            $('#imgfd').css('display','none');
+                                        })
+                                    })
+                                }
+                            })
+                        }
+                        if(baobeirole==0){
+                            $("#file_input1").parent().removeClass("hide");
+                        }else{
+                            $("#file_input1").parent().addClass("hide");
+                        }
+                        if(baobeitype==1){
+                            $('#scfcz').html("上传行驶证照片");
+                            $('#file_input1').attr('info',"drivingcards");
+                        }
+                        cut("ziya-tab","contract");
+                        cut("liucheng-tab","liucheng");
+                        if(baobeitype==0){
+                            cut("fangbaobei-tab","fangbaobei");
+                        }else if(baobeitype==1){
+                            cut("chebaobei-tab","chebaobei");
+                        }
+                        cut("approve-tab","approve");
+                        //字段不存在时input值置空
+                        ziduan("contract");
+                        $("#custSignature").attr("src",data.data.zhiya.custSignature);
+                        //房屋状态
+                        if($("input[name='firstHouseSituation']").val()=="0"){
+                            $(".housestate").val("空置");
+                        }else if($("input[name='firstHouseSituation']").val()=="1"){
+                            $(".housestate").val("由抵押人自住");
+                        }else if($("input[name='firstHouseSituation']").val()=="2"){
+                            $(".housestate").val("在出租");
+                        }
+                        $(".housestate1").val("0");
+                        $(".housestate2").val("1");
+                        $(".housestate3").val("2");
+                        var contractid=$("input[name='contractId']").val();
+                        console.log(contractid);
+                    }
+                }
+            })
+//            document.getElementById("form-submit").addEventListener("tap",function(){
+//                var rex=/^\d+(\.\d{1,2})?$/;
+//                var rex1=/^\d+$/;
+//                var rex2=/^1[34578]\d{9}$/;
+//                var fllag=true;
+//                if(baobeitype==0){
+//                    fllag=fllag&&tjverifyNum("fangbaobei","custphone","电话格式不正确",rex2);
+//                    fllag=fllag&&tjverifyNum("fangbaobei","jiekuan","借款格式不正确",rex);
+//                    fllag=fllag&&tjverifyNum("fangbaobei","fanfeijine","返费金额格式不正确",rex1);
+//                    fllag=fllag&&tjverifyNum("fangbaobei","fuwufei","服务费格式不正确",rex1);
+//                    fllag=fllag&&tjverifyNum("fangbaobei","weikuan","尾款格式不正确",rex);
+//                    fllag=fllag&&tjverifyNum("fangbaobei","fangwuguzhi","房屋评估值格式不正确",rex);
+//                    fllag=fllag&&tjverifyNum("fangbaobei","hetongdianhua","合作银行电话格式不正确",rex2);
+//                }
+//                if(!fllag){
+//                    return false;
+//                }
+//                $('.main').show();
+//                mask.show();
+//                mui.confirm("是否确认提交",function(e){
+//                    $('.main').hide();
+//                    mask.close();
+//                    if(e.index==1){
+//                        if(baobeitype==0){
+//                            $("#chebaobei").html("");
+//                            var baobeiXulie=$("#fangbaobei").serialize();
+//                            var baobei=$("#fangbaobei").serializeObject();
+//                            var fg = validation.checkData(
+//                                    'quyu:区域,bumen:部门,jingli:经理姓名,zhuguan:主管姓名,yewu:业务姓名,yinzhubumen:银主部门,jiekuan:借款金额,' +
+//                                    'fanfeifangshi:返费方式,fanfeijine:返费金额,jiekuanqixian:借款期限,fuwufei:服务费,zhiyaleixing:质押类型,weikuan:尾款,' +
+//                                    'kehuage:客户年龄,kehuleixing:客户类型,fangwudizhi:房屋地址',
+//                                    baobeiXulie);
+//                            //如果是房屋
+//                            if(!$('input[name="pointandback"]').val()){
+//                                mui.alert("点位必填");
+//                                return false;
+//                            }
+//                        }else if(baobeitype==1){
+//                            $("#fangbaobei").html("");
+//                            var baobeiXulie=$("#chebaobei").serialize();
+//                            console.log(baobeiXulie);
+//                            var baobei=$("#chebaobei").serializeObject();
+//                            var fg = validation.checkData(
+//                                    'organname:机构名,custname:客户名,region:区域,deptname:部门,reporttime:报备时间,managername:经理姓名,directorname:主管姓名'+
+//                                     'salesmanname:业务姓名,loantime:借款期限,loanmoney:借款金额,point:点位及返点,servicemoney:服务费金额,returnmoney:返费金额'+
+//                                      'vehiclemodel:车辆款型',
+//                                    baobeiXulie);
+//                            }
+//                        baobei.contractid=$("input[name='contractId']").val();
+//                        baobei.userid=userid;
+//                        console.log(baobei);
+//                        baobei.contractnum=$("input[name='contractNum']").val();
+//                        if(!fg.statuscode){
+//                            mui.alert(fg.msg);
+//                        }
+//                        if(fg.statuscode){
+//                            $("#form-submit").attr("disabled", true);
+//                            if(baobeitype==0){
+//                                mui.ajax(host+"/app/saveReport",{
+//                                    data:baobei,
+//                                    dataType: 'JSON',
+//                                    type: 'POST',
+//                                    headers: {'Content-Type': 'application/json'},
+//                                    success:function(data){
+//                                        if(data){
+//                                            data = $.parseJSON(data);
+//                                            if(data.data.code==200){
+//                                                state1=true;
+//                                                if(state1&&state2){
+//                                                    if(step==0){
+//                                                        window.location.href="contractListP.html";
+//                                                    }else if(step==1){
+//                                                        window.location.href="ManagerReportP.html";
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                })
+//                            }else if(baobeitype==1){
+//                                mui.ajax(host+"/app/saveCarReport",{
+//                                    data:baobei,
+//                                    dataType: 'JSON',
+//                                    type: 'POST',
+//                                    headers: {'Content-Type': 'application/json'},
+//                                    success:function(data){
+//                                        if(data){
+//                                            $("#form-submit").removeAttr("disabled");
+//                                            data = $.parseJSON(data);
+//                                            if(data.data.code==200){
+//                                                state1=true;
+//                                                if(state1&&state2){
+//                                                    if(step==0){
+//                                                        window.location.href="contractListP.html";
+//                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    },
+//                                    error: function (xhr, type, errorThrown) {
+//                                        mui.alert('路上堵车，停车休息一会儿吧！');
+//                                        $("#form-submit").removeAttr("disabled");
+//                                    }
+//                                })
+//                            }
+//                        }
+//                        formtijiao();
+//                    }
+//                })
+//            })
+            if(step==0){
+                //房报备单的提交
+                document.getElementById("formFangBao-submit").addEventListener("tap",function(){
+                    jlsftj=false;
+                    var rex=/^\d+(\.\d{1,2})?$/;
+                    var rex1=/^\d+$/;
+                    var rex2=/^1[34578]\d{9}$/;
+                    var fllag=true;
+                    if(baobeitype==0){
+                        fllag=fllag&&tjverifyNum("fangbaobei","custphone","电话格式不正确",rex2);
+                        fllag=fllag&&tjverifyNum("fangbaobei","jiekuan","借款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fanfeijine","返费金额格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fuwufei","服务费格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","weikuan","尾款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fangwuguzhi","房屋评估值格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","hetongdianhua","合作银行电话格式不正确",rex2);
+                    }
+                    if(!fllag){
+                        return false;
+                    }
+                    if(baobeitype==0){
+                        $("#chebaobei").html("");
+                        var baobeiXulie=$("#fangbaobei").serialize();
+                        var baobei=$("#fangbaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'quyu:区域,bumen:部门,jingli:经理姓名,zhuguan:主管姓名,yewu:业务姓名,yinzhubumen:银主部门,jiekuan:借款金额,' +
+                                'fanfeifangshi:返费方式,fanfeijine:返费金额,jiekuanqixian:借款期限,fuwufei:服务费,zhiyaleixing:质押类型,weikuan:尾款,' +
+                                'kehuage:客户年龄,kehuleixing:客户类型,fangwudizhi:房屋地址',
+                                baobeiXulie);
+                        //如果是房屋
+                        if(!$('input[name="pointandback"]').val()){
+                            mui.alert("点位必填");
+                            return false;
+                        }
+                    }else if(baobeitype==1){
+                        $("#fangbaobei").html("");
+                        var baobeiXulie=$("#chebaobei").serialize();
+                        console.log(baobeiXulie);
+                        var baobei=$("#chebaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'organname:机构名,custname:客户名,region:区域,deptname:部门,reporttime:报备时间,managername:经理姓名,directorname:主管姓名'+
+                                'salesmanname:业务姓名,loantime:借款期限,loanmoney:借款金额,point:点位及返点,servicemoney:服务费金额,returnmoney:返费金额'+
+                                'vehiclemodel:车辆款型',
+                                baobeiXulie);
+                    }
+                    baobei.contractid=$("input[name='contractId']").val();
+                    baobei.userid=userid;
+                    console.log(baobei);
+                    baobei.contractnum=$("input[name='contractNum']").val();
+                    if(!fg.statuscode){
+                        mui.alert(fg.msg);
+                    }
+                    if(fg.statuscode){
+                        $('.main').show();
+                        mask.show();
+                        if(baobeitype==0){
+                            $("#formFangBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveReport?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            $("#formFangBao-submit").removeAttr("disabled");
+                                            state1=true;
+                                            jlsftj=true;
+                                            mui.alert(data.data.message);
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formFangBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }else if(baobeitype==1){
+                            $("#formCheBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveCarReport?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        $("#formCheBao-submit").removeAttr("disabled");
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            state1=true;
+                                            mui.alert(data.data.message);
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formCheBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }
+                    }
+                })
+                //车报备单的提交
+                document.getElementById("formCheBao-submit").addEventListener("tap",function(){
+                    jlsftj=false;
+                    var rex=/^\d+(\.\d{1,2})?$/;
+                    var rex1=/^\d+$/;
+                    var rex2=/^1[34578]\d{9}$/;
+                    var fllag=true;
+                    if(baobeitype==0){
+                        fllag=fllag&&tjverifyNum("fangbaobei","custphone","电话格式不正确",rex2);
+                        fllag=fllag&&tjverifyNum("fangbaobei","jiekuan","借款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fanfeijine","返费金额格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fuwufei","服务费格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","weikuan","尾款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fangwuguzhi","房屋评估值格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","hetongdianhua","合作银行电话格式不正确",rex2);
+                    }
+                    if(!fllag){
+                        return false;
+                    }
+                    if(baobeitype==0){
+                        $("#chebaobei").html("");
+                        var baobeiXulie=$("#fangbaobei").serialize();
+                        var baobei=$("#fangbaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'quyu:区域,bumen:部门,jingli:经理姓名,zhuguan:主管姓名,yewu:业务姓名,yinzhubumen:银主部门,jiekuan:借款金额,' +
+                                'fanfeifangshi:返费方式,fanfeijine:返费金额,jiekuanqixian:借款期限,fuwufei:服务费,zhiyaleixing:质押类型,weikuan:尾款,' +
+                                'kehuage:客户年龄,kehuleixing:客户类型,fangwudizhi:房屋地址',
+                                baobeiXulie);
+                        //如果是房屋
+                        if(!$('input[name="pointandback"]').val()){
+                            mui.alert("点位必填");
+                            return false;
+                        }
+                    }else if(baobeitype==1){
+                        $("#fangbaobei").html("");
+                        var baobeiXulie=$("#chebaobei").serialize();
+                        console.log(baobeiXulie);
+                        var baobei=$("#chebaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'organname:机构名,custname:客户名,region:区域,deptname:部门,reporttime:报备时间,managername:经理姓名,directorname:主管姓名'+
+                                'salesmanname:业务姓名,loantime:借款期限,loanmoney:借款金额,point:点位及返点,servicemoney:服务费金额,returnmoney:返费金额'+
+                                'vehiclemodel:车辆款型',
+                                baobeiXulie);
+                    }
+                    baobei.contractid=$("input[name='contractId']").val();
+                    baobei.userid=userid;
+                    console.log(baobei);
+                    baobei.contractnum=$("input[name='contractNum']").val();
+                    if(!fg.statuscode){
+                        mui.alert(fg.msg);
+                    }
+                    if(fg.statuscode){
+                        $('.main').show();
+                        mask.show();
+                        if(baobeitype==0){
+                            $("#formFangBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveReport?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        $("#formFangBao-submit").removeAttr("disabled");
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            state1=true;
+                                            jlsftj=true;
+                                            mui.alert(data.data.message);
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formFangBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }else if(baobeitype==1){
+                            $("#formCheBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveCarReport?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        $("#formCheBao-submit").removeAttr("disabled");
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            state1=true;
+                                            mui.alert(data.data.message)
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formCheBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }
+                    }
+                })
+            }else if(step==1){
+                //房报备单的提交
+                document.getElementById("formFangBao-submit").addEventListener("tap",function(){
+                    jlsftj=false;
+                    var rex=/^\d+(\.\d{1,2})?$/;
+                    var rex1=/^\d+$/;
+                    var rex2=/^1[34578]\d{9}$/;
+                    var fllag=true;
+                    if(baobeitype==0){
+                        fllag=fllag&&tjverifyNum("fangbaobei","custphone","电话格式不正确",rex2);
+                        fllag=fllag&&tjverifyNum("fangbaobei","jiekuan","借款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fanfeijine","返费金额格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fuwufei","服务费格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","weikuan","尾款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fangwuguzhi","房屋评估值格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","hetongdianhua","合作银行电话格式不正确",rex2);
+                    }
+                    if(!fllag){
+                        return false;
+                    }
+                    if(baobeitype==0){
+                        $("#chebaobei").html("");
+                        var baobeiXulie=$("#fangbaobei").serialize();
+                        var baobei=$("#fangbaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'quyu:区域,bumen:部门,jingli:经理姓名,zhuguan:主管姓名,yewu:业务姓名,yinzhubumen:银主部门,jiekuan:借款金额,' +
+                                'fanfeifangshi:返费方式,fanfeijine:返费金额,jiekuanqixian:借款期限,fuwufei:服务费,zhiyaleixing:质押类型,weikuan:尾款,' +
+                                'kehuage:客户年龄,kehuleixing:客户类型,fangwudizhi:房屋地址',
+                                baobeiXulie);
+                        //如果是房屋
+                        if(!$('input[name="pointandback"]').val()){
+                            mui.alert("点位必填");
+                            return false;
+                        }
+                    }else if(baobeitype==1){
+                        $("#fangbaobei").html("");
+                        var baobeiXulie=$("#chebaobei").serialize();
+                        console.log(baobeiXulie);
+                        var baobei=$("#chebaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'organname:机构名,custname:客户名,region:区域,deptname:部门,reporttime:报备时间,managername:经理姓名,directorname:主管姓名'+
+                                'salesmanname:业务姓名,loantime:借款期限,loanmoney:借款金额,point:点位及返点,servicemoney:服务费金额,returnmoney:返费金额'+
+                                'vehiclemodel:车辆款型',
+                                baobeiXulie);
+                    }
+                    baobei.contractid=$("input[name='contractId']").val();
+                    baobei.userid=userid;
+                    console.log(baobei);
+                    baobei.contractnum=$("input[name='contractNum']").val();
+                    if(!fg.statuscode){
+                        mui.alert(fg.msg);
+                    }
+                    if(fg.statuscode){
+                        $('.main').show();
+                        mask.show();
+                        if(baobeitype==0){
+                            $("#formFangBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveReportAgain?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            $("#formFangBao-submit").removeAttr("disabled");
+                                            state1=true;
+                                            jlsftj=true;
+                                            mui.alert(data.data.message);
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formFangBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }else if(baobeitype==1){
+                            $("#formCheBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveCarReportAgain?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        $("#formCheBao-submit").removeAttr("disabled");
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            state1=true;
+                                            mui.alert(data.data.message);
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formCheBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }
+                    }
+                })
+                //车报备单的提交
+                document.getElementById("formCheBao-submit").addEventListener("tap",function(){
+                    jlsftj=false;
+                    var rex=/^\d+(\.\d{1,2})?$/;
+                    var rex1=/^\d+$/;
+                    var rex2=/^1[34578]\d{9}$/;
+                    var fllag=true;
+                    if(baobeitype==0){
+                        fllag=fllag&&tjverifyNum("fangbaobei","custphone","电话格式不正确",rex2);
+                        fllag=fllag&&tjverifyNum("fangbaobei","jiekuan","借款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fanfeijine","返费金额格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fuwufei","服务费格式不正确",rex1);
+                        fllag=fllag&&tjverifyNum("fangbaobei","weikuan","尾款格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","fangwuguzhi","房屋评估值格式不正确",rex);
+                        fllag=fllag&&tjverifyNum("fangbaobei","hetongdianhua","合作银行电话格式不正确",rex2);
+                    }
+                    if(!fllag){
+                        return false;
+                    }
+                    if(baobeitype==0){
+                        $("#chebaobei").html("");
+                        var baobeiXulie=$("#fangbaobei").serialize();
+                        var baobei=$("#fangbaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'quyu:区域,bumen:部门,jingli:经理姓名,zhuguan:主管姓名,yewu:业务姓名,yinzhubumen:银主部门,jiekuan:借款金额,' +
+                                'fanfeifangshi:返费方式,fanfeijine:返费金额,jiekuanqixian:借款期限,fuwufei:服务费,zhiyaleixing:质押类型,weikuan:尾款,' +
+                                'kehuage:客户年龄,kehuleixing:客户类型,fangwudizhi:房屋地址',
+                                baobeiXulie);
+                        //如果是房屋
+                        if(!$('input[name="pointandback"]').val()){
+                            mui.alert("点位必填");
+                            return false;
+                        }
+                    }else if(baobeitype==1){
+                        $("#fangbaobei").html("");
+                        var baobeiXulie=$("#chebaobei").serialize();
+                        console.log(baobeiXulie);
+                        var baobei=$("#chebaobei").serializeObject();
+                        var fg = validation.checkData(
+                                'organname:机构名,custname:客户名,region:区域,deptname:部门,reporttime:报备时间,managername:经理姓名,directorname:主管姓名'+
+                                'salesmanname:业务姓名,loantime:借款期限,loanmoney:借款金额,point:点位及返点,servicemoney:服务费金额,returnmoney:返费金额'+
+                                'vehiclemodel:车辆款型',
+                                baobeiXulie);
+                    }
+                    baobei.contractid=$("input[name='contractId']").val();
+                    baobei.userid=userid;
+                    console.log(baobei);
+                    baobei.contractnum=$("input[name='contractNum']").val();
+                    if(!fg.statuscode){
+                        mui.alert(fg.msg);
+                    }
+                    if(fg.statuscode){
+                        $('.main').show();
+                        mask.show();
+                        if(baobeitype==0){
+                            $("#formFangBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveReportAgain?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        $("#formFangBao-submit").removeAttr("disabled");
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            state1=true;
+                                            jlsftj=true;
+                                            mui.alert(data.data.message);
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formFangBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }else if(baobeitype==1){
+                            $("#formCheBao-submit").attr("disabled", true);
+                            mui.ajax(host+"/app/saveCarReportAgain?uuid="+uuid,{
+                                data:baobei,
+                                dataType: 'JSON',
+                                type: 'POST',
+                                headers: {'Content-Type': 'application/json'},
+                                success:function(data){
+                                    if(data){
+                                        $("#formCheBao-submit").removeAttr("disabled");
+                                        data = $.parseJSON(data);
+                                        if(data.data.code==200){
+                                            state1=true;
+                                            jlsftj=true;
+                                            mui.alert(data.data.message)
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else if(data.data.code==400){
+                                            mui.alert('保存失败');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    }
+                                },
+                                error: function (xhr, type, errorThrown) {
+                                    mui.alert('路上堵车，停车休息一会儿吧！');
+                                    $("#formCheBao-submit").removeAttr("disabled");
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+            //总接口
+            document.getElementById("formzong-submit").addEventListener("tap",function(){
+                if(!state1){
+                    mui.alert("报备单尚未保存");
+                    return false;
+                }
+                if(!state2){
+                    mui.alert("流程附件尚未保存");
+                    return false;
+                }
+                $('.main').show();
+                mask.show();
+                $("#formzong-submit").attr("disabled", true);
+                if(state1&&state2){
+                    mui.confirm("是否确认提交",function(e){
+                        if(e.index==1){
+                            mui.ajax(host+"/app/saveReportGo?contractid="+contaracthetongid+"&uuid="+uuid,{
+                                dataType: 'json',
+                                type: 'post',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                success:function(data){
+                                    if(data.code==200){
+                                        $("#formzong-submit").removeAttr("disabled");
+                                        if(step==0){
+                                            window.location.href="contractListP.html";
+                                        }else if(step==1){
+                                            window.location.href="ManagerReportP.html";
+                                        }
+                                    }else if(data.code==400){
+                                        mui.alert('保存失败');
+                                        $('.main').hide();
+                                        mask.close();
+                                    }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                     }
+                                }
+                            })
+                        }else{
+                            $('.main').hide();
+                            mask.close();
+                        }
+                    })
+                }
+            })
+            //调取意见提交接口
+            document.getElementById("approve-save").addEventListener("tap",function(){
+                $('.main').show();
+                mask.show();
+                if(!jlsftj){
+                    mui.alert("报备单需要保存");
+                    $('.main').hide();
+                    mask.close();
+                    return false;
+                }
+
+                $("#approve-save").attr("disabled", true);
+                mui.ajax(host+"/app/approve?userid="+userid+"&nodeType=0&typeid="+typeid+"&step="+step+"&processinstanceid="+processinstanceid+"&num=0"+"&contractid="+contaracthetongid+"&auditoropinion="+$("textarea[name='approveIdea']").val()+"&uuid="+uuid,{
+                    dataType: 'JSON',
+                    type: 'get',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success:function(data){
+                        $('.main').hide();
+                        mask.close();
+                        $("#approve-save").removeAttr("disabled");
+                        if(data){
+                            data = $.parseJSON(data);
+                            if(data.code==200){
+                                window.location.href="ManagerReportP.html";
+                            }else if(data.code==400){
+                                mui.alert('保存失败');
+                                $('.main').hide();
+                                mask.close();
+                            }else{
+                                mui.alert('用户已下线');
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        window.location.href="ManagerReportP.html";
+                        $("#approve-save").removeAttr("disabled");
+                        $('.main').hide();
+                        mask.close();
+                    }
+
+                })
+            })
+            //调取不同意的接口
+            document.getElementById("cancel").addEventListener("tap",function(){
+                $('.main').show();
+                mask.show();
+                $("#cancel").attr("disabled", true);
+                mui.ajax(host+"/app/reject?userid="+userid+"&nodeType=0&typeid="+typeid+"&step="+step+"&processinstanceid="+processinstanceid+"&contractid="+contaracthetongid+"&auditoropinion="+$("textarea[name='approveIdea']").val()+"&uuid="+uuid,{
+                    dataType: 'JSON',
+                    type: 'get',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success:function(data){
+                        $('.main').hide();
+                        mask.close();
+                        $("#cancel").removeAttr("disabled");
+                        if(data){
+                            data = $.parseJSON(data);
+                            if(data.code==200){
+                                window.location.href="ManagerReportP.html";
+                            }else if(data.code==400){
+                                mui.alert('保存失败');
+                                $('.main').hide();
+                                mask.close();
+                            }else{
+                                mui.alert('用户已下线');
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        }else{
+                            mui.alert('保存失败');
+                            $('.main').hide();
+                            mask.close();
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        window.location.href="ManagerReportP.html";
+                        $("#cancel").removeAttr("disabled");
+                        $('.main').hide();
+                        mask.close();
+                    }
+                })
+            })
+        });
+    </script>
+    <style>
+        /*流程css 模块：附件上传 彭*/
+        .imgupBox{
+            margin-bottom: 18px;
+            overflow: hidden;
+        }
+        .groupPhotoC,.IDPhotoC,.itPhotoC{
+            padding: 0px 15px;
+        }
+        .groupPhoto,.IDPhoto,.itPhoto{
+            border-top:9px solid #f5f5f5;
+            overflow: hidden;
+        }
+        .Phototit{
+            font-size: 14px;
+            color: #666;
+            line-height: 35px;
+        }
+        /*上传按钮*/
+        .imgupbtn{
+            border: 1px dashed #dadada;
+            width: 29%;
+            height:82px;
+            position:relative;
+            float: left;
+        }
+        .imgadd{
+            /*background: url("../img/imgadd.png") no-repeat;*/
+            /*background-size: 50% 50%;*/
+        }
+        .imgupbtnInp{
+            opacity:0;
+            filter:alpha(opacity=0);
+            height: 82px;
+            width: 100px;
+            position: absolute;
+            /*position:relative;*/
+            top: 0;
+            /*top: -64px;*/
+            left: 0;
+            z-index: 9;
+        }
+        .rep{
+            padding: 0px 0px;
+            margin: 0px 0px;
+            overflow: hidden;
+        }
+        .rep>div{
+            width: 29%;
+            height: 84px;
+            float: left;
+            margin-right: 2.09%;
+            margin-left: 2.09%;
+            margin-top: 12px;
+        }
+        .imgCC{
+            position:relative;
+        }
+        .imgCC>img{
+            height: 100%;
+            width: 100%;
+        }
+        .ImgClose{
+            width: 20px;
+            height:20px;
+            background-color: #fff;
+            background: url("../img/cancel.png") no-repeat;
+            background-size: 100% 100%;
+            position:absolute;
+            right: -8%;
+            top: -8%;
+        }
+        /*流程css结束*/
+    </style>
+</head>
+<body>
+<!--加载页面-->
+<div id="loadPage"  class=" main">
+    <div class="loadEffect">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<div style="display: none;position:fixed;background:rgba(0,0,0,0.6);z-index: 2147483646;width: 100%;height:100%;text-align: center;line-height: 100%;" id="imgfd">
+    <img src='' style="max-width: 100%;max-height: 90%;position: relative;top:50%;transform:translateY(-50%);">
+</div>
+<header class="mui-bar mui-bar-nav" style="box-shadow:none;background:#fff;border-bottom:1px solid #ddd;position:fixed;top:0px;">
+    <a href="javascript:history.go(-1)"  class="mui-icon mui-icon-left-nav ret" style="color:#333;"></a>
+    <h1 id="title" class="mui-title"></h1>
+    <span style="position:absolute;right:10px;top:10px;font-size:16px;" id="formzong-submit">提交</span>
+</header>
+<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="background:#fff;top:44px;border-bottom:1px solid #f5f5f5;height:39px;position:fixed;top:44px;">
+    <div class="mui-scroll">
+        <a class="mui-control-item mui-active"  id="ziya-tab" >
+            委托协议
+        </a>
+        <a class="mui-control-item" id="fangbaobei-tab" >
+            报备单
+        </a>
+        <a class="mui-control-item" id="chebaobei-tab" >
+            报备单
+        </a>
+        <a class="mui-control-item" id="liucheng-tab">
+            流程附件
+        </a>
+        <a class="mui-control-item" id="approve-tab">
+            审批意见
+        </a>
+    </div>
+</div>
+<div id="veriftyscroll" style="margin-bottom: 20px;overflow-y: scroll;position:absolute;width:100%;">
+<form id="contract"  action="" >
+    <input type="hidden"  name="contractId"/>
+    <input type="hidden"  name="contractNum"/>
+    <div class="iterm">
+        <label for="" >甲方：</label>
+        <input type="text" name="custName" class="word5" id="custName"/>
+    </div>
+    <div class="iterm">
+        <label for="">身份证号码：</label>
+        <input type="text" name="custNumber" class="word5" id="custNumber"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="custPhone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">紧急联系人：</label>
+        <input type="text" name="emergencycontact" class="word5" id="emergencycontact"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="emergencycontactphone" class="word5" id="emergencycontactphone"/>
+    </div>
+    <div class="iterm">
+        <label for="">家庭住址：</label>
+        <input type="text" name="custAddress" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">电子邮箱：</label>
+        <input type="text" name="emergencycontactemail" class="word5" id="emergencycontactemail"/>
+    </div>
+    <div class="iterm">
+        <label for="" >乙方：</label>
+        <input type="text"  class="word5" value="北京鸿诚祥兆投资担保有限公司"/>
+    </div>
+    <div class="iterm">
+        <label for="">注册地址：</label>
+        <input type="text" class="word5" value="北京市朝阳区延静西里2号华商大厦1311"/>
+    </div>
+    <div class="iterm">
+        <label for="">经办人：</label>
+        <input type="text" name="clerkname" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="clerkphone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">业务邮箱：</label>
+        <input type="text" name="clerkemail" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">房产坐落：</label>
+        <input type="text" name="firstHousePropertyArea" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">产权证编号：</label>
+        <input type="text" name="firstHousePropertyCardNum" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">建筑面积：</label>
+        <input type="text" name="firstHouseProportion" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">抵押物估值：</label>
+        <input type="text" name="firstHouseValuation" class="word5"/>
+    </div>
+    <div class="iterm" style="position: relative;">
+        <label for="" style="width:115px;">目前房产状态：</label>
+        <input type="hidden"  name="firstHouseSituation" />
+        <input type="text" class="word6 housestate"  readonly/>
+        <!--<div style="position:absolute;right:10%;width:35px;top:0;text-align:center;" class="tog2">></div>-->
+        <div style="display:none;" class="tog2-content">
+            <span class="single">空置<input type="radio" housestateinfo="0" name="housestate" class="single-value housestate1" /></span>
+            <span class="single">由抵押人自住<input type="radio" housestateinfo="1" name="housestate" class="single-value housestate2" /></span>
+            <span class="single">在出租<input type="radio" housestateinfo="2" name="housestate" class="single-value housestate3" /></span>
+        </div>
+    </div>
+    <div class="iterm">
+        <label for="">租期至：</label>
+        <input type="date" name="firstHouseLeaseDate" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">车辆型号：</label>
+        <input type="text" name="carPropertyModel" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">车辆登记号：</label>
+        <input type="text" name="carRegistrationNum" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">车牌号码：</label>
+        <input type="text" name="carLicensePlateNum" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="" style="width:115px;">车辆发动机号：</label>
+        <input type="text" name="carEngineNum" class="word6"/>
+    </div>
+    <div class="iterm">
+        <label for="">行驶证号码：</label>
+        <input type="text" name="carDrivingLicenseNum" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">车辆估值：</label>
+        <input type="text" name="carValuation" class="word5"/>万元
+    </div>
+    <div class="iterm">
+        <label for="">抵押物情况：</label>
+        <input type="text" name="pawnState" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">抵押物评估：</label>
+        <input type="text" name="pawnAssessment" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">股权质押：</label>
+        <input type="text" name="stockPledge" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">公司名称：</label>
+        <input type="text" name="pledgeDept" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">质押股份：</label>
+        <input type="text" name="pledgeStock" class="word5"/>
+    </div>
+    <div class="iterm">
+        甲方预计向资金持有人借款：<input type="text" name="amountNum" style="width:30%;"/>元（大写 <input type="text" name="amountChar" style="width:50%;"/>）<br/>
+        甲方应以《借款合同》或《借款及担保合同》合同编号 <input type="text" name="contractNum" style="width:55%;"/>中所确定的借款额度的 <input type="text" name="point" style="width:20%"/>%
+        作为综合服务费用；<br/>
+        服务费：<input type="text" name="totalAmount" style="width:50%;"/>元（大写 <input type="text" name="totalChar" style="width:80%;"/>）;
+    </div>
+    <div class="iterm">
+        <label for="" style="vertical-align: top;">甲方：</label>
+        <!--<input type="text" class="word5"/>-->
+        <img src="" alt="" id="custSignature" style="width:40%;height:50px;"/>
+    </div>
+    <div class="iterm">
+        <label for="">签约时间：</label>
+        <input type="date" class="word5" name="custSignatureDate"/>
+    </div>
+    <div class="iterm">
+        <label for="">乙方：</label>
+        <input type="text" class="word5" value="北京鸿诚祥兆投资担保有限公司"/>
+    </div>
+    <div class="iterm">
+        <label for="">签约时间：</label>
+        <input type="text" class="word5" name="contractDate"/>
+    </div>
+</form>
+<form id="fangbaobei" action="" >
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">区域：</label>
+        <input type="text" name="quyu" class="word5" id="quyu"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">部门：</label>
+        <input type="text" name="bumen" class="word5" id="bumen"/>
+    </div>
+    <div class="iterm">
+        <label for="">报备人姓名：</label>
+        <input type="text" name="name" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">报备时间：</label>
+        <input type="date" name="time"  class="word5" />
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">经理姓名：</label>
+        <input type="text" name="jingli" class="word5" id="jingli"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">主管姓名：</label>
+        <input type="text" name="zhuguan" class="word5" id="zhuguan"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">业务姓名：</label>
+        <input type="text" name="yewu" class="word5" id="yewu"/>
+    </div>
+    <div class="iterm">
+        <label for="">做单时间：</label>
+        <input type="date" name="zuodantime" class="word5"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">银主部门：</label>
+        <input type="text" name="yinzhubumen" class="word5" id="yinzhubumen"/>
+    </div>
+    <div class="iterm">
+        <label for="">银主姓名：</label>
+        <input type="text" name="yinzhuname" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">客户姓名：</label>
+        <input type="text" name="custname" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">客户电话：</label>
+        <input type="text" name="custphone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="" style="width:130px;">借款金额（万元）：</label>
+        <input type="text" name="jiekuan" class="word6" style="width:50% !important;" id="jiekuan"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="" style="width:130px;">点位及返点（%）：</label>
+        <input type="text" name="pointandback" class="word6" style="width:50% !important;display:inline-block;" id="point" alt="number"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">返费方式：</label>
+        <input type="text" name="fanfeifangshi" class="word5" id="fanfeifangshi"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">返费金额（元）：</label>
+        <input type="text" name="fanfeijine" class="word5"  id="fanfeijine" style="width:59% !important;"/>元
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">借款期限：</label>
+        <input type="text" name="jiekuanqixian" class="word5" id="jiekuanqixian"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">服务费（元）：</label>
+        <input type="text" name="fuwufei" class="word5" id="fuwufei" style="width:59% !important;"/>元
+    </div>
+    <div class="iterm">
+        <label for="">借款用途：</label>
+        <input type="text" name="yongtu" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">还款来源：</label>
+        <input type="text" name="huankuanlaiyuan" class="word5"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">质押类型：</label>
+        <input type="text" name="zhiyaleixing" class="word5" id="zhiyaleixing"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">尾款（万元）：</label>
+        <input type="text" name="weikuan" class="word5" id="weikuan"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">客户年龄：</label>
+        <input type="text" name="kehuage" class="word5" id="kehuage"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">客户类型：</label>
+        <input type="text" name="kehuleixing" class="word5" id="kehuleixing"/>
+    </div>
+    <div class="iterm">
+        <label for="">房屋评估值：</label>
+        <input type="text" name="fangwuguzhi" class="word5"/>万元
+    </div>
+    <div class="iterm">
+        <label for="">房屋面积：</label>
+        <input type="text" name="fangwumianji" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">房屋朝向：</label>
+        <input type="text" name="fangwuchaoxiang" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">房屋类型：</label>
+        <input type="text" name="fangwuleixing" class="word5"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">房屋地址：</label>
+        <input type="text" name="fangwudizhi" class="word5" id="fangwudizhi"/>
+    </div>
+    <div class="iterm">
+        一抵银行贷款合同及银行电话：<input type="text" name="hetongdianhua" style="width:100%;"/>
+    </div>
+    <div class="big-save" id="formFangBao-submit">
+        保存
+    </div>
+</form>
+<form id="chebaobei" action="">
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">机构名：</label>
+        <input type="text" class="word5" name="organname" id="organname" />
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">客户名：</label>
+        <input type="text" class="word5" name="custname" id="custname"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">区域：</label>
+        <input type="text" class="word5" name="region" id="region"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">部门：</label>
+        <input type="text" class="word5" name="deptname"  id="deptname"/>
+    </div>
+    <div class="iterm">
+        <label for="">提报人姓名：</label>
+        <input type="text" class="word5" name="reportname" />
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">报备时间：</label>
+        <input type="date" class="word5" name="reporttime" id="reporttime"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">经理姓名：</label>
+        <input type="text" class="word5" name="managername" id="managername"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">主管姓名：</label>
+        <input type="text" class="word5" name="directorname" id="directorname"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">业务姓名：</label>
+        <input type="text" class="word5" name="salesmanname" id="salesmanname"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">借款期限：</label>
+        <input type="text" class="word5" name="loantime" id="loantime" />
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">借款金额（万元）：</label>
+        <input type="text" class="word5" name="loanmoney" id="loanmoney"  />
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">点位及返点：</label>
+        <input type="text" class="word6" name="point" id="point" style="display:inline-block;"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">服务费金额：</label>
+        <input type="text" class="word5" name="servicemoney"  id="servicemoney"/>
+    </div>
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">返费金额（元）：</label>
+        <input type="text" class="word5" name="returnmoney" id="returnmoney"/>
+    </div>
+    <div class="iterm">
+        <label for="">车辆评估值：</label>
+        <input type="text" class="word5" name="carvalue"/>
+    </div>
+    <div class="iterm">
+        <label for="">尾款（万元）：</label>
+        <input type="text" class="word5" name="retainagemoney"/>
+    </div>
+    <div class="iterm">
+        <label for="">排量：</label>
+        <input type="text" class="word5" name="displacement"/>
+    </div>
+    <div class="iterm">
+        <label for="">行驶证日期：</label>
+        <input type="date" class="word5" name="drivetime"/>
+    </div>
+
+    <div class="iterm">
+        <span class="star">*</span>
+        <label for="">车辆款型：</label>
+        <input type="text" class="word5" name="vehiclemodel" id="vehiclemodel"/>
+    </div>
+    <!--<div class="iterm">-->
+        <!--<label for="">审批员意见</label>-->
+    <!--</div>-->
+    <!--<div class="iterm">-->
+        <!--<label for="">车辆评估值：</label>-->
+        <!--<input type="text" class="word5" name="approvevalue"/>-->
+    <!--</div>-->
+    <!--<div class="iterm">-->
+        <!--<label for="">融资上限：</label>-->
+        <!--<input type="text" class="word5" name="financelimit"/>-->
+    <!--</div>-->
+    <!--<div class="iterm">-->
+        <!--<label for="">抵押率：</label>-->
+        <!--<input type="text" class="word5" name="mortgagerate"/>-->
+    <!--</div>-->
+    <!--<div class="iterm">-->
+        <!--<label for="">信审员签字：</label>-->
+        <!--<input type="text" name="lettername"/>-->
+    <!--</div>-->
+    <!--<div class="iterm">-->
+        <!--<label for="">审批人意见：</label>-->
+        <!--<input type="text" class="word5" name="approveopinion"/>-->
+    <!--</div>-->
+    <div class="big-save" id="formCheBao-submit">
+        保存
+    </div>
+</form >
+<form style="display:none;" id="formdataDemo" enctype ="multipart/form-data">
+    <input type="file" id="file" multiple>
+</form>
+<form id="liucheng" action="">
+    <div class="iterm" style="padding: 0px 0px;">
+        <!--流程 模块：附件上传 彭传博-->
+        <div class="imgUpload">
+            <div class="groupPhoto">
+                <div class="groupPhotoC">
+                    <p class="Phototit" id="scfcz">上传房产证照片</p>
+                    <!--照片上传div-->
+                    <div id='box' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report1" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input1" info="house" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--流程结束-->
+    </div>
+    <div class="big-save" id="formLiuCheng-submit" >
+        保存
+    </div>
+</form>
+<script src="../js/checkht.js"></script>
+<script>
+	$(function(){
+    		 $('a').click(function(){
+			if(checkYh($(this))){
+				return true;
+			}else{
+				mui.alert('用户已经离线，请重新登录');
+//				alert('用户已经离线，请重新登录');
+				return false;
+			}
+		})
+    	})
+    $(function(){
+        var screnheight = window.innerHeight-20;
+        $('#veriftyscroll').css({'height':screnheight+'px'});
+        $('#formLiuCheng-submit').click(function(){
+            $('.main').show();
+            mask.show();
+            formtijiao();
+            $("#formLiuCheng-submit").attr("disabled", true);
+        })
+    })
+</script>
+<form id="approve" action="">
+    <div class="iterm">
+        <label for="">审批人：</label>
+        <input type="text" name="approvePerson" class="word5"/>
+    </div>
+    <div class="iterm"  style="margin-top:10px;">
+        <table style="width:100%;">
+            <tr>
+                <td style="vertical-align: top;"> <span style="vertical-align: top;width:70px;">审批意见：</span></td>
+                <td>  <textarea  rows="4" name="approveIdea" style="width:90%;font-size:14px;"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="iterm" style="margin-left:70px;">
+        <div class="cancel" id="cancel">不同意</div>
+        <div class="save" id="approve-save" style="float:right;margin-right:7%;">同意</div>
+    </div>
+</form>
+</div>
+<!--<div class="big-save" id="form-submit">-->
+    <!--提交-->
+<!--</div>-->
+<script>
+    /*遮罩蒙版*/
+    var mask = mui.createMask(function () {
+//					$('.modleChane').hide();
+//					$('.modleWait').hide();
+//					$('#msgResoult').hide();
+
+    })
+    function cut(tab,cont){
+        document.getElementById(tab).addEventListener("tap",function(){
+            $("form").hide();
+            $("#"+cont).show();
+        })
+    }
+</script>
+<script>
+    //面板的折叠
+    $(".tog2").click(function(){
+        $(".tog2-content").toggle();
+    })
+    //房屋状态的单选
+    $("input[name='housestate']").each(function(){
+        $(this).click(function(){
+            if($(this).attr("housestateinfo")==0){
+                $(".housestate").val("空置");
+                $("input[name='firstHouseSituation']").val("0");
+            }else if($(this).attr("housestateinfo")==1){
+                $(".housestate").val("由抵押人自住");
+                $("input[name='firstHouseSituation']").val("1");
+            }else if($(this).attr("housestateinfo")==2){
+                $(".housestate").val("在出租");
+                $("input[name='firstHouseSituation']").val("2");
+            }
+        })
+    });
+    //字段不存在时input值置空
+    function ziduan(str){
+        $("#"+str).find("input").each(function(){
+            if($(this).val()=="undefined"){
+                $(this).val("");
+            }
+        })
+    }
+</script>
+<script type="text/javascript" src="../js/index1.js"></script>
+<script type="text/javascript" src="../js/mobileFix.mini.js"></script>
+<script type="text/javascript" src="../js/exif.js"></script>
+<script type="text/javascript" src="../js/lrz.js"></script>
+<script type="text/javascript" src="../js/pengfujian1.js"></script>
+<script>
+    $('.main').show();
+    mask.show();
+</script>
+<script>
+    $(function () {
+        var rex=/^\d+(\.\d{1,2})?$/;
+        var rex1=/^\d+$/;
+        var rex2=/^1[34578]\d{9}$/;
+        verifyNum("fangbaobei","custphone","电话格式不正确",rex2);
+        verifyNum("fangbaobei","jiekuan","借款格式不正确",rex);
+        verifyNum("fangbaobei","fanfeijine","返费金额格式不正确",rex1);
+        verifyNum("fangbaobei","fuwufei","服务费格式不正确",rex1);
+        verifyNum("fangbaobei","weikuan","尾款格式不正确",rex);
+        verifyNum("fangbaobei","fangwuguzhi","房屋评估值格式不正确",rex);
+        verifyNum("fangbaobei","hetongdianhua","合作银行电话格式不正确",rex2);
+    })
+</script>
+</body>
+</html>

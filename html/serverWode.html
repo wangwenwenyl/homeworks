@@ -1,0 +1,587 @@
+<!doctype html>
+<!--
+	编辑者：宋亚男
+	模块：我的模块
+-->
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/syn.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/loadingSyn.css"/>
+	</head>
+	<style type="text/css">
+		.topBar{
+			height: 44px;
+			text-align: center;
+			font-size: 18px;
+			font-family: "微软雅黑";
+			font-weight: bold;
+			line-height: 44px;
+			background: white;
+			border-bottom: 0.5px solid #efefef;
+		}
+		.topBar>span{
+			font-size: 17px;
+			position: fixed;
+			right: 15px;
+			font-weight: 300;
+			z-index: 4;
+		}
+		.topWode{
+			background: white;
+			height: 148px;
+			padding-top: 14px;
+			padding-left: 8%;
+		}
+		.imgHead{
+			width: 28%;
+			height: 119px;
+		}
+		.contentUl{
+			display: inline-block;
+			margin-left: 4.5%;
+		}
+		.contentli{
+			margin-top: 15px;
+		}
+		.contentName{
+			margin-top: 19px;
+			font-size: 16px;
+			font-family: "微软雅黑";
+			color: #333333;
+		}
+		.contentType{
+			margin-top: 19px;
+			font-size: 12px;
+			color: #666666;
+			font-family: "微软雅黑";
+		}
+		.imgType{
+			width: 12px;
+			height: 12px;
+			margin-top: 5px;
+		}
+		.spanType{
+			font-size: 12px;
+			color: #333333;
+			
+		}
+		.btnTop{
+			width: 39.29%;
+			height: 21px; 
+			line-height: 21px;
+			display: inline-block;
+			font-family: "微软雅黑";
+			font-size: 12px;
+		}
+		
+		.rowLine{
+			width: 1px;
+			height: 12px;
+			background: #666666;
+			vertical-align: middle;
+			display: inline-block;
+			margin-left: 8.28%;
+		}
+		.wodeTop{
+			margin-top: 9px;
+			background: white;
+			padding: 0 8%;
+		}
+		.wodeTop>ul>li{
+			height: 39px;
+			border-bottom: 0.5px solid #efefef;
+			line-height: 39px;
+		}
+		.wodeTop span{
+			font-size: 14px;
+			font-family: "微软雅黑";
+		}
+		
+		.xibaoTopBar{
+			width: 100%;
+			height: 55px;
+			background: #f4f4f4;
+			line-height: 55px;
+			font-size: 15px;
+			color: #666666;
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+		.imgConcle{
+			width: 24px;
+			height: 24px;
+			float: right;
+			margin-top: 12px;
+		}
+		.mui-backdrop {
+			z-index: 2;
+		}
+		.modleWait{
+			width: 85.3%;
+		    height: 202.5px;
+		    position: fixed;
+		    top: 200px;
+		    left: 7.35%;
+		    background-color: #f9f9f9;
+		    border-radius: 0.3rem;
+		    overflow: auto;
+		    display: none;  
+		    z-index: 10;
+		    font-family: "微软雅黑";
+		}
+		.modleChane{
+			width: 85.3%;
+		    height: 263px;
+		    position: fixed;
+		    top: 50px;
+		    left: 7.35%;
+		    background-color: #f9f9f9;
+		    border-radius: 0.3rem;
+		    overflow: auto;
+		    display: none;  
+		    z-index: 10;
+		    font-family: "微软雅黑";
+		}
+		.modleMsg{
+			width: 85.3%;
+		    height: 202.5px;
+		    position: fixed;
+		    top: 200px;
+		    left: 7.35%;
+		    background-color: #f9f9f9;
+		    border-radius: 0.3rem;
+		    overflow: auto;
+		    display: none;  
+		    z-index: 10;
+		    font-family: "微软雅黑";
+		}
+		
+		.waitMessage{
+			text-align: center;
+			margin-top: 32px;
+		}
+		.waitMessage>span{
+			color: #666666;
+			font-size: 16px;
+		}
+		.waitBtn{
+			padding: 0 45px;
+			float: inherit;
+			margin-top: 45px;		
+		}
+		.changeBtn{
+			padding: 0 45px;
+			float: inherit;
+			margin-top: 14px;		
+		}
+		.changeBtn>div{
+			width: 45%;
+			height: 40px;
+			text-align: center;
+			display: inline-block;
+			font-size: 16px;
+			border-radius: 0.3rem;
+			background: #fabf37;
+			line-height: 40px;
+			border: 0.5px solid #e5e5e5;
+			font-weight: bold;
+		}
+		.waitBtn>div{
+			width: 45%;
+			height: 40px;
+			text-align: center;
+			display: inline-block;
+			font-size: 16px;
+			border-radius: 0.3rem;
+			background: #fabf37;
+			line-height: 40px;
+			border: 0.5px solid #e5e5e5;
+			font-weight: bold;
+		}
+		.changeUl{
+			padding-left: 10%;
+		}
+		.changeUl>li{
+			margin-top: 12px;
+			height: 33px;
+			line-height: 33px;
+		}
+		.changeUl>li>span{
+			font-size: 16px;
+			font-family: "微软雅黑";
+			color: #999999;
+			
+		}
+		.changeUl>li>input{
+			width: 53.4%;
+			padding: 0;
+			margin-bottom: 0;
+			height: 33px;
+			margin-left: 5%;
+		}
+		.dizhi{
+			width: 80%;
+			text-overflow: ellipsis;
+			display: inline-block;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+		.titleSpan{
+			width: 70px;
+			display: inline-block;
+			/*text-align: -webkit-right;*/
+		}
+		.spanContent{
+			margin-left: 13.3%;
+			vertical-align: middle;
+		}
+	</style>	
+
+	<body>
+		
+		<!--加载页面-->
+		<div id="loadPage"  class=" main">
+			<div class="loadEffect">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+		<!--返回消息-->
+		<div id="msgResoult" class="modleMsg">
+			<div class="xibaoTopBar">
+				处理结果
+				<img id="waitConcle" class="waitConcle imgConcle" src="../img/cancel.png" alt="" />
+			</div>
+			<div class="waitMessage">
+				<span id="spanResoult">返回结果</span>
+			</div>
+			<div class="waitBtn">
+				<div id="resoultAffirm" style="margin-left: 63.22px;" class="color-white">确定</div>
+			</div>
+		</div>
+		<!--离职申请-->
+		<div class="modleWait">
+			<div class="xibaoTopBar">
+				离职申请
+				<img  class="waitConcle imgConcle" src="../img/cancel.png" alt="" />
+			</div>
+			<div class="waitMessage">
+				<span>是否确定要离职</span>
+			</div>
+			<div class="waitBtn">
+				<div id="alertConsole" style="background: none;" class="color-gray float-left">取消</div>
+				<div id="alertAffirm" class="color-white float-right">确定</div>
+			</div>
+		</div>
+		<!--修改密码-->
+		<div class="modleChane">
+			<div class="xibaoTopBar">
+				修改密码
+				<img id="changeConsole"  src="../img/cancel.png" alt="" class="imgConcle" />
+			</div>
+			<!--修改密码内容-->
+			<div class="changePwd">
+				<ul class="changeUl">
+					<li>
+						<span>原密码 &nbsp;&nbsp;&nbsp;</span>
+						<input id="oldPass" type="password" />
+					</li>
+					<li>
+						<span>新密码 &nbsp;&nbsp;&nbsp;</span>
+						<input id="newPass" type="password" />
+					</li>
+					<li>
+						<span>确认密码    </span>
+						<input id="rePass" type="password" />
+					</li>
+				</ul>
+			</div>
+			<!--按钮-->
+			<div class="changeBtn">
+				<div id="changeBtnConsole" style="background: none;" class="color-gray float-left">取消</div>
+				<div id="btnChangePass" class="color-white float-right">确定</div>
+			</div>
+		</div>
+		
+		<!--顶部标题栏-->
+		<!--<img class="imgBack" src="../img/返回.png"/>
+		<div class="topBar">
+			工作<span>退出</span>
+		</div>-->
+		<!--上部个人信息-->
+		<div class="line"></div>
+		<div class="topWode">
+			<img id="imgHead" class="back-ef imgHead" src="" alt="" />
+			<ul style="width: 59.3%;" class="contentUl">
+				<li class="contentli"><span id="contentName" class="contentName">***</span>
+					<span id="contentType" class="contentType">***</span>
+				</li>
+				<li>
+					<span id="contentDepart" class="contentType">***</span>
+				</li>
+				<li class="line" style="margin-top: 14px;" ></li>
+				<li style="margin-top: 18px;">
+					<div id="changePwd"  class="btnTop">
+						<img class="imgType" src="../img/修改密码.png" alt="" />
+						<div class="checkYh center-line"></div>
+						修改密码
+					</div>
+					<div id="rowLine" class="rowLine"></div>
+					<div  class="center-line"></div>
+					<div id="applyDis" style="margin-left: 4.9%;"  class="btnTop">
+						<img class="imgType" src="../img/离职.png" alt="" />
+						<div class="center-line"></div>
+						离职申请
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--姓名性别出生日期-->
+		<div class="wodeTop">
+			<ul>
+				<li style="">
+					<span class="titleSpan">姓名</span>
+					
+					<span id="spanName" class="spanContent"></span>
+					<div class="center-line"></div>
+				</li>
+				<li>
+					<span class="titleSpan">性别</span>
+					<span id="spanSex" class="spanContent"></span>
+				</li>
+				<li>
+					<span class="titleSpan">出生日期</span>
+					<span id="spanDate" class="spanContent"></span>
+				</li>
+			</ul>
+		</div>
+		<!--从业年限/范围-->
+		<div class="wodeTop">
+			<ul>
+				<li>
+					<span class="titleSpan">从业年限</span>
+					<span id="spanYear" class="spanContent"></span>
+				</li>
+				<li>
+					<span class="titleSpan">从业范围</span>
+					<span id="spanScape" class="spanContent"></span>
+				</li>
+			</ul>
+		</div>
+		<!--联系方式-->
+		<div class="wodeTop">
+			<ul>
+				<li>
+					<span class="titleSpan">联系电话</span>
+					<span id="spanPhone" class="spanContent"></span>
+				</li>
+				<li>
+					<span class="titleSpan">Email</span>
+					<span id="spanEmail" class="spanContent"></span>
+				</li>
+				<li>
+					<span style="display: inline; width: 70px;" class="titleSpan">地址</span>
+					<div style="width: 80%;  display: inline-block; ">
+						<span id="spanArea" style="margin-left: 34.15%;" class="dizhi spanContent"></span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script src="../js/checkht.js"></script>
+		<script type="text/javascript">
+			console.log(host);
+		 	var baseUrl=host+'/app/';
+		 	var userid='';
+		 	var usertype='';
+		 	var username='';
+		 	var uuid='';
+		 	var account='';
+		 	var getUserid= function(){
+		 		var searchURL=window.location.search;;
+		 		searchURL = searchURL.substring(1, searchURL.length);
+				searchURL=searchURL.split("&");
+				userid = searchURL[0].split("=")[1];
+				usertype=searchURL[1].split("=")[1];
+				username = searchURL[2].split("=")[1];
+				uuid=searchURL[3].split("=")[1];
+				account=searchURL[4].split("=")[1];
+				$.cookie('uid',userid,{ expires: 365});
+				$.cookie('utype',usertype,{ expires: 365 });
+				$.cookie('uname',username,{expires: 365});
+				$.cookie('uuid',uuid,{expires:365});
+				$.cookie('uaccount',account,{expires:365});
+		 		userid=$.cookie('uid');	
+		 		uuid=$.cookie('uuid');
+		 		usertype=$.cookie('utype');
+		 		if(usertype!='1'){
+		 			$('#applyDis').hide();
+		 			$('#rowLine').hide();
+		 		}
+//		 		console.log(uuid);
+		 	}
+		 	
+		 	/*用户信息回显*/
+		 	var getUserInfo= function(){
+		 		mui.getJSON(baseUrl+'getuserinfo',{userid:userid},function(data){
+
+						$.each(data, function(infoIndex,item) {
+							if(item!=null){
+								$('#contentName').html(item.name);
+				   				$('#contentType').html(item.position);
+				   				$('#contentDepart').html(item.department);
+				   				$('#spanName').html(item.name);
+				   				$('#spanSex').html(item.gender);
+				   				$('#spanDate').html(item.birthday);
+				   				$('#spanYear').html(item.year);
+				   				$('#spanScape').html(item.scope);
+				   				$('#spanPhone').html(item.phone);
+				   				$('#spanEmail').html(item.email);
+				   				$('#spanArea').html(item.address);
+				   				$('#imgHead').attr('src',item.image);
+							}				   				
+				   		});
+					}
+				);
+		 	}
+		 	
+			mui.init({
+					preloadPages:[
+					getUserid(),
+					/*初始化用户信息*/
+				   	getUserInfo(),
+			 	]
+			})
+			
+			/*遮罩蒙版*/	
+		 	var mask = mui.createMask(function () {
+					$('.modleChane').hide();
+					$('.modleWait').hide();
+					$('#msgResoult').hide();
+					
+				})
+		 	/*离职申请点击事件*/
+			
+			$('#applyDis').click(function(){
+				if(checkYh($(this))){
+					$('.modleWait').show();
+					mask.show();
+					return true;
+				}else{
+					mui.alert('用户已经离线，请重新登陆');
+					return false;
+				}
+			})
+			/*离职申请取消*/
+			$('#alertConsole').click(function(){
+				$('.modleWait').hide();
+				mask.close();
+			});
+			$('.waitConcle').click(function(){
+				$('.modleWait').hide();
+				$('.modleMsg').hide();
+				mask.close();
+			});
+			/*离职确认*/
+			$('#alertAffirm').click(function(){
+//				$('.modleMsg').show();
+				$('.modleWait').hide();
+				/*loading*/
+				$('.main').show();
+				applyDiss();
+			});
+			/*修改密码点击事件*/
+			
+			$('#changePwd').click(function(){
+		 		if(checkYh($(this))){
+		 			console.log('123')
+		 			$('.modleChane').show();
+					mask.show();
+		 			return true;
+		 		}else{
+		 			mui.alert('用户已经离线，请重新登陆');
+		 			return false;
+		 		}
+		 	})
+			/*修改密码取消*/
+			$('#changeConsole').click(function(){
+				$('.modleChange').hide();
+				mask.close();
+			});
+			$('#changeBtnConsole').click(function(){
+				$('.modleChange').hide();
+				mask.close();
+			});
+			/*回显消息确认点击事件*/
+			$('#resoultAffirm').click(function(){
+				$('.modleMsg').hide();
+				mask.close();
+			});
+			/*修改密码确认按钮点击事件*/
+			$('#btnChangePass').click(function(){
+				var newPass =$('#newPass').val();
+				var oldPass =$('#oldPass').val();
+				$('.modleChane').hide();
+				$('.main').show();
+				mui.ajax(baseUrl+'resetpass',{
+					data:{
+						userid:userid,
+						newpass:newPass,
+						oldpass:oldPass,
+						uuid:uuid
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'get',//HTTP请求类型
+					success:function(data){
+						$.each(data,function(index,info){
+							$('.main').hide();
+							mask.close();
+							/*$('#spanResoult').html(info.message);
+							$('#msgResoult').show();*/
+							mui.confirm(info.message,'申请结果',['确认'],'','');
+						})
+					}
+				})
+			});
+			/*离职申请接口*/
+			var applyDiss = function(){
+				mui.ajax(baseUrl+'dimissionuser',{
+					data:{
+						userid:userid,
+						uuid:uuid
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'get',//HTTP请求类型
+					success:function(data){
+//					    console.log(data);
+						$.each(data,function(index,info){
+							$('.main').hide();
+							mask.close();
+							/*$('#spanResoult').html(info.message);
+							$('#msgResoult').show();*/
+							mui.confirm(info.message,'申请结果',['确认','取消'],'','');
+//							mui.toast(info.message,{ duration:'short', type:'div' })
+						})
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

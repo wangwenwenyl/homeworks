@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<!--编辑者：彭传博
+	模块：已办 业务经理 返合同审批
+-->
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <!--<meta name="viewport" content="width=750, target-densitydpi=284, maximum-scale=1, user-scalable=no">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--׼mui.css-->
+    <link rel="stylesheet" href="../css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/Peng-common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/loadingSyn.css"/>
+    <!--<script type="text/javascript" src="../js/old.js" ></script>-->
+    <title>已办返合同审批</title>
+    <style>
+        .mui-spinner {
+            width: 32px;
+            height: 32px;
+        }
+        /*下拉刷新的箭头颜色*/
+        .mui-pull-top-pocket{
+            /*margin-top:44px;*/
+        }
+        .mui-icon-pulldown {
+            color: #fbaf37;
+        }
+        .mui-spinner:after {
+            border-color:#fbaf37;
+        }
+        .mui-bar{
+            position: relative;
+            background-color: #fff;
+        }
+        header{
+            background-color: #fff;
+            line-height: 44px;
+
+            /*顶端固定*/
+            position:fixed;
+            width:100%;
+            z-index: 100;
+            top:0px
+        }
+        .contractList{
+            overflow: hidden;
+            /*margin-top: 44px;*/
+        }
+        header>h1>.ret:before{
+            height: 16px;
+            width: 9px;
+            display: inline-block;
+            float: left;
+            vertical-align: middle;
+            /*background: url("../img/return.png") no-repeat;*/
+            /*background-size:100% 100% ;*/
+            /*margin-left: 4%;*/
+            position: absolute;
+            margin: auto 0;
+            left: 4%;
+            top:9px;
+        }
+        header>h1{
+            font-size: 18px;
+            color:#333;
+            /*font-weight: 500;*/
+            line-height: 44px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-weight: bold;
+            /*white-space: nowrap;*/
+        }
+        .contractList{
+            overflow: hidden;
+        }
+        .contract{
+            border-top:9px solid #f5f5f5;
+            background-color: #fff;
+        }
+        .contract>li{
+            overflow: hidden;
+        }
+        /*<li>1*/
+        .contract_num1{
+            text-align: left;
+            line-height: 42px;
+            color: #333;
+            padding-left: 4%;
+            border-bottom: 1px solid #efefef;
+        }
+        /*<li>2*/
+        .state2{
+            line-height: 38px;
+            font-size:16px;
+        }
+        .state2>p{
+            color:#333;
+        }
+        .state_1{
+            float: left;
+            margin-left: 6.4%;
+            color:#333;
+            font-weight: bold;
+            font-size:14px;
+        }
+        .state_1m2{
+            color:#666;
+        }
+        .contractnu{
+            font-size:15px;
+            font-weight: bold;
+        }
+
+        /*<li>3*/
+        .Guardian3{
+            line-height: 38px;
+        }
+        .Guardian3>p{
+            display: inline-block;
+        }
+        .Guardian_1{
+            float: left;
+            margin-left: 6.4%;
+            color:#333;
+            font-size:14px;
+        }
+        .Guardian_1w{
+            font-size:14px;
+            font-weight: bold;
+        }
+        .Guardian_1p{
+            font-size:14px;
+            color:#666;
+        }
+        .Guardian_2{
+            float: left;
+            margin-left: 6.4%;
+            color:#333;
+            font-size:14px;
+        }
+        .Guardian_2w{
+            color: #333;
+            font-weight: bold;
+        }
+        .Guardian_2img{
+            display: inline-block;
+            width: 17px;
+            height:17px;
+            background: url("../img/exclamation.png") no-repeat;
+            background-size:100% 100%;
+            vertical-align: middle;
+            margin-right: 24px;
+        }
+        .Guardian_2zhuang{
+            color:#666;
+        }
+        /*<li>4*/
+        .uptime4{
+            line-height: 38px;
+        }
+        .uptime_1{
+            display: inline-block;
+            margin-left: 6.4%;
+            color:#333;
+        }
+        .uptime_1t{
+            font-weight: bold;
+            font-size:14px;
+        }
+        .uptime_1tc{
+            color:#666;
+            font-size:14px;
+        }
+        /*<li>5*/
+        .btn5{
+            line-height: 51px;
+            height: 51px;
+            /*padding-right: 40px;*/
+            padding-right: 6.4%;
+            border-top: 1px solid #efefef;
+            text-align: right;
+        }
+        .btn5>div{
+            width:84px;
+            line-height: 27px;
+            display: inline-block;
+            border-radius: 20px;
+            background-color: #fbaf37;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .btn5>div>span{
+            font-size: 14px;
+            color:#fff;
+        }
+        .varbtn_words{
+            font-size: 14px;
+            color:#666;
+        }
+        .qiandan,.chakanjd,.cuidan{
+            margin-right: 4.3%;
+        }
+
+    </style>
+</head>
+<body>
+<header class="">
+    <h1 class=""><a href="serverSalesmanJob.html" class="mui-icon mui-icon-left-nav mui-pull-left ret" style="color:#333;"></a><span>返合同审批</span></h1>
+</header>
+<ul class="mui-table-view" style="margin-top:44px;margin-left: 1rem;margin-right: 1rem;">
+    <input type="submit" id="tiaojian" style="width:100%;background-color: #fbaf37;border:none;" value="查找条件">
+    <div class="mui-collapse-content">
+        <label for="starttime">起始日期</label>
+        <input type="date" name="starttime" value="" id="starttime"/>
+        <label for="endtime">终止日期</label>
+        <input type="date" name="endtime" value="" id="endtime"/>
+        <label for="submiter">申请人</label>
+        <input type="text" id="submiter" value="">
+        <input type="submit" id="submit" style="width:100%;background-color: #fbaf37;border:none;" value="查找">
+    </div>
+</ul>
+<!--加载页面-->
+<div id="loadPage"  class=" main">
+    <div class="loadEffect">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="margin-top:80px;margin-bottom: 20px;padding-bottom: 40px;">
+    <div class="contractList mui-scroll" id="contractList">
+    <!--<ul class="contract">-->
+        <!--<li class="contract_num1">-->
+            <!--<span class="contractnu">合同编号：</span><span class="contractnu">333</span>-->
+        <!--</li>-->
+        <!--<li class="state2">-->
+            <!--<p class="state_1"><span>合同名称：</span><span class="state_1m2">xxx合同</span></p>-->
+        <!--</li>-->
+        <!--<li class="state2">-->
+            <!--<p class="state_1"><span>提交人：</span><span class="state_1m2">周周周公</span></p>-->
+        <!--</li>-->
+        <!--<li class="Guardian3">-->
+            <!--<p class="Guardian_1">-->
+                <!--<span class="Guardian_1w" style="margin-right: 0px">审批意见：</span><span class="Guardian_1p" style="margin-left: 0px">我的意见</span>-->
+            <!--</p>-->
+        <!--</li>-->
+        <!--<li class="uptime4">-->
+            <!--<p class="uptime_1">-->
+                <!--<span class="uptime_1t">审批时间：</span><span class="uptime_1tc">2017-04-24</span>-->
+            <!--</p>-->
+        <!--</li>-->
+    <!--</ul>-->
+    </div>
+</div>
+<script type="text/javascript" src="../js/mui.min.js" ></script>
+<script type="text/javascript" src="../js/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript" src="../js/jquery.cookie.js" ></script>
+<script src="../js/checkht.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js" ></script>
+<script>
+    var flag = true;
+    $('#tiaojian').bind('tap',function(){
+        if(!checkYh($(this))){
+            mui.alert("用户已下线，请重新登录");
+            return false;
+        }
+       if(flag){
+           $('.mui-collapse-content').css({'display':'block'});
+           $('#refreshContainer').css({'margin-top':'340px'});
+           flag=false;
+       }else{
+           $('.mui-collapse-content').css({'display':'none'});
+           $('#refreshContainer').css({'margin-top':'80px'});
+           flag=true;
+       }
+    });
+     $('a').click(function(){
+			if(checkYh($(this))){
+				return true;
+			}else{
+				mui.alert('用户已经离线，请重新登录');
+//				alert('用户已经离线，请重新登录');
+				return false;
+			}
+		})
+    var userid = $.cookie('uid');
+//    var userid = '877701025044164609';
+//    console.log(userid);
+
+    var starttime = "";
+    var endtime = "";
+    var submiter = "";
+    $('#submit').bind('tap',function(){
+        starttime = $('#starttime').val();
+        endtime = $('#endtime').val();
+        submiter = $('#submiter').val();
+        ajs();
+    });
+    var contractcode = "";
+    function ajs(){
+        if(!checkXl()){
+            mui.alert("用户已经离线，请重新登录！");
+            return false;
+        };
+        $('.main').show();
+        mask.show();
+//        console.log(host+"/app/contractdone?userid="+userid+"&submitter="+submiter+"&fromdate="+starttim e+"&todate="+endtime);
+        $.ajax({
+//            url:host+"/app/getrecordcontractlist?uname=zhang&type=3&userid=819384343152005146",
+            url:host+"/app/contractdone?userid="+userid+"&submitter="+submiter+"&fromdate="+starttime+"&todate="+endtime,
+            type:"get",
+            datatype:"json",
+            success:function(result){
+                var html= '<div id="Tips" style="display:none; text-align: center; color: #999999;">'
+						     	+'<img style="width: 121px;height: 120px;margin-top: 75px;" src="../img/暂无数据.png" alt="" />'
+						    	+'<div style="margin-top: 25px;">'
+						    	+	'<span>暂无数据</span>'
+						    	+'</div>	'
+							+'</div>';
+                var contactdata=result.data;
+                $(".contractList").html('');
+//                console.log(result);
+//                遍历数组
+                for(var i=0;i<contactdata.length;i++){
+                    var detail= new Array(); //定义一数组
+                    detail=contactdata[i].detail.split(","); //字符分割
+                    var reg1 = /(.*?)返合同/;
+                    var reg2 = /^编号(.*?)质押合同报备流程$/;
+                    var reg3 = /^编号(.*?)审批流程$/;
+                    var reg4 = /^编号(.*?)合同作废流程$/;
+                    var reg5 = /^编号(.*?)合同撤单流程$/;
+                    if(reg1.test(detail[1])){
+                        var contractcode1 = detail[1].match(reg1);
+                        if(reg2.test(contractcode1[1])){
+                            var contractcode2 = contractcode1[1].match(reg2);
+                            contractcode = contractcode2[1];
+                        }else{
+                            contractcode = contractcode1[1];
+                        }
+                    }else if(reg3.test(detail[1])){
+                        var contractcode3 = detail[1].match(reg3);
+                            contractcode = contractcode3[1];
+                    }else if(reg4.test(detail[1])){
+                        var contractcode4 = detail[1].match(reg4);
+                        contractcode = contractcode4[1];
+                    }else if(reg5.test(detail[1])){
+                        var contractcode5 = detail[1].match(reg5);
+                        contractcode = contractcode5[1];
+                    }else{
+
+                    }
+                    //    拼接字符串
+                    html+='<ul class="contract">'
+                        +'<li class="contract_num1">'
+                        +'<span class="contractnu">合同编号：</span><span class="contractnu">'+ contractcode +'</span>'
+                        +'</li>'
+                        +'<li class="state2">'
+                        +'<p class="state_1"><span>合同名称：</span><span class="state_1m2">'+detail[0]+'</span></p>'
+                        +'</li>'
+                        +'<li class="state2">'
+                        +'<p class="state_1"><span>提交人：</span><span class="state_1m2">'+ contactdata[i].submitter +'</span></p>'
+                        +'</li>'
+                        +'<li class="Guardian3">'
+                        +'<p class="Guardian_1">'
+                        +'<span class="Guardian_1w" style="margin-right: 0px">审批意见：</span><span class="Guardian_1p" style="margin-left: 0px">'+ contactdata[i].opinion +'</span>'
+                        +'</p>'
+                        +'</li>'
+                        +'<li class="uptime4">'
+                        +'<p class="uptime_1">'
+                        +'<span class="uptime_1t">审批时间：</span><span class="uptime_1tc">'+ contactdata[i].date +'</span>'
+                        +'</p>'
+                        +'</li>'
+                        +' </ul>'
+
+                }   //for over
+
+                $(".contractList").html(html);
+                if(contactdata.length==0){
+	                	$('#Tips').show();
+                }
+                $('.main').hide();
+                mask.close();
+            },
+            error:function (data) {
+                mui.alert("操作失败");
+            }
+        });
+    }
+
+
+
+    /*遮罩蒙版*/
+    var mask = mui.createMask(function () {
+//					$('.modleChane').hide();
+//					$('.modleWait').hide();
+//					$('#msgResoult').hide();
+
+    })
+    $('.main').show();
+    mask.show();
+mui.init({
+    swipeBack:true,
+    gestureConfig: {
+        tap: true, //默认为true
+        doubletap: true, //默认为false
+        longtap: true, //默认为false
+        swipe: true, //默认为true
+        drag: true, //默认为true
+        hold: false, //默认为false，不监听
+        release: false //默认为false，不监听
+    },
+    pullRefresh: {
+        container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+        down: {
+            style:'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+            color:'#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+            height:50,//可选,默认50.触发下拉刷新拖动距离,
+            auto: true,//可选,默认false.首次加载自动上拉刷新一次
+            contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+            contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+            contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+            callback: function() { //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+                setTimeout(function() {
+                    ajs();
+                    mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
+                }, 1000);
+            }
+        }
+    }
+});
+
+</script>
+</body>
+</html>

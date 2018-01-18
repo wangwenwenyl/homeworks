@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html style="font-size:100px;height: 100%;">
+<head>
+<meta charset="utf-8">
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="apple-touch-fullscreen"/>
+<meta content="telephone=no,email=no" name="format-detection"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>地图</title>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=geGLGXIUuWM0lGsGGy5tBX06QOie4FIf"></script>
+<style type="text/css">
+    body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+    #allmap {height: 500px;width:100%;overflow: hidden;}
+    #result {width:100%;font-size:14px;}
+    dl,dt,dd,ul,li{
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+    dt{
+        font-size:14px;
+        font-family:"微软雅黑";
+        font-weight:bold;
+        border-bottom:1px dotted #000;
+        padding:5px 0 5px 5px;
+        margin:5px 0;
+    }
+	.BMapLib_sendToPhone{display:none;}
+    dd{
+        padding:5px 0 0 5px;
+    }
+    li{
+        line-height:28px;
+    }
+     #licontain a{text-decoration:none;color:#6ce;font-size:14px;}
+    #licontain a:hover{text-decoration:underline;}
+    #licontain *{box-sizing:border-box;margin:0px;padding:0px;}
+    #licontain div{padding:0.2rem;}
+
+	ul>.lit{
+	padding-left:0.18rem !important;
+	;padding-top:0.08rem !important;
+	padding-bottom:0.08rem !important;
+	border-bottom:1px solid #efefef;
+	width:100%;
+	}
+	.litp1{
+	color:#333;
+	line-height:0.35rem;
+	font-size:0.16rem !important;
+	width: 98%;
+	}
+	.litp2{
+		color:#676767;
+//		line-height:0.3rem;
+		font-size: 0.14rem !important;
+	}
+	.litp2>span{
+		display:inline-block;
+
+//      vertical-align: super;
+	}
+	.lit .litp2m,.lit .litp2d{
+
+//        line-height:0.7rem;
+        background-size:100% 100%;
+	}
+	.litp2m{
+		background:url('../img/lmo.png') no-repeat;
+		width:0.15rem;
+        height:0.15rem;
+        margin-right:0.15rem !important;
+        vertical-align: middle;
+	}
+	.litp2d{
+    	background:url('../img/ldi.png') no-repeat;
+//      line-height: 0.7rem;
+        width:0.13rem;
+        height:0.17rem;
+        margin-left:0.01rem !important;
+        margin-right:0.17rem !important;
+        vertical-align: top;
+//		margin-top:0.1rem !important;
+        margin-top: 0.05rem !important;
+    }
+    .litp2p{
+        width: 85%;
+
+    }
+	ul>.lit p{
+    	width:100%;
+    	}
+ </style>
+ <script>
+// 	var autoScreen=function(){
+//     	var x=$(window).width();
+//     	$("html").css("font-size",20*(x/320)+"px");
+//     }
+//     autoScreen();
+ </script>
+	<link rel="stylesheet" href="../css/index1.css"/>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=geGLGXIUuWM0lGsGGy5tBX06QOie4FIf"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+</head>
+<body style="height: 100%;">
+<div class="header" style="width:100%;height: 5%;background-color: #f6f6f6;font-size: 0.16rem;color: #0c0d0e; height: 0.44rem;line-height: 0.44rem;padding-left: 3%;">
+	<a href="javascript:;" onclick="window.history.go(-1);"><img src="../img/left-arrow.png" alt="" style="height: 15px;"/></a>
+	<!--<a href="http://ts.hcxzdanbao.com/html/serverSalesmanJob.html"><img src="../img/left-arrow.png" alt="" style="height: 15px;"/></a>-->
+	<span style="position: relative;left: 35%;">征信查询</span>
+</div>
+<div style="width:100%;height:40%;border:1px solid gray" id="container"></div>
+<div style="width:100%;height:54%;border:1px solid gray;overflow-y: scroll;line-height:1.8em;" id="licontain">
+
+    	<ul>
+    	   <li class='lit'>
+    	      <a onmouseover="openMyWin(infoWindow1,marker1)" href="#">
+    				<p class='litp1' >招商银行长安街支行(自助查询)</p>
+    				<p class='litp2' ><span class='litp2m'></span><span>电话：95555</span></p>
+    				<p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市东城区建国门内大街11-1号</span></p>
+    	      </a>
+    	   </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow2,marker2)" href="#">
+    	         <p class='litp1' >招商银行个贷朝外大街分中心(自助查询)</p>
+    			 <p class='litp2' ><span class='litp2m'></span><span>电话：95555</span></p>
+    			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>北京市朝阳区朝外大街26号朝外写字中心C座1层</span></p>
+    	         </a>
+    	      </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow3,marker3)" href="#">
+    	         <p class='litp1' >北京农商银行延庆支行营业部(自助查询)</p>
+    			 <p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>北京市延庆县东外大街109号</span></p>
+    	         </a>
+    	      </li>
+
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow4,marker4)" href="#">
+    	        <p class='litp1' >北京农商银行密云支行营业部(自助查询)</p>
+    		    <p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：密云县鼓楼南大街25号</span></p>
+    	        </a>
+    	      </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow5,marker5)" href="#">
+    	        <p class='litp1' >北京农商银行平谷支行营业部(自助查询)</p>
+    			 <p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			 <p class='litp2' style=''><span class='litp2d' style=''></span><span class='litp2p'>地址：平谷区新平北路平乐街8号</span></p>
+    	        </a>
+    	      </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow6,marker6)" href="#">
+    	        <p class='litp1' >北京农商银行房山支行营业部(自助查询)</p>
+    		    <p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			<p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：房山区良乡长虹东路1号</span></p>
+    	        </a>
+    	      </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow7,marker7)" href="#">
+    	         <p class='litp1' >北京农商银行门头沟支行营业部(自助查询)</p>
+                 <p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：门头沟区滨河路115号滨河大厦1层</span></p>
+    	        </a>
+    	      </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow8,marker8)" href="#">
+    	         <p class='litp1' >北京农商银行顺义支行营业部(自助查询)</p>
+    			 <p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市顺义区新顺南大街15号</span></p>
+    	        </a>
+    	      </li>
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow9,marker9)" href="#">
+    	        <p class='litp1' >北京农商银行怀柔支行营业部(自助查询)</p>
+    			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市怀柔区迎宾北路18号支行营业部</span></p>
+    	        </a>
+    	      </li>
+
+
+    	     <li class='lit'><a onmouseover="openMyWin(infoWindow10,marker10)" href="#">
+    	        <p class='litp1' >北京农商银行西城支行营业部(自助查询)</p>
+    			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+    			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：西城区复兴门外大街4号</span></p>
+    	        </a>
+    	      </li>
+    	      <li class='lit'><a onmouseover="openMyWin(infoWindow11,marker11)" href="#">
+                  	        <p class='litp1' >北京农商银行东城支行营业部(自助查询)</p>
+                  			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                  			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>北京市东城区北三环东路37号A座(华世隆国际公寓)一层</span></p>
+                  	        </a>
+              </li>
+              <li class='lit'><a onmouseover="openMyWin(infoWindow12,marker12)" href="#">
+                  	        <p class='litp1' >北京农商银行海淀支行营业部(自助查询)</p>
+                  			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                  			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市海淀区苏州街77号</span></p>
+                  	        </a>
+               </li>
+
+               <li class='lit'><a onmouseover="openMyWin(infoWindow13,marker13)" href="#">
+                   	        <p class='litp1' >招商银行个贷中关村分中心(自助查询)</p>
+                   			<p class='litp2' ><span class='litp2m'></span><span>电话：95555</span></p>
+                   			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市海淀区北二街6号中国普天大厦一层</span></p>
+                   	        </a>
+               </li>
+               <li class='lit'><a onmouseover="openMyWin(infoWindow14,marker14)" href="#">
+                   	        <p class='litp1' >招商银行个贷复兴门分中心(自助查询)</p>
+                   			<p class='litp2' ><span class='litp2m'></span><span>电话：95555</span></p>
+                   			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市西城区闹市口大街1号院4号楼10E</span></p>
+                   	        </a>
+                   	      </li>
+               <li class='lit'><a onmouseover="openMyWin(infoWindow15,marker15)" href="#">
+                   	        <p class='litp1' >浦发银行慧忠支行(自助查询)</p>
+                   			<p class='litp2' ><span class='litp2m'></span><span>电话：64877966</span></p>
+                   			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市朝阳慧忠北里214号奥华美达酒店一层</span></p>
+                   	        </a>
+                   	      </li>
+
+                 <li class='lit'><a onmouseover="openMyWin(infoWindow16,marker16)" href="#">
+                     	        <p class='litp1' >浦发银行经济技术开发区支行(自助查询)</p>
+                     			<p class='litp2' ><span class='litp2m'></span><span>电话：67890778</span></p>
+                     			 <p class='litp2' ><span class='litp2d' style=''></span><span class='litp2p'>地址：北京市大兴亦庄天华园二里二区19号楼(大雄商业中心)一层</span></p>
+                     	        </a>
+                     	      </li>
+                 <li class='lit'><a onmouseover="openMyWin(infoWindow17,marker17)" href="#">
+                     	        <p class='litp1' >浦发银行雅宝路支行(自助查询)</p>
+                     			<p class='litp2' ><span class='litp2m'></span><span>电话：85192337</span></p>
+                     			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市东城建国门北大街8号华润大厦一层</span></p>
+                     	        </a>
+                     	      </li>
+                 <li class='lit'><a onmouseover="openMyWin(infoWindow18,marker18)" href="#">
+                     	        <p class='litp1' >北京农商银行通州支行(自助查询)</p>
+                     			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                     			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市通州梨园北街63、65号</span></p>
+                     	        </a>
+                     	      </li>
+                  <li class='lit'><a onmouseover="openMyWin(infoWindow19,marker19)" href="#">
+                      	        <p class='litp1' >北京农商银行石景山支行营业部(自助查询)</p>
+                      			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                      			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市石景山区杨庄东路78号</span></p>
+                      	        </a>
+                      	      </li>
+
+                   <li class='lit'><a onmouseover="openMyWin(infoWindow20,marker20)" href="#">
+                       	        <p class='litp1' >北京农商银行丰台支行营业部(自助查询)</p>
+                       			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                       			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市丰台西局南街101号</span></p>
+                       	        </a>
+                       	      </li>
+                   <li class='lit'><a onmouseover="openMyWin(infoWindow21,marker21)" href="#">
+                       	        <p class='litp1' >北京农商银行黄村支行(自助查询)</p>
+                       			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                       			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>北京市大兴黄村兴华路216号</span></p>
+                       	        </a>
+                       	      </li>
+                   <li class='lit'><a onmouseover="openMyWin(infoWindow22,marker22)" href="#">
+                                          	        <p class='litp1' >北京农商银行朝阳支行望京分理处(自助查询)</p>
+                                          			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                                          			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市朝阳区南湖中园130号</span></p>
+                                          	        </a>
+                                          	      </li>
+                   <li class='lit'><a onmouseover="openMyWin(infoWindow23,marker23)" href="#">
+                                          	        <p class='litp1' >北京农商银行大望路支行(自助查询)</p>
+                                          			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                                          			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市朝阳区西大望路15号院3号楼一层</span></p>
+                                          	        </a>
+                                          	      </li>
+                  <li class='lit'><a onmouseover="openMyWin(infoWindow24,marker24)" href="#">
+                                         	        <p class='litp1' >北京农商银行京粮支行(柜台查询/自助查询)</p>
+                                         			<p class='litp2' ><span class='litp2m'></span><span>电话：96198</span></p>
+                                         			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市朝阳区东三环中路16号京粮大厦一层</span></p>
+                                         	        </a>
+                                         	      </li>
+                   <li class='lit'><a onmouseover="openMyWin(infoWindow25,marker27)" href="#">
+                                                            	        <p class='litp1' >北银消费金融公司(柜台查询)</p>
+                                                            			<p class='litp2' ><span class='litp2m'></span><span>电话：62521036</span></p>
+                                                            			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市海淀区中关村大街22号中科大厦B座一层</span></p>
+                                                            	        </a>
+                                                            	      </li>
+                   <li class='lit'><a onmouseover="openMyWin(infoWindow0,marker0)" href="#">
+                                                            	        <p class='litp1' >中国人民银行征信中心北京分中心(柜台查询/自助查询)</p>
+                                                            			<p class='litp2' ><span class='litp2m'></span><span>电话：68559206</span></p>
+                                                            			 <p class='litp2' ><span class='litp2d'style=''></span><span class='litp2p'>地址：北京市西城区月坛北街26号恒华国际商务中心A座907</span></p>
+                                                            	        </a>
+                                                            	      </li>
+
+
+
+
+
+
+
+    	 </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+var map = new BMap.Map("container");
+map.centerAndZoom(point, 14);
+map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
+map.addControl(new BMap.ScaleControl());             // 添加比例尺控件
+map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
+map.enableScrollWheelZoom();                         //启用滚轮放大缩小
+map.centerAndZoom(new BMap.Point(116.282512,39.922014), 11);
+
+var myIcon = new BMap.Icon("../img/baiduico.png", new BMap.Size(40,40), {
+    imageOffset: new BMap.Size(15,5)
+  });
+
+
+
+
+var point = [new BMap.Point(116.43313,39.915517),new BMap.Point(116.448043,39.927542),new BMap.Point(115.983796,40.465672),new BMap.Point(116.851608,40.376936),new BMap.Point(117.125714,40.152419),new BMap.Point(116.145367,39.729089),new BMap.Point(116.117941,39.941104),new BMap.Point(116.656877,40.131278),new BMap.Point(116.644936,40.334452),new BMap.Point(116.357025,39.91253),new BMap.Point(116.415091,39.975904),new BMap.Point(116.313736,39.969201),new BMap.Point(116.318091,39.989731),new BMap.Point(116.367968,39.910737),new BMap.Point(116.410836,40.011789),new BMap.Point(116.501736,39.805828),new BMap.Point(116.440503,39.918908),new BMap.Point(116.685797,39.893162),new BMap.Point(116.204836,39.927657),new BMap.Point(116.311001,39.876788),new BMap.Point(116.339599,39.761802),new BMap.Point(116.468835,40.006868),new BMap.Point(116.482511,39.899539),new BMap.Point(116.469427,39.906163),new BMap.Point(116.323834,39.986866),new BMap.Point(116.352289,39.923731)];
+
+var marker1 = new BMap.Marker(point[0],{icon:myIcon});
+var marker2 = new BMap.Marker(point[1],{icon:myIcon});
+var marker3 = new BMap.Marker(point[2],{icon:myIcon});
+var marker4 = new BMap.Marker(point[3],{icon:myIcon});
+var marker5 = new BMap.Marker(point[4],{icon:myIcon});
+var marker6 = new BMap.Marker(point[5],{icon:myIcon});
+var marker7 = new BMap.Marker(point[6],{icon:myIcon});
+var marker8 = new BMap.Marker(point[7],{icon:myIcon});
+var marker9 = new BMap.Marker(point[8],{icon:myIcon});
+var marker10 = new BMap.Marker(point[9],{icon:myIcon});
+var marker11 = new BMap.Marker(point[10],{icon:myIcon});
+var marker12 = new BMap.Marker(point[11],{icon:myIcon});
+var marker13 = new BMap.Marker(point[12],{icon:myIcon});
+var marker14 = new BMap.Marker(point[13],{icon:myIcon});
+var marker15 = new BMap.Marker(point[14],{icon:myIcon});
+var marker16 = new BMap.Marker(point[15],{icon:myIcon});
+var marker17 = new BMap.Marker(point[16],{icon:myIcon});
+var marker18 = new BMap.Marker(point[17],{icon:myIcon});
+var marker19 = new BMap.Marker(point[18],{icon:myIcon});
+var marker20 = new BMap.Marker(point[19],{icon:myIcon});
+var marker21 = new BMap.Marker(point[20],{icon:myIcon});
+var marker22 = new BMap.Marker(point[21],{icon:myIcon});
+var marker23 = new BMap.Marker(point[22],{icon:myIcon});
+var marker24 = new BMap.Marker(point[23],{icon:myIcon});
+var marker25 = new BMap.Marker(point[24],{icon:myIcon});
+var marker0 = new BMap.Marker(point[25],{icon:myIcon});
+map.addOverlay(marker1);              
+map.addOverlay(marker2);
+map.addOverlay(marker3);
+map.addOverlay(marker4);
+map.addOverlay(marker5);
+map.addOverlay(marker6);
+map.addOverlay(marker7);
+map.addOverlay(marker8);
+map.addOverlay(marker9);
+map.addOverlay(marker10);
+map.addOverlay(marker11);              
+map.addOverlay(marker12);
+map.addOverlay(marker13);
+map.addOverlay(marker14);
+map.addOverlay(marker15);
+map.addOverlay(marker16);
+map.addOverlay(marker17);
+map.addOverlay(marker18);
+map.addOverlay(marker19);
+map.addOverlay(marker20);
+map.addOverlay(marker21);              
+map.addOverlay(marker22);
+map.addOverlay(marker23);
+map.addOverlay(marker24);
+map.addOverlay(marker25);
+map.addOverlay(marker0);
+
+map.setViewport(point);    
+
+
+
+var content1 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市东城区建国门内大街11-1号</br>电话:95555</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow1 = null;
+    infoWindow1 = new BMapLib.SearchInfoWindow(map, content1, {
+            title  : "招商银行长安街支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content2 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市朝阳区朝外大街26号朝外门写字中心C座1层</br>电话:95555</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow2 = null;
+    infoWindow2 = new BMapLib.SearchInfoWindow(map, content2, {
+            title  : "招商银行个贷朝外大街分中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content3 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市延庆县东外大街109号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow3 = null;
+    infoWindow3 = new BMapLib.SearchInfoWindow(map, content3, {
+            title  : "北京农商银行延庆支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content4 = "<div style='line-height:1.8em;font-size:14px;'>地址:密云县鼓楼南大街25号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow4 = null;
+    infoWindow4 = new BMapLib.SearchInfoWindow(map, content4, {
+            title  : "北京农商银行密云支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content5 = "<div style='line-height:1.8em;font-size:14px;'>地址:平谷区新平北路平乐街8号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow5 = null;
+    infoWindow5 = new BMapLib.SearchInfoWindow(map, content5, {
+            title  : "北京农商银行平谷支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content6 = "<div style='line-height:1.8em;font-size:14px;'>地址:房山区良乡长虹东路1号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow6 = null;
+    infoWindow6 = new BMapLib.SearchInfoWindow(map, content6, {
+            title  : "北京农商银行房山支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content7 = "<div style='line-height:1.8em;font-size:14px;'>地址:门头沟区滨河路115号滨河大厦1层</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow7 = null;
+    infoWindow7 = new BMapLib.SearchInfoWindow(map, content7, {
+            title  : "北京农商银行门头沟支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content8 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市顺义区新顺南大街15号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow8 = null;
+    infoWindow8 = new BMapLib.SearchInfoWindow(map, content8, {
+            title  : "北京农商银行顺义支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content9 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市怀柔区迎宾北路18号支行营业部</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow9 = null;
+    infoWindow9 = new BMapLib.SearchInfoWindow(map, content9, {
+            title  : "北京农商银行怀柔支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content10 = "<div style='line-height:1.8em;font-size:14px;'>地址:西城区复兴门外大街4号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow10 = null;
+    infoWindow10 = new BMapLib.SearchInfoWindow(map, content10, {
+            title  : "北京农商银行西城支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content11 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市东城区北三环东路37号A座(华世隆国际公寓)一层</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow11 = null;
+    infoWindow11 = new BMapLib.SearchInfoWindow(map, content11, {
+            title  : "北京农商银行东城支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content12 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市海淀区苏州街77号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow12 = null;
+    infoWindow12 = new BMapLib.SearchInfoWindow(map, content12, {
+            title  : "北京农商银行海淀支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content13 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市海淀区北二街6号中国普天大厦一层</br>电话:95555</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow13 = null;
+    infoWindow13 = new BMapLib.SearchInfoWindow(map, content13, {
+            title  : "招商银行个贷中关村分中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content14 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市西城区闹市口大街1号院4号楼10E</br>电话:95555</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow14 = null;
+    infoWindow14 = new BMapLib.SearchInfoWindow(map, content14, {
+            title  : "招商银行个贷复兴门分中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content15 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市朝阳慧忠北里214号奥华美达酒店一层</br>电话:64877966</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow15 = null;
+    infoWindow15 = new BMapLib.SearchInfoWindow(map, content15, {
+            title  : "浦发银行慧忠支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content16 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市大兴亦庄天华园二里二区19号楼(大雄商业中心)一层</br>电话:67890778</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow16 = null;
+    infoWindow16 = new BMapLib.SearchInfoWindow(map, content16, {
+            title  : "浦发银行经济技术开发区支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content17 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市东城建国门北大街8号华润大厦一层</br>电话:85192337</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow17 = null;
+    infoWindow17 = new BMapLib.SearchInfoWindow(map, content17, {
+            title  : "浦发银行雅宝路支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content18 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市通州梨园北街63、65号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow18 = null;
+    infoWindow18 = new BMapLib.SearchInfoWindow(map, content18, {
+            title  : "北京农商银行通州支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content19 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市石景山区杨庄东路78号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow19 = null;
+    infoWindow19 = new BMapLib.SearchInfoWindow(map, content19, {
+            title  : "北京农商银行石景山支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content20 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市丰台西局南街101号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow20 = null;
+    infoWindow20 = new BMapLib.SearchInfoWindow(map, content20, {
+            title  : "北京农商银行丰台支行营业部",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content21 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市大兴黄村兴华路216号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow21 = null;
+    infoWindow21 = new BMapLib.SearchInfoWindow(map, content21, {
+            title  : "北京农商银行黄村支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content22 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市朝阳区南湖中园130号</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow22 = null;
+    infoWindow22 = new BMapLib.SearchInfoWindow(map, content22, {
+            title  : "北京农商银行朝阳支行望京分理处",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content23 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市朝阳区西大望路15号院3号楼一层</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow23 = null;
+    infoWindow23 = new BMapLib.SearchInfoWindow(map, content23, {
+            title  : "北京农商银行大望路支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content24 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市朝阳区东三环中路16号京粮大厦一层</br>电话:96198</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow24 = null;
+    infoWindow24 = new BMapLib.SearchInfoWindow(map, content24, {
+            title  : "北京农商银行京粮支行",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content25 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市海淀区中关村大街22号中科大厦B座一层</br>电话:62521036</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow25 = null;
+    infoWindow25 = new BMapLib.SearchInfoWindow(map, content25, {
+            title  : "北银消费金融公司",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+    var content0 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市西城区月坛北街26号恒华国际商务中心A座907</br>电话:68559206</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow0 = null;
+    infoWindow0 = new BMapLib.SearchInfoWindow(map, content0, {
+            title  : "中国人民银行征信中心北京分中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+                // BMAPLIB_TAB_TO_HERE,  //到这里去
+                // BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+
+
+
+
+
+marker1.addEventListener("mouseover", function(e){infoWindow1.open(marker1);});
+marker2.addEventListener("mouseover", function(e){infoWindow2.open(marker2);});
+marker3.addEventListener("mouseover", function(e){infoWindow3.open(marker3);});
+marker4.addEventListener("mouseover", function(e){infoWindow4.open(marker4);});
+marker5.addEventListener("mouseover", function(e){infoWindow5.open(marker5);});
+marker6.addEventListener("mouseover", function(e){infoWindow6.open(marker6);});
+marker7.addEventListener("mouseover", function(e){infoWindow7.open(marker7);});
+marker8.addEventListener("mouseover", function(e){infoWindow8.open(marker8);;});
+marker9.addEventListener("mouseover", function(e){infoWindow9.open(marker9);});
+marker10.addEventListener("mouseover", function(e){infoWindow10.open(marker10);});
+marker11.addEventListener("mouseover", function(e){infoWindow11.open(marker11);});
+marker12.addEventListener("mouseover", function(e){infoWindow12.open(marker12);});
+marker13.addEventListener("mouseover", function(e){infoWindow13.open(marker13);});
+marker14.addEventListener("mouseover", function(e){infoWindow14.open(marker14);});
+marker15.addEventListener("mouseover", function(e){infoWindow15.open(marker15);});
+marker16.addEventListener("mouseover", function(e){infoWindow16.open(marker16);});
+marker17.addEventListener("mouseover", function(e){infoWindow17.open(marker17);});
+marker18.addEventListener("mouseover", function(e){infoWindow18.open(marker18);;});
+marker19.addEventListener("mouseover", function(e){infoWindow19.open(marker19);});
+marker20.addEventListener("mouseover", function(e){infoWindow20.open(marker20);});
+marker21.addEventListener("mouseover", function(e){infoWindow21.open(marker21);});
+marker22.addEventListener("mouseover", function(e){infoWindow22.open(marker22);});
+marker23.addEventListener("mouseover", function(e){infoWindow23.open(marker23);});
+marker24.addEventListener("mouseover", function(e){infoWindow24.open(marker24);});
+marker25.addEventListener("mouseover", function(e){infoWindow25.open(marker25);});
+marker0.addEventListener("mouseover", function(e){infoWindow0.open(marker0);});
+
+
+
+marker1.addEventListener("click", function(e){infoWindow1.open(marker1);});
+marker2.addEventListener("click", function(e){infoWindow2.open(marker2);});
+marker3.addEventListener("click", function(e){infoWindow3.open(marker3);});
+marker4.addEventListener("click", function(e){infoWindow4.open(marker4);});
+marker5.addEventListener("click", function(e){infoWindow5.open(marker5);});
+marker6.addEventListener("click", function(e){infoWindow6.open(marker6);});
+marker7.addEventListener("click", function(e){infoWindow7.open(marker7);});
+marker8.addEventListener("click", function(e){infoWindow8.open(marker8);;});
+marker9.addEventListener("click", function(e){infoWindow9.open(marker9);});
+marker10.addEventListener("click", function(e){infoWindow10.open(marker10);});
+marker11.addEventListener("click", function(e){infoWindow11.open(marker11);});
+marker12.addEventListener("click", function(e){infoWindow12.open(marker12);});
+marker13.addEventListener("click", function(e){infoWindow13.open(marker13);});
+marker14.addEventListener("click", function(e){infoWindow14.open(marker14);});
+marker15.addEventListener("click", function(e){infoWindow15.open(marker15);});
+marker16.addEventListener("click", function(e){infoWindow16.open(marker16);});
+marker17.addEventListener("click", function(e){infoWindow17.open(marker17);});
+marker18.addEventListener("click", function(e){infoWindow18.open(marker18);;});
+marker19.addEventListener("click", function(e){infoWindow19.open(marker19);});
+marker20.addEventListener("click", function(e){infoWindow20.open(marker20);});
+marker21.addEventListener("click", function(e){infoWindow21.open(marker21);});
+marker22.addEventListener("click", function(e){infoWindow22.open(marker22);});
+marker23.addEventListener("click", function(e){infoWindow23.open(marker23);});
+marker24.addEventListener("click", function(e){infoWindow24.open(marker24);});
+marker25.addEventListener("click", function(e){infoWindow25.open(marker25);});
+marker0.addEventListener("click", function(e){infoWindow0.open(marker0);});
+
+function openMyWin(id,p){
+    id.open(p);
+}
+
+
+//var autoScreen=function(){
+//    	var x=$(window).width();
+//    	$("html").css("font-size",20*(x/320)+"px");
+//    	// 375
+//    }
+//    autoScreen();
+//    $(function(){
+//    	// 固定底部
+//    	var fixft=function(){
+//    		var fth=$(".fix-ft").height();
+//    		if($(".fix-ft").length>0){
+//    			if($("body").height()>$(window).height()/2){
+//    				$("body").css("padding-bottom",(fth+24)+"px");
+//    			}
+//    		}
+//    	}
+//    	fixft();
+
+</script>

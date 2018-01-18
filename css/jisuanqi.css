@@ -1,0 +1,30 @@
+ *{margin:0px;padding:0px;}
+ .header{position: relative;height:0.44rem;line-height:0.44rem;background-color: #f6f6f6;
+     border-bottom: 1px solid #efefef;margin: 0 auto;text-align: center;font-size:0.16rem;color: #0c0d0e;}
+   a{ -webkit-tap-highlight-color:rgba(255,0,0,0);}
+   .nav-box{height:0.36rem;width:100%;background:#fbfbfb;}
+   .nav-iterm1 a{width:50%;font-size:0.14rem;color:#83868f;float:left;line-height:0.36rem;text-align: center;text-decoration:none;}
+   .nav-iterm1 span{line-height:0.35rem;padding:0.06rem 0.06rem;}
+   .nav-iterm1 a.active span{border-bottom: 1px solid #df3031;font-size:0.16rem;color: #df3031;}
+     .w100{font-size:0.16rem;}
+     .form-box{height:0.44rem;line-height:0.44rem;border-bottom:1px solid #ddd;font-size:0.14rem;padding:0rem 0.1rem;}
+   .form-lei{float:left;color:#83868f;width:25%}
+   .form-input{float:right;width:72%;}
+   .tac{margin: 0 0.14rem;  margin-top:0.2rem;text-align: center;}
+   #Button1{display: block;width: 100%;  height:0.36rem;  line-height:0.36rem;background: #df3031;font-size:0.14rem;  border: none;  border-radius:0.02rem;  outline: none;}
+   input,select{width: 80%;height:0.44rem;font-size:0.14rem;border: none;background: none;overflow: hidden;color: #0c0d0e!important;outline: none;}
+   .mTab{margin: 0 auto;font-size:0.13rem;width:2rem;margin:auto;}
+   .flexbox{width: 100%;padding: 1px;border: 1px solid #f66;border-radius: 15px;}
+   .w100{margin-top:0.2rem;}
+     .mTab a:first-child {border-radius:0.15rem 0 0 0.15rem;  }
+     .mTab a:last-child {  border-radius: 0 15px 15px 0;}
+     .mTab a.active {background-color: #f66;color: #fff;}
+     .mTab a {text-align: center;width:49%;height:0.25rem;line-height:0.25rem;color: #f66;}
+     .flexbox > * {display: inline-block;box-flex: 1;-webkit-box-flex: 1;-moz-box-flex: 1;-ms-box-flex: 1;}
+     .benxi-text,.benjin-text {color: #b3b6be;font-size: 14px;line-height: 24px;margin-top: 12px;padding: 0 14px;}
+   .benjin-text{display:none;}
+   .xi-title{width:48%;float:left;text-align:right;color:#b3b6be;font-size:0.15rem;}
+   .xi-num{width:48%;float:right;font-size:0.15rem;}
+   .benxi,.benjin{line-height:0.3rem;display:none;}
+   .benxi:after,.benjin:after{display:table;content:"";clear:both;}
+   .valu{text-align: center;border-bottom:1px solid #f5f5f5;}

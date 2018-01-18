@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<!--编辑者：彭传博
+	模块：合同签单
+-->
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <!--mui.css-->
+    <link rel="stylesheet" href="../css/mui.min.css">
+    <link rel="sty.lesheet" type="text/css" href="../css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/Peng-common.css"/>
+    <title>合同签单</title>
+    <style>
+        .mui-spinner {
+            width: 32px;
+            height: 32px;
+        }
+
+        /*下拉刷新的箭头颜色*/
+        .mui-pull-top-pocket {
+            margin-top: 44px;
+        }
+
+        .mui-icon-pulldown {
+            color: #fbaf37;
+        }
+
+        .mui-spinner:after {
+            border-color: #fbaf37;
+        }
+
+        html, body {
+            touch-action: none;
+            height: 100%;
+            width: 100%;
+        }
+
+        .mui-bar {
+            position: relative;
+            background-color: #fff;
+        }
+
+        header {
+            background-color: #fff;
+            line-height: 44px;
+
+            /*顶端固定*/
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            top: 0px
+        }
+
+        .contractList {
+            overflow: hidden;
+            margin-top: 44px;
+        }
+
+        header > h1 {
+            font-size: 18px;
+            color: #333;
+            /*font-weight: 500;*/
+            line-height: 44px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-weight: bold;
+            /*white-space: nowrap;*/
+        }
+
+        header > h1 > .ret:before {
+            height: 16px;
+            width: 9px;
+            display: inline-block;
+            float: left;
+            vertical-align: middle;
+            /*background: url("../img/return.png") no-repeat;*/
+            /*background-size:100% 100% ;*/
+            /*margin-left: 4%;*/
+            position: absolute;
+            margin: auto 0;
+            left: 4%;
+            top: 9px;
+        }
+
+        .contract {
+            border-top: 9px solid #f5f5f5;
+            border-bottom: 9px solid #f5f5f5;
+            background-color: #fff;
+        }
+
+        .contract > li {
+            overflow: hidden;
+        }
+
+        /*<li>1*/
+        .contract_num1 {
+            text-align: left;
+            line-height: 42px;
+            color: #333;
+            padding-left: 15px;
+            border-bottom: 1px solid #efefef;
+        }
+
+        /*<li>2*/
+        .state2 {
+            line-height: 38px;
+            font-size: 16px;
+        }
+
+        .state2 > p {
+            color: #333;
+        }
+
+        .state_1 {
+            float: left;
+            margin-left: 20px;
+            color: #333;
+
+            font-size: 14px;
+        }
+
+        .contractnu {
+            font-size: 14px;
+            /*font-weight: bold;*/
+        }
+
+        /*<li>3*/
+        .Guardian3 {
+            line-height: 38px;
+        }
+
+        .Guardian3 > p {
+            display: inline-block;
+        }
+
+        .Guardian_1 {
+            float: left;
+            margin-left: 20px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .Guardian_1w {
+            font-size: 14px;
+
+        }
+
+        .Guardian_1p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .Guardian_2 {
+            float: right;
+            width: 35%;
+            display: inline-block;
+            margin-right: 5%;
+            text-align: right;
+        }
+
+        .Guardian_2 > span {
+
+        }
+
+        .Guardian_2zhuang {
+            color: #666;
+        }
+
+        .Guardian_2img {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            /*background: url("../img/exclamation.png") no-repeat;*/
+            background-size: 100% 100%;
+            vertical-align: middle;
+            margin-right: 8%;
+        }
+
+        /*<li>4*/
+        .uptime4 {
+            line-height: 38px;
+        }
+
+        .uptime_1 {
+            display: inline-block;
+            float: left;
+            margin-left: 20px;
+            color: #333;
+        }
+
+        .uptime_1t {
+
+            font-size: 14px;
+        }
+
+        .uptime_1tdate {
+            color: #666;
+        }
+
+        /*<li>5*/
+        .btn5 {
+            line-height: 51px;
+            height: 51px;
+            /*padding-right: 40px;*/
+            padding-right: 4.79%;
+            border-top: 1px solid #efefef;
+            text-align: right;
+        }
+
+        .btn5 > div {
+            width: 84px;
+            line-height: 27px;
+            display: inline-block;
+            border-radius: 20px;
+            background-color: #fbaf37;
+            vertical-align: middle;
+            text-align: center;
+            color: #fff;
+        }
+
+        .btn5 > div > span {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .varbtn_words {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .qiandan, .chakanjd, .cuidan {
+            margin-right: 4.3%;
+        }
+
+        /*modalBox*/
+        .hide {
+            /*display:none !important;*/
+            display: none;
+        }
+
+        .modle_blank_shou2 {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            background-color: #000;
+            opacity: 0.25;
+            z-index: 10;
+        }
+
+        /*撤单alert*/
+        .modle_sex_shou2 {
+            width: 85.3%;
+            height: 33%;
+            /*height: 396px;*/
+            position: fixed;
+            z-index: 15;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: auto;
+        }
+
+        .modheader {
+            /*height:55px;*/
+            height: 25%;
+            background-color: #f9f9f9;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .modheader > p {
+            display: inline-block;
+            float: left;
+            font-size: 16px;
+            color: #666;
+            margin-top: 18px;
+        }
+
+        .modheader > div {
+            display: inline-block;
+            float: right;
+            margin-top: 5%;
+        }
+
+        .tanClose {
+            width: 24px;
+            height: 24px;
+            /*background: url("../img/tanClose.png") no-repeat;*/
+            background-size: 100% 100%;
+        }
+
+        .modbody {
+            background-color: #fff;
+            height: 39%;
+            line-height: 39%;
+            /*overflow:hidden*/
+        }
+
+        .modbody > textarea {
+            display: block;
+            width: 81.25%;
+            /*height: 81px;*/
+            height: 90%;
+            margin: 0 auto;
+            color: #666;
+            font-size: 16px;
+            /*margin-top: 10px;*/
+            margin-top: 3%;
+            border-radius: 5px;
+        }
+
+        textarea::placeholder {
+            color: #dadada;
+            font-size: 16px;
+        }
+
+        .modfooter {
+            height: 20%;
+            margin-top: 3%;
+        }
+
+        .modfooterBtn {
+            width: 81.25%;
+            /*height:40px;*/
+            /*height:77%;*/
+            height: 100%;
+            margin: 0 auto;
+            /*background-color: #8f8f94;*/
+        }
+
+        .modfooterBtn > div {
+            /*line-height: 40px;*/
+            line-height: 100%;
+            vertical-align: middle;
+            text-align: center;
+            /*height: 40px;*/
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .modfooterBtnL {
+            float: left;
+            width: 44%;
+            background-color: #fff;
+            border: 2px solid #e5e5e5;
+        }
+
+        .modfooterBtnR {
+            float: right;
+            width: 44%;
+            background-color: #fbaf37;
+        }
+
+        .modfooterBtn > div > span {
+            line-height: 40px;
+            /*line-height: 100%;*/
+            display: block;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        .modfooterBtnL > span {
+            color: #a5a5a5;
+        }
+
+        .modfooterBtnR > span {
+            color: #fff;
+        }
+
+        /*催单alert*/
+        .modle_sex_shou3 {
+            width: 85.3%;
+            height: 33%;
+            /*height: 396px;*/
+            position: fixed;
+            z-index: 15;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: auto;
+        }
+
+        .modbodyC {
+            background-color: #fff;
+            height: 39%;
+            line-height: 39%;
+            /*overflow:hidden*/
+            padding-top: 13%;
+        }
+
+        .modcuidanP {
+            /*vertical-align:center;*/
+            color: #999;
+            font-size: 16px;
+            text-align: center;
+            vertical-align: middle;
+            height: 100%;
+            line-height: 100%;
+        }
+
+        .modfooterBtnC {
+            line-height: 39px;
+            background-color: #fbaf37;
+            width: 90.6%;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 10px;
+        }
+
+        .modle_sex_shou4 {
+            width: 85.3%;
+            height: 33%;
+            /*height: 396px;*/
+            position: fixed;
+            z-index: 15;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: auto;
+        }
+
+        .modle_sex_shou4 > .modbody > p {
+            text-align: center;
+            line-height: 80px;
+            font-size: 17px;
+        }
+
+        .modle_sex_shouC {
+            width: 85.3%;
+            height: 32%;
+            /*height: 396px;*/
+            position: fixed;
+            z-index: 15;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: auto;
+            margin-top: 35%;
+        }
+
+        .modle_sex_shouC > .modbody > p {
+            text-align: center;
+            line-height: 80px;
+            font-size: 17px;
+        }
+
+        .modle_sex_shouZ {
+            width: 85.3%;
+            height: 33%;
+            /*height: 396px;*/
+            position: fixed;
+            z-index: 15;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: auto;
+            margin-top: 32%;
+        }
+
+        .modle_sex_shouZ > .modbody > p {
+            text-align: center;
+            line-height: 80px;
+            font-size: 17px;
+        }
+
+        /*无数据提示*/
+        .nomess {
+            text-align: center;
+            margin-top: 150px;
+        }
+
+        .noImg {
+            background: url('../img/noMess.png') no-repeat;
+            background-size: 100% 100%;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+        }
+
+        .Notes {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+
+    </style>
+</head>
+<body>
+<script src="../js/mui.min.js"></script>
+<script src="../js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js" ></script>
+<script src="../js/checkht.js"></script>
+<header class="">
+    <h1 class="">
+        <a href="serverSalesmanJob.html" class="mui-icon mui-icon-left-nav mui-pull-left ret" style="color:#333;"></a>
+        <span>合同签单</span></h1>
+</header>
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper" style="margin-bottom: 20px;padding-bottom: 40px;">
+    <div class="contractList" id="contractList">
+
+
+    </div>
+</div>
+<div class="nomess hide">
+    <div class="noImg"></div>
+    <p class="Notes">暂无数据</p>
+</div>
+
+<!-- modalBox -->
+<div class='modle_blank_shou2 hide'>
+
+</div>
+
+<!--撤单 modalBox-->
+<div class='modle_sex_shou2 hide'>
+    <div class="modheader">
+        <p>消息提醒</p>
+        <div class="tanClose"></div>
+    </div>
+    <div class="modbody">
+        <textarea id='chetext' class='chetext' placeholder="请输入撤单请求"></textarea>
+    </div>
+    <div class="modfooter">
+        <div class="modfooterBtn">
+            <div class="modfooterBtnL"><span>取消</span></div>
+            <div class="modfooterBtnR"><span>确定</span></div>
+        </div>
+    </div>
+</div>
+<!--催单 modalBox-->
+<div class='modle_sex_shou3 hide'>
+    <div class="modheader">
+        <p>消息提醒</p>
+        <div class="tanClose"></div>
+    </div>
+    <div class="modbodyC">
+        <p class="modcuidanP" id="modcuidanP"></p>
+    </div>
+    <div class="modfooter">
+        <div class="modfooterBtnC">确定</div>
+    </div>
+</div>
+
+<!--废单弹框-->
+<div class='modle_sex_shouZ hide' id="feidasucc">
+    <div class="modheader">
+        <p>消息提醒</p>
+        <div class="tanClose"></div>
+    </div>
+    <div class="modbody">
+        <textarea id='chetextZ' class='chetext1' placeholder="请输入废单请求"></textarea>
+    </div>
+    <div class="modfooter">
+        <div class="modfooterBtn">
+            <div class="modfooterBtnL"><span>取消</span></div>
+            <div class="modfooterBtnR"><span>确定</span></div>
+        </div>
+    </div>
+</div>
+
+
+<!--撤单 modalBox-->
+<div class='modle_sex_shouC hide'>
+    <div class="modheader">
+        <p>消息提醒</p>
+        <div class="tanClose"></div>
+    </div>
+    <div class="modbody">
+        <textarea id='chetextC' class='chetext1' placeholder="请输入撤单请求"></textarea>
+    </div>
+    <div class="modfooter">
+        <div class="modfooterBtn">
+            <div class="modfooterBtnL"><span>取消</span></div>
+            <div class="modfooterBtnR"><span>确定</span></div>
+        </div>
+    </div>
+</div>
+
+
+<!--撤单弹框-->
+<div class='modle_sex_shou5 hide' id="chedsucc">
+    <div class="modheader">
+        <p>消息提醒</p>
+        <div class="tanClose"></div>
+    </div>
+    <div class="modbody">
+        <p>撤单申请成功</p>
+    </div>
+    <div class="modfooter">
+        <div class="modfooterBtn">
+            <div class="modfooterBtnL"><span>取消</span></div>
+            <div class="modfooterBtnR"><span>确定</span></div>
+        </div>
+    </div>
+</div>
+<script src="../js/checkht.js"></script>
+<script>
+    var userid = $.cookie('uid');
+    var uuid = $.cookie('uuid');
+
+//    alert(uuid);
+    //    var userid = '855601509113622528'; //吕苗苗
+
+    console.log(userid);
+
+    var conid = "";      //合同id
+    var contp = "";      //合同类型
+    //        ajs();
+    var info = '';
+    $('a').click(function(){
+			if(checkYh($(this))){
+				return true;
+			}else{
+				mui.alert('用户已经离线，请重新登录');
+				return false;
+			}
+		})
+    function modalBox() {
+        /**
+         *  撤单 modalBox
+         */
+        $(".chedan").bind('tap', function () {
+            $('.modle_blank_shou2').removeClass('hide');
+            $('.modle_sex_shouC').removeClass('hide');
+            info = $(this).attr('info');
+            $(document.body).css({
+                "overflow-x": "hidden",
+                "overflow-y": "hidden"
+            });
+        });
+        $('.tanClose').bind('tap', function () {
+            $('.modle_blank_shou2').addClass('hide');
+            $('.modle_sex_shou3').addClass('hide');
+            $('.modle_sex_shou4').addClass('hide');
+            $('.modle_sex_shouC').addClass('hide');
+            $('.modle_sex_shouZ').addClass('hide');
+            $('#chetextZ').val('');
+            $('#chetextC').val('');
+            $(document.body).css({
+                "overflow-x": "auto",
+                "overflow-y": "auto"
+            });
+
+        });
+        $('.chetext').bind('focus', function () {
+            $(this).attr("placeholder", "");
+        });
+        $('.chetext').bind('blur', function () {
+            if ($(this).attr("placeholder") === '') {
+                $(this).attr("placeholder", "请输入撤单请求");
+            }
+        });
+        $('.modfooterBtnL,.modfooterBtnR,.modfooterBtnC').bind('tap', function () {
+            $('.modle_blank_shou2').addClass('hide');
+            $('.modle_sex_shou3 ').addClass('hide');
+            $('.modle_sex_shou4').addClass('hide');
+            $('.modle_sex_shouC').addClass('hide');
+            $('.modle_sex_shouZ').addClass('hide');
+            $('#chetextZ').val('');
+            $('#chetextC').val('');
+            $(document.body).css({
+                "overflow-x": "auto",
+                "overflow-y": "auto"
+            });
+        });
+
+        /**
+         *  催单 modalBox
+         */
+        $(".cuidan").bind('tap', function () {
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            $('.modle_blank_shou2').removeClass('hide');
+            $('.modle_sex_shou3').removeClass('hide');
+            $(document.body).css({
+                "overflow-x": "hidden",
+                "overflow-y": "hidden"
+            });
+            info = $(this).attr('info');
+            $.ajax({
+                url: host+'/app/reminder?contractid=' + info+"&uuid="+uuid,
+                type: "get",
+                datatype: "json",
+                success: function (result) {
+                    $('#modcuidanP').text(result.data.message);
+                },
+                error:function (data) {
+                    mui.alert("操作失败");
+                }
+            })
+        });
+
+
+        $(".zuofe").bind('tap', function () {
+            $('.modle_blank_shou2').removeClass('hide');
+            $('.modle_sex_shouZ').removeClass('hide');
+            $(document.body).css({
+                "overflow-x": "hidden",
+                "overflow-y": "hidden"
+            });
+            info = $(this).attr('info');
+            console.log(info);
+        });
+
+        $('.cheak1').bind('tap', function () {  //状态1
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            conid = $(this).attr('conid')
+            location.href = "progress.html?&dt=0" + "&contractid=" + conid;
+        });
+        $('.chongxintj3').bind('tap', function () {  //状态3-重新提交
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            var info = $(this).attr('inco');
+            contp = $(this).attr('contpye');
+            conid = $(this).attr('conid');
+
+            if (contp === '信用贷') {
+                location.href = "serverXinYongDai.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&contractid=" + conid;
+            } else if (contp === '抵押贷') {
+                location.href = "serverDiYaDai.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&contractid=" + conid;
+            } else if (contp === '质押贷') {
+                location.href = "serverZhiyaFanHeTong.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&contractid=" + conid;
+            }
+
+        });
+        $('.qiandanXIN').bind('tap', function () { //状态5-信用贷-签单
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            info = $(this).attr('info');
+            conid = $(this).attr('conid');
+            location.href = "serverXinYongDai.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&conid=" + conid;
+        });
+        $('.qiandanDI').bind('tap', function () { //状态5-抵押贷-签单
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            info = $(this).attr('info');
+            conid = $(this).attr('conid');
+            location.href = "serverDiYaDai.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&conid=" + conid;
+            // location.href="serverDiYaDai.html?"+"&step=0"+"&nodeType=0"+"&processinstanceid=''"+"&contractnum="+info;
+        });
+        $('.baobei5').bind('tap', function () {   //状态5报备按钮
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            info = $(this).attr('info');
+            location.href = "serverZhiyaBaoBeiDan.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info;
+        });
+        $('.baobei12').bind('tap', function () {   //状态12报备按钮
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            info = $(this).attr('info');
+            conid = $(this).attr('conid');
+            location.href = "serverZhiyaBaoBeiDan.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&conid=" + conid;
+        });
+        $('.cheak7').bind('tap', function () {  //状态7
+            if(!checkYhTap(this)){
+                mui.alert("用户已下线，请重新登录");
+                return false;
+            }
+            conid = $(this).attr('conid');
+//                console.log(conid)
+            location.href = "progress.html?&dt=1" + "&contractid=" + conid;
+        });
+        $('.qiandan11').bind('tap', function () { //状态11 签单按钮
+
+            info = $(this).attr('info');
+            //infotype = $(this).attr('infotype');
+            infotype = $.trim($(this).attr('infotype'));
+            conid = $(this).attr('conid');
+//                console.log(infotype);
+            if (infotype == '信用贷') {
+                location.href = "serverXinYongDai.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&conid=" + conid;
+            } else if (infotype == '抵押贷') {
+                location.href = "serverDiYaDai.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&conid=" + conid;
+            } else if (infotype == '质押贷') {
+                location.href = "serverZhiyaFanHeTong.html?" + "&step=0" + "&nodeType=0" + "&processinstanceid=''" + "&contractnum=" + info + "&conid=" + conid;
+            }
+        });
+    }
+
+
+    //    使用jquery的ajax
+    function ajs() {
+        if(!checkXl()){
+            mui.alert("用户已经离线，请重新登录！");
+            return false;
+        };
+        $.ajax({
+            url: host+"/app/getrecordcontractlist?uname=zhang&type=0&userid=" + userid,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+//                    console.log(result);
+                var html = '<div id="Tips" style="display:none; text-align: center; color: #999999;">'
+                    + '<img style="width: 121px;height: 120px;margin-top: 75px;" src="../img/暂无数据.png" alt="" />'
+                    + '<div style="margin-top: 25px;">'
+                    + '<span>暂无数据</span>'
+                    + '</div>	'
+                    + '</div>';
+                var HTstate = "";     //合同状态 新constatus 旧applycount
+                var varbtn = "";    //合同状态下各种按钮
+                var imgState = '';//图片状态
+                var contactdata = result.data;
+                for (var i = 0; i < contactdata.length; i++) {
+                    if (contactdata[i].constatus == 0) {
+                        HTstate = '尚未签单';
+                        varbtn = "";
+                        imgState = "../img/签单-未开始.png";
+                    } else if (contactdata[i].constatus == 1) {
+                        HTstate = '签单审核中';
+                        imgState = '../img/签单-待审核.png';
+                        varbtn = '<div class="chakanjd cheak1' +
+                            '" info="' + contactdata[i].contractnum + '" conid="' + contactdata[i].id + '">'
+                            + '<span class="div_btn" >查看进度</span>'
+                            + '</div>'
+                            + '<div class="cuidan" info="' + contactdata[i].id + '">'
+                            + '<span class="div_btn">催单</span>'
+                            + '</div>'
+                            + '<div class="chedan" info="' + contactdata[i].contractnum + '">'
+                            + '<span class="div_btn cheda">撤单</span>'
+                            + '</div>';
+                    } else if (contactdata[i].constatus == 2) {
+                        HTstate = '签单完成';
+                        imgState == '../img/签单-完成.png';
+                        varbtn = '<span class="varbtn_words">签单完成</span>'
+                    } else if (contactdata[i].constatus == 3) {
+                        HTstate = '审核未通过';
+                        imgState = '../img/签单-退回.png';
+                        varbtn = '<div class="chongxintj3" inco="' + contactdata[i].contractnum + '" contpye ="' + contactdata[i].contpye + '" conid="' + contactdata[i].id + '">' +
+                            '<span class="div_btn" >重新提交</span>' +
+                            '</div>';
+                    } else if (contactdata[i].constatus == 4) {
+                        HTstate = '作废审核中';
+                        imgState = '../img/签单-待审核.png';
+                        varbtn = '<span class="varbtn_words">作废审核中</span>'
+                    } else if (contactdata[i].constatus == 5) {
+                        if (contactdata[i].contpye == '信用贷') {
+                            HTstate = '尚未签单';
+                            imgState = '../img/签单-未开始.png';
+                            varbtn = '<div class="qiandan qiandanXIN" info="' + contactdata[i].contractnum + '" conid="' + contactdata[i].id + '">' +
+                                '<span class="div_btn">签单</span>' +
+                                '</div>' +
+                                '<div class="zuofei" info="' + contactdata[i].contractnum + '" conid="' + contactdata[i].id + '">' +
+                                '<span class="div_btn zuofe" info="' + contactdata[i].contractnum + '">作废</span>' +
+                                '</div>';
+                        } else if (contactdata[i].contpye == '抵押贷') {
+                            HTstate = '尚未签单';
+                            imgState = '../img/签单-未开始.png';
+                            varbtn = '<div class="qiandan qiandanDI" info="' + contactdata[i].contractnum + '" conid="' + contactdata[i].id + '">' +
+                                '<span class="div_btn">签单</span>' +
+                                '</div>' +
+                                '<div class="zuofei" info="' + contactdata[i].contractnum + '">' +
+                                '<span class="div_btn zuofe" info="'+contactdata[i].contractnum+'">作废</span>' +
+                                '</div>';
+                        } else if (contactdata[i].contpye == '质押贷') {
+                            HTstate = '尚未签单';
+                            imgState = '../img/签单-未开始.png';
+                            varbtn =
+                                '<div class="zuofei baobei12 " info="' + contactdata[i].contractnum + '">' +
+                                '<span class="div_btn">报备</span>' +
+                                '</div>';
+                        }
+                    } else if (contactdata[i].constatus == 6) {
+                        HTstate = '已归档';
+                        imgState = '../img/签单-完成.png';
+                        varbtn = '<span class="varbtn_words">已归档</span>'
+                    } else if (contactdata[i].constatus == 7) {
+                        if (contactdata[i].contpye == '质押贷') {
+                            HTstate = '报备审核中';
+                            imgState = '../img/签单-待审核.png';
+                            varbtn = ' <div class="zuofei cheak7" info="' + contactdata[i].contractnum + '" conid="' + contactdata[i].id + '">' +
+                                '<span class="div_btn" conid="' + contactdata[i].id + '" info="' + contactdata[i].contractnum + '">查看进度</span>' +
+                                '</div>';
+                        }
+                    } else if (contactdata[i].constatus == 8) {
+                        HTstate = '被撤单完成';
+                        imgState = '../img/签单-完成.png';
+                        varbtn = '<span class="varbtn_words">被撤单完成</span>'
+                    } else if (contactdata[i].constatus == 9) {
+                        HTstate = '员工离职废除';
+                        imgState = '../img/签单-提示.png';
+                        varbtn = '<span class="varbtn_words">员工离职废除</span>'
+                    } else if (contactdata[i].constatus == 10) {
+                        HTstate = '已提交成交确认书';
+                        imgState = '../img/签单-完成.png';
+                        varbtn = '<span class="varbtn_words">已提交成交确认书</span>'
+                    } else if (contactdata[i].constatus == 11) {
+                        HTstate = '未签单';
+                        imgState = '../img/签单-未开始.png';
+                        varbtn = '<div class="qiandan qiandan11" info="' + contactdata[i].contractnum + '" infotype="' + contactdata[i].contpye + '" conid="' + contactdata[i].id + '">' +
+                            '<span class="div_btn" >签单</span>' +
+                            '</div>' +
+                            '<div class="zuofei info="' + contactdata[i].contractnum + '">' +
+                            '<span class="div_btn zuofe"  info="' + contactdata[i].contractnum + '">作废</span>' +
+                            '</div>';
+                    } else if (contactdata[i].constatus == 12) {
+                        HTstate = '报备被驳回';
+                        imgState = '../img/签单-退回.png';
+                        varbtn = '<div class="qiandan baobei12" info="' + contactdata[i].contractnum + '">' +
+                            '<span class="div_btn" >报备</span>' +
+                            '</div>';
+                    } else if (contactdata[i].constatus == 13) {
+                        HTstate = '被作废完成';
+                        imgState = '../img/签单-完成.png';
+                        varbtn = '<span class="varbtn_words">被作废完成</span>'
+                    } else if (contactdata[i].constatus == 14) {
+                        HTstate = '撤单审核中';
+                        imgState = '../img/签单-待审核.png';
+                        varbtn = '<span class="varbtn_words">撤单审核中</span>'
+                    }  //if over
+                    //    拼接字符串
+                    html += '<ul class="contract">'
+                        + '<li class="contract_num1"><span class="contractnu">合同编号：</span><span style="font-size: 12px;">' + contactdata[i].contractnum + '</span>'
+                        + '<p class="Guardian_2">'
+                        + '<img class="Guardian_2img" src="' + imgState + '" />'
+                        + '<span style="font-size: 12px;" class="Guardian_2zhuang">' + HTstate + '</span>'
+                        + '</p>'
+
+                        + '</li>'
+
+                        + '<li class="state2">'
+                        + '<p class="state_1">' + contactdata[i].contpye + '</p>'
+                        //                    applytype
+                        + '</li>'
+                        + '<li class="Guardian3">'
+                        + '<p class="Guardian_1">'
+                        + '<span class="Guardian_1w">维护人：</span>'
+                        + '<span class="Guardian_1p">' + contactdata[i].username + '</span></p>'
+
+                        + '</li>'
+                        + '<li class="uptime4">'
+                        + '<p class="uptime_1">'
+                        + '<span class="uptime_1t">更新时间：</span>'
+                        + '<span class="uptime_1tdate">' + contactdata[i].conupdate + '</span>'
+                        //                    applytime
+                        + '</p>'
+                        + '</li>'
+                        + '<li class="btn5">' + varbtn + '</li>'
+                        + '</ul>'
+                }   //for over
+//                跳转判断
+//                div_btn = function(){
+//                    $('.modle_blank_shou2').removeClass('hide');
+//                    $('.modle_sex_shou4').removeClass('hide');
+//                }
+                $(".contractList").html(html);
+                if (contactdata.length == 0) {
+                    $('#Tips').show();
+                }
+                modalBox();
+//            shu();
+            }
+        });
+    };
+
+
+    //作废
+    $('.modle_sex_shouZ .modfooterBtnR').bind('tap', function () {
+//            alert('作废');
+//            console.log(info);
+        if(!checkYhTap(this)){
+            mui.alert("用户已下线，请重新登录");
+            return false;
+        }
+        var chy = $('#chetextZ').val();
+//            console.log(chy);
+        $.ajax({
+//                url: host+"/app/getrecordcontractlist?uname=zhang&type=0&userid=855603647927644160",
+            url: host+"/app/cancelcontract?contractnum=" + info + "&userid=" + userid + "&content=" + chy+"&uuid="+uuid,
+            type: "get",
+            datatype: "json",
+            success: function (result) {
+//                    console.log(result);
+                if (result.data.code === '200') {
+                    $('.modle_sex_shouZ').addClass('hide');
+                    $('#feidasucc').addClass('hide');
+                    ajs();
+                }else if(result.data.code === '500'){
+                    mui.alert('用户已离线');
+                }else{
+                    mui.alert('操作失败');
+                    $('.modle_sex_shouZ').addClass('hide');
+                    $('#feidasucc').addClass('hide');
+                    ajs();
+                }
+                $('#chetextZ').val('');
+            },
+            error:function (data) {
+                mui.alert("操作失败");
+                $('#chetextZ').val('');
+                location.reload();
+            }
+        });
+    });
+
+
+    //撤单
+    $(".modle_sex_shouC .modfooterBtnR").bind('tap', function () {
+        if(!checkYhTap(this)){
+            mui.alert("用户已下线，请重新登录");
+            return false;
+        }
+//            console.log(info);
+        var chy = $('#chetextC').val();
+//            console.log(chy);
+        $.ajax({
+            url: host+"/app/revokecontract?contractnum=" + info + "&userid=" + userid + "&content=" + chy+"&uuid="+uuid,
+            type: "get",
+            datatype: "json",
+            success: function (result) {
+//                    console.log(result);
+                if (result.data.code === '200') {
+                    $('.modle_sex_shouC').addClass('hide');
+                    $('#chedsucc').addClass('hide');
+                    $('#chetextC').val('');
+                    ajs();
+                }else if(result.data.code === '500'){
+                    mui.alert('用户已离线');
+                }else{
+                    mui.alert('操作失败');
+                    $('.modle_sex_shouC').addClass('hide');
+                    $('#chedsucc').addClass('hide');
+                    $('#chetextC').val('');
+                    ajs();
+                }
+                $('#chetextC').val('');
+            },
+            error:function (data) {
+                mui.alert("操作失败");
+                $('#chetextC').val('');
+                location.reload();
+            }
+        })
+    });
+    mui.init({
+        swipeBack: true,
+        gestureConfig: {
+            tap: true, //默认为true
+            doubletap: true, //默认为false
+            longtap: true, //默认为false
+            swipe: true, //默认为true
+            drag: true, //默认为true
+            hold: false, //默认为false，不监听
+            release: false //默认为false，不监听
+        },
+        pullRefresh: {
+            container: "#refreshContainer", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+            down: {
+                style: 'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+                color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+                height: 50,//可选,默认50.触发下拉刷新拖动距离,
+                auto: true,//可选,默认false.首次加载自动上拉刷新一次
+                contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+                contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+                contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+                callback: function () { //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+                    setTimeout(function () {
+                        ajs();
+                        mui('#refreshContainer').pullRefresh().endPulldownToRefresh(); //refresh completed
+                    }, 1000);
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

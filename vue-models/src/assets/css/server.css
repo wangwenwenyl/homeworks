@@ -1,0 +1,92 @@
+*{box-sizing: border-box;margin:0px;padding:0px;}
+html, body {
+    touch-action: none;
+    height: 100%;
+    width: 100%;
+    font-size:14px;
+}
+.head{
+    background-color: #fff;
+    border-bottom:1px solid #ddd;
+    height:88px;
+    line-height: 88px;
+    /*���˹̶�*/
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    top: 0px;
+}
+.head>h1{
+    font-size: 36px;
+    color: #333;
+    line-height: 88px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    /*font-weight: bold;*/
+}
+
+.head > h1 > .ret:before {
+    display: inline-block;
+    float: left;
+    vertical-align: middle;
+    position: absolute;
+    margin: auto 0;
+    left:2%;
+    top: 20px;
+}
+select,input,a,textarea{outline:none;}
+input,textarea{padding-left:10px;}
+.mui-icon{font-size:48px;}
+.search-box{background:#fff;width:100%; text-align:center;padding:19px 10px;}
+.search-iterm{margin-top:12px;}
+.iterm-box{position:absolute;top:84px;width:100%;}
+.iterms{background:#fff;}
+.contract-num{font-size:14px;color:#333;display:inline-block;line-height:32px;}
+.contract-check,.contract-nums{font-size:13px;color:#333;display:inline-block}
+.contract-check{float:right;color:#fabf37;margin-top:10px;}
+.check-img{width:14px;vertical-align: middle;margin-right:7px;margin-top:-3px;}
+header{padding:5px 16px;border-bottom:1px solid #ddd;}
+section{padding:16px;border-bottom:1px solid #ddd;}
+.contract-list:not(:last-child){margin-bottom:13px;}
+.contract-list-left{display:inline-block;width:49%;}
+.contract-list-right{display:inline-block;width:49%;padding-left:5px;}
+.contract-list-name{font-size:12px;color:#333;display:inline-block;}
+.contract-list-value{font-size:12px;color:#666;display:inline-block;}
+.contract-btn{width:74px;height:26px;border:1px solid #fabf37;border-radius:13px;text-align: center;
+    line-height:26px;font-size:12px;color:#fabf37;display:inline-block;margin-left:6px;}
+footer{display: flex;justify-content: flex-end;align-items: center;padding:10px 16px;}
+.search-input{width:100% !important;border:1px solid #ddd !important;height:35px !important;margin-bottom:0px !important;font-size:16px;color:#333;}
+.search-btn{width:300px;height:40px;background:#fabf37;color:#fff;text-align: center;line-height:40px;margin:auto;font-size:16px;margin-top:16px;border-radius:5px;}
+.search-iterm label{font-size:14px;}
+.follow-box{background:#fff;height:40px;}
+.follow-active{color:#FBAF37 !important;}
+.follow-iterm{margin-bottom:12px;}
+.follow-left{width:49%;display:inline-block;font-size:16px;color:#333;text-align: center;line-height:40px;}
+.follow-right{width:49%;display:inline-block;font-size:16px;color:#333;text-align: center;line-height: 40px;}
+.follow-content{background:#fff;font-size:14px;color:#333;padding:20px 11px;}
+.follow-iterm-left{display:inline-block;text-align: left;width:42%;}
+.follow-iterm-right{width:56%;display:inline-block;text-align:right;}
+.follow-input{margin-bottom:0px !important;height:33px !important;border:1px solid #ddd !important;font-size:13px;line-height:33px !important;width:100%;}
+.follow-inputed{margin-top:12px;}
+.follow-star{color:#FBAF37;vertical-align: text-bottom;margin-right:10px;}
+.follow-iterm-right textarea{font-size:14px;padding:5px;}
+.btn-box{display:flex; justify-content: center;margin-top:30px;}
+.follow-cancel,.follow-sure{width:115px;height:40px;text-align: center;line-height:40px;font-size:16px;border:2px solid #ddd;border-radius:5px;}
+.follow-sure{margin-left:29px;color:#fff;background:#FBAF37;border:none;}
+input[type="radio"]{width:10px;height:10px;}
+.search-select{width:210px;font-size:14px;padding:0px 10px;height:33px;line-height:33px;border:1px solid #ddd !important;}
+ option{font-size:14px !important;}
+  .follow-space{width:100%;height:10px;background:#efeff4;}
+  .mint-msgbox-confirm{font-size:14px;}
+.follow-submit{height:40px;line-height:40px;background:#fbaf37;color:#fff;text-align:center;width:93%;border-radius:5px;}
+.fen-top{position:fixed;right:10px;top:15px;}
+.fen-box{position:fixed;top:70px;right:10px;width:120px;height:135px;background:#efeff4;}
+.fen-iterm{width:100%;height:45px;line-height:45px;text-align:center;border-bottom:1px solid #ddd;}
+.fen-img{width:15px;vertical-align:middle;}
+.fen-text{font-size:14px;margin-left:16px;}
+#app{background:#fff;}
+.picker-toolbar{background:#ddd;}
+.mintui{font-size:16px !important;margin-left:0px !important;}

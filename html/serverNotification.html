@@ -1,0 +1,322 @@
+<!doctype html>
+<!--
+	编辑者：宋亚男
+	模块：所有通知模块
+-->
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/syn.css"/>
+		<style type="text/css">
+			#box {
+				display: block;
+			}
+	
+			.mui-title {
+				font-size: 18px;
+				font-family: "微软雅黑";
+				font-weight: bold;
+				color: #333333;
+			}
+	
+			.top_hetongguanli {
+				display: block;
+				height: 43px;
+				background: white;
+				align-content: center;
+				font-family: "微软雅黑";
+				font-size: 18px;
+				padding-left: 24px;
+			}
+	
+			.top_hetongguanli_name {
+				line-height: 43px;
+				display: inline-block;
+			}
+	
+			.mui-bar {
+				position: relative;
+				background: white;
+				z-index: 6;
+			}
+	
+			.button_hetong_block {
+				height: 89px;
+				background: white;
+				margin-top: 9px;
+				padding: 0 42px;
+			}
+	
+			.button_hetong {
+				height: 36px;
+				width: 44%;
+				background: #fbaf37;
+				font-family: "微软雅黑";
+				font-size: 16px;
+				display: inline-block;
+				line-height: 36px;
+				text-align: center;
+				color: white;
+				vertical-align: middle;
+			}
+	
+			.margin-left-14px {
+				margin-left: 0.4%;
+				
+			}
+			
+			.message {
+				padding: 0 15px;
+				background: white;
+				/*margin-top: 44px;*/
+			}
+	
+			.message-title {
+				height: 49px;
+			}
+	
+	
+			.message-list {
+				padding: 0 0 0 16px;
+				background: white;
+			}
+	
+			.mui-pull-left {
+				margin-left: 3px;
+			}
+	
+			.height-88 {
+				height: 44px;
+			}
+	
+			.message-logo {
+				display: inline-block;
+				vertical-align: middle;
+			}
+	
+			.message-content {
+				font-size: 14px;
+				margin-left: 3.2%;
+			}
+	
+			.message-content-name {
+				color: red;
+				font-weight: bold;
+			}
+	
+			.message-content-date {
+				float: right;
+				color: #999999;
+				font-size: 12px;
+				margin-right: 16px;
+	
+				line-height: 44px;
+				text-align: center;
+			}
+			/* new */
+	
+			.itemContainer {
+				display: flex;
+			}
+			.flexImg{
+				
+			}
+			.flexUl {
+				flex-grow: 1;
+			}
+			/* end */
+			.modle_xibao{
+			    width: 85.3%;
+			    height: 202.5px;
+			    position: fixed;
+			    top: 200px;
+			    left: 7.35%;
+			    background-color: #f9f9f9;
+			    border-radius: 0.3rem;
+			    overflow: auto;
+			    display: none;  
+			    z-index: 10;
+			}
+			.mui-backdrop {
+				z-index: 8;
+			}
+			.xibaoTopBar{
+				width: 100%;
+				height: 27.16%;
+				background: #f4f4f4;
+				line-height: 55px;
+				font-size: 15px;
+				color: #666666;
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+			.imgConcle{
+				width: 24px;
+				height: 24px;
+				float: right;
+				margin-top: 9px;
+			}
+			.xibaoContent{
+				padding-left: 16.875%;
+				padding-top: 16px;
+			}
+			.xibaoContent>ul>li{
+				font-family: "微软雅黑";
+				color: #666666;
+				font-size: 14px;
+			}
+			#message>li{
+				border-bottom: 0.5px solid #efefef;
+			}
+			.xibaoContent>ul>li>span{
+				margin-left: 7.8%;
+			}
+			
+			.mui-slider-progress-bar{
+				background:none !important;
+			}
+			.mui-active{
+				color: #FBAF37 !important;
+			}
+			.imgBack{
+				position: fixed;
+				left: 15px;
+				top: 14px;
+				width: 9px;
+				height: 16px;
+				z-index: 10;
+			}
+			.imgcss{
+				position:fixed
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" ><img id="imgBack" class="imgBack" src="../img/返回.png" alt="" /></a>-->
+		<!--细报详情-->
+		<div class='modle_xibao'>	
+			<div class="xibaoTopBar font-family-black">
+				喜报详情
+				<img id="xibaoConcle" class="imgConcle" src="../img/cancel.png" alt="" />
+			</div>
+			<div  class="xibaoContent">
+				<ul>
+					<li>业务员&nbsp;&nbsp;    <span  id="xibaoName">王磊</span></li>
+					<li>所属门店<span id="xibaoDep">信贷二十六部</span></li>
+					<li>合同编号<span id="xibaoNum">WC1234567889</span></li>
+					<li>合同类型<span id="xibaoType">质押贷</span></li>
+					<li>签订日期<span id="xibaoTime">2017-05-26</span></li>
+				</ul>
+			</div>
+		</div>
+		<!--<header class="mui-bar mui-bar-nav display-block">
+			<h1 id="indMore" class="mui-title">通知</h1>
+		</header>-->
+		<header class="mui-bar mui-bar-nav" style="box-shadow:none;background:#fff;border-bottom:1px solid #ddd;position:fixed;top:0px;">
+		    <a href="javascript:;" onclick="window.history.go(-1);" class="mui-icon mui-icon-left-nav mui-pull-left" style="color:#333;"></a>
+		    <!--<a href="serverSalesmanJob.html" class="mui-icon mui-icon-left-nav mui-pull-left" style="color:#333;"></a>-->
+		    <h1 id="title" class="mui-title">通知</h1>
+		</header>
+		<!--顶部分割线-->
+		<div class="line"></div>
+		<div style="height: 44px;"></div>
+		<!--通知-->
+		<div  class="message">
+			<!--通知list内容-->
+			<div id="message">
+				
+			</div>
+		</div>
+		<!--通知list-->
+		<div class="message-list">
+			<ul id="message" class="mui-table-view">
+				
+			</ul>
+		</div>
+		
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script src="../js/jquery.cookie.js"></script>
+		<script src="../js/checkht.js"></script>
+		<script type="text/javascript">
+			var baseUrl = host+'/app/';
+			var username = "";
+			var password = "";
+			var mask = mui.createMask(function(){
+				$('.modle_xibao').hide();
+			});
+			
+			$('a').click(function(){
+				if(checkYh($(this))){
+					return true;
+				}else{
+					mui.alert('用户已经离线，请重新登录');
+					return false;
+				}
+			})
+			
+			/*获取全部通知接口*/
+			var getAllMsg= function(){
+				mui.get(baseUrl+'getallbillboard',{},function(data){
+						$('message').empty();
+						mJson=data;
+						$.each(data, function(infoIndex,info) {
+							strHtml='';
+							
+							$.each(info,function(index,item){
+								strHtml='<li id="'+item.number+'" class="height-88">'+
+											'<a href="javascript:;">'+
+										            '<img src="../img/通知.png" alt="" class="icon-32 message-logo" />'+
+										            '<div class="center-line"></div>'+
+										            '<div class="message-content display-inlineblock color-black font-family-black">'+
+										            	'恭喜<span id="messageName" class="message-content-name">'+item.name+'</span>签单成功'+
+										            '</div>'+
+										            '<div id="messageDate" class="message-content-date font-family-black">'+item.time+'</div>'+
+										        '</a>'+
+										'</li>';
+								$(strHtml).appendTo('#message');	
+							});
+						});
+					},'json'
+				);
+			}
+			mui.init({
+				preloadPages:[
+					getAllMsg()
+				
+				]
+			})
+			
+			/*通知点击事件*/
+			mui('#message').on('tap','.height-88',function(){
+				var id = this.getAttribute('id');
+				$.each(mJson, function(index,info) {
+					$.each(info,function(infoIndex,item){
+						if(id==item.number){
+							$('#xibaoNum').html(item.number);
+							$('#xibaoTime').html(item.time);
+							$('#xibaoDep').html(item.department);
+							$('#xibaoType').html(item.type);
+							$('#xibaoName').html(item.name);
+						}
+					});
+				});
+			    $('.modle_xibao').show();
+				mask.show()
+			})
+			//消息退出按钮
+			$('#xibaoConcle').bind('click',function(){
+				$('.modle_xibao').hide();				
+				mask.close();
+			});	
+			
+			
+		</script>
+	</body>
+
+</html>

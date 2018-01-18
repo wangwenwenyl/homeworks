@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="../css/mui.min.css"/>
+    <link rel="stylesheet" href="../css/contract.css"/>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/jquery.min-1.11.1.js"></script>
+    <script src="../js/checkht.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+    <script src="../js/serialize.js"></script>
+    <script src="../js/checkdata.js"></script>
+    <script src="../js/jquery.cookie.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/loadingSyn.css"/>
+    <style>
+        *{color:#333;}
+        input{color:#666;}
+        input[disabled],input:disabled{
+            /*border:1px solid #;*/
+            background-color:#fff;
+            color:#666;
+            opacity:1 !important;
+            -webkit-opacity:1 !important;
+        }
+        textarea[disabled],textarea:disabled{
+            background-color:#fff;
+            color:#666;
+            opacity:1 !important;
+            -webkit-opacity:1 !important;
+        }
+    </style>
+    <style>
+        .ret:before{
+            height: 16px;
+            width: 9px;
+            display: inline-block;
+            float: left;
+            vertical-align: middle;
+            /*background: url("../img/return.png") no-repeat;*/
+            /*background-size:100% 100% ;*/
+            /*margin-left: 4%;*/
+            position: absolute;
+            margin: auto 0;
+            left: 4%;
+            top:9px;
+        }
+        /*流程css 模块：附件上传 彭*/
+        .imgupBox{
+            margin-bottom: 18px;
+            overflow: hidden;
+        }
+        .groupPhotoC,.IDPhotoC,.itPhotoC{
+            padding: 0px 15px;
+        }
+        .groupPhoto,.IDPhoto,.itPhoto{
+            border-top:9px solid #f5f5f5;
+            overflow: hidden;
+        }
+        .Phototit{
+            font-size: 14px;
+            color: #666;
+            line-height: 35px;
+        }
+        /*上传按钮*/
+        .imgupbtn{
+            border: 1px dashed #dadada;
+            width: 29%;
+            height:82px;
+            position:relative;
+            float: left;
+        }
+        .imgadd{
+            /*background: url("../img/imgadd.png") no-repeat;*/
+            /*background-size: 50% 50%;*/
+        }
+        .imgupbtnInp{
+            opacity:0;
+            filter:alpha(opacity=0);
+            height: 82px;
+            width: 100px;
+            position: absolute;
+            /*position:relative;*/
+            top: 0;
+            /*top: -64px;*/
+            left: 0;
+            z-index: 9;
+        }
+        .rep{
+            padding: 0px 0px;
+            margin: 0px 0px;
+            overflow: hidden;
+        }
+        .rep>div{
+            width: 29%;
+            height: 84px;
+            float: left;
+            margin-right: 2.09%;
+            margin-left: 2.09%;
+            margin-top: 12px;
+        }
+        .imgCC{
+            position:relative;
+        }
+        .imgCC>img{
+            height: 100%;
+            width: 100%;
+        }
+        .ImgClose{
+            width: 20px;
+            height:20px;
+            background-color: #fff;
+            background: url("../img/cancel.png") no-repeat;
+            background-size: 100% 100%;
+            position:absolute;
+            right: -8%;
+            top: -8%;
+        }
+        /*流程css结束*/
+        .hide{display: none;}
+    </style>
+    
+    <script>
+    	$(function(){
+    		 $('a').click(function(){
+			if(checkYh($(this))){
+				return true;
+			}else{
+				mui.alert('用户已经离线，请重新登录');
+//				alert('用户已经离线，请重新登录');
+				return false;
+			}
+		})
+    	}) 	
+        function verifyNum(formname,name,text,reg){
+            $('#'+formname).find('input[name="'+name+'"]').blur(function(){
+                if($(this).val()!='') {
+                    if (!reg.test($(this).val())) {
+                        mui.alert(text);
+                    }
+                }
+            })
+        }
+        function tjverifyNum(formname,name,text,reg){
+            var flag=true;
+            $('#'+formname).find('input[name="'+name+'"]').each(function(){
+                if($(this).val()!=''){
+                    if(!reg.test($(this).val())){
+                        mui.alert(text);
+                        flag=false;
+                    }
+                }
+            })
+            return flag;
+        }
+        function tjverifyNull(formname,name,text){
+            var flag=true;
+            $('#'+formname).find('input[name="'+name+'"]').each(function(){
+                if($(this).val()==''){
+                    mui.alert(text);
+                    flag=false;
+                }
+            })
+            return flag;
+        }
+    </script>
+    <script>
+        var state1,state2,state3,state4,state5,state6,state7;
+        var success1,success2,success3,success4,success5;
+        var caiLiaoStr1d;
+        var caiLiaoStr2d;
+        var caiLiaoStr3d;
+        var caiLiaoStr4d;
+        var caiLiaoStr5d;
+        var caiLiaoStr6d;
+        var caiLiaoStr7d;
+        var xinyongrole;
+        var contaracthetongbianhao='';
+        var contaracthetongid='';
+        var typeid="";
+        var userid=$.cookie("uid");
+        console.log(userid);
+        var uname=$.cookie("uname");
+        var uuid=$.cookie("uuid");
+        uname=decodeURI(uname);
+        var usertype=$.cookie("utype");
+        
+        var initAURL = function(){
+        	var url = document.referrer;
+			console.log(url)
+        	$('#toBack').attr('href',url);
+        }
+        
+        mui.init({
+        	preloadPages:[
+        		initAURL(),
+        	]
+        });
+        mui.ready(function(){
+            //合同的回显，只读
+            $("#contract").find("input").attr("disabled",true);
+            $("input").attr("autocomplete","off");
+            //获取合同编号和获取角色
+            var searchURL = window.location.search;
+            searchURL = searchURL.substring(1, searchURL.length);
+            searchURL=searchURL.split("&");
+            console.log(searchURL);
+            var step=searchURL[1].split("=")[1];
+            xinyongrole=step;
+            var processinstanceid=searchURL[3].split("=")[1];
+//            contaracthetongbianhao=txt;
+            var contractnumber=searchURL[4].split("=")[1];
+            contaracthetongbianhao=contractnumber;
+            if(xinyongrole==0){
+                $('#file_input1').parent().removeClass('hide');
+                $('#file_input2').parent().removeClass('hide');
+                $('#file_input3').parent().removeClass('hide');
+            }else{
+                $('#file_input1').parent().addClass('hide');
+                $('#file_input2').parent().addClass('hide');
+                $('#file_input3').parent().addClass('hide');
+            }
+            if(step==0){
+                $("header h1").text("签单");
+                $(".big-save").show();
+                $("#approve-tab").hide();
+                $("#formzong-submit").show();
+                $("#receipt").find("input").removeAttr("disabled");
+                $("#promise").find("input").removeAttr("disabled");
+                $("#point").find("input").removeAttr("disabled");
+                $("#point").find("textarea").removeAttr("disabled");
+                //下拉列表的显示
+                $(".tog1").show();
+                $(".tog2").show();
+                $(".tog3").show();
+                $(".tog4").show();
+                //材料选择的显示
+                $("#loan-person").show();
+                $("#loan-mate").show();
+                $("#common-loan").show();
+                $("#common-loan-mate").show();
+                $("#pledge").show();
+                $("#pledge-mate").show();
+                $("#commpany").show();
+                //交接单签字角色
+//                $(".qianZiRole").text("业务员签字：");
+                //点位下的经理与总监
+                $("#jingli").find("label").text("业务员签字：");
+                $("#jingli").show();
+            }else if(step==1){
+                $("header h1").text("审批");
+                $(".big-save").hide();
+                $("#approve-tab").show();
+                $("#formzong-submit").hide();
+                $("#receipt").find("input").attr("disabled",true);
+                $("#promise").find("input").attr("disabled",true);
+                $("#point").find("input").attr("disabled",true);
+                $("#point").find("textarea").attr("disabled",true);
+                //下拉列表的隐藏
+                $(".tog1").hide();
+                $(".tog2").hide();
+                $(".tog3").hide();
+                $(".tog4").hide();
+                //材料选择的隐藏
+                $("#loan-person").hide();
+                $("#loan-mate").hide();
+                $("#common-loan").hide();
+                $("#common-loan-mate").hide();
+                $("#pledge").hide();
+                $("#pledge-mate").hide();
+                $("#commpany").hide();
+                //交接单签字角色
+//                $(".qianZiRole").text("业务经理签字：");
+                $('#qianzi').show();
+                //点位下的经理与总监
+                $("#jingli").show();
+                $("#jingli").find("label").text("业务经理签字：");
+                $("#promise input[name='commitdate']").attr("disabled",true);
+            }else if(step==2){
+                $("header h1").text("审批");
+                $(".big-save").hide();
+                $("#approve-tab").show();
+                $("#formzong-submit").hide();
+                $("#receipt").find("input").attr("disabled",true);
+                $("#promise").find("input").attr("disabled",true);
+                $("#point").find("input").attr("disabled",true);
+                $("#point").find("textarea").attr("disabled",true);
+                //下拉列表的隐藏
+                $(".tog1").hide();
+                $(".tog2").hide();
+                $(".tog3").hide();
+                $(".tog4").hide();
+                //材料选择的隐藏
+                $("#loan-person").hide();
+                $("#loan-mate").hide();
+                $("#common-loan").hide();
+                $("#common-loan-mate").hide();
+                $("#pledge").hide();
+                $("#pledge-mate").hide();
+                $("#commpany").hide();
+                //交接单签字角色
+//                $(".qianZiRole").text("业务总监签字：");
+                $('#qianzi').show();
+                //点位下的经理与总监
+                $("#jingli").show();
+                $("#jingli").find("label").text("业务经理签字：");
+                $("#zongjian").show();
+                $("#zongjian").find("label").text("业务总监签字：");
+            }
+            //所有角色合同是只读状态
+            $("#contract").find("input").attr("readonly",true);
+            //合同正文数据的回显
+            mui.ajax(host+"/app/loadGuarantyContractMain?contractnum="+contractnumber,{
+                data:contractnumber,
+                dataType: 'JSON',
+                type: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success:function(data){
+                    if(data){
+                        success1=true;
+                        data = $.parseJSON(data);
+                        console.log("合同正文");
+                        console.log(data);
+                        if(success1&&success2&&success3&&success4&&success5){
+                            $('.main').hide();
+                            mask.close();
+                        }
+                        contaracthetongid=data.data.diya.contractId;
+                        $("#contract").setForm(document.getElementById("contract"),data.data.diya);
+                        //$("input[name='depositamount']").val($("input[name='depositAmount']").val());
+                        //字段不存在时input值置空
+                        ziduan("contract");
+                        $("#contract input[name='contractnum']").val(contractnumber);
+                        $("#custSignature1").attr("src",data.data.diya.custSignature1);
+                        $("#custSignature2").attr("src",data.data.diya.remindsuresign);
+                        $("#custSignature3").attr("src",data.data.diya.custSignature3);
+                        //有无抵押单选赋值
+                        $(".mortgagesituation1").val("0");
+                        $(".mortgagesituation2").val("1");
+                        if(data.data.diya.mortgageSituation=="0"){
+                            $(".mortgagesituation1").attr("checked",true);
+                        }else if(data.data.diya.mortgageSituation=="1"){
+                            $(".mortgagesituation2").attr("checked",true);
+                        }
+                        //点位判断
+                        if(data.data.diya.point>1.8){
+                            $("#point-tab").hide();
+                            typeid=0;
+                            state3=true;
+                            state6=true;
+                        }else{
+                            $("#point-tab").show();
+//                            contractPoint=1;
+                            typeid=1;
+                        }
+                        //上传图片地址回显
+                        mui.ajax(host+"/getaccessory?contractid="+data.data.diya.contractId,{
+                            data:'',
+                            dataType: 'JSON',
+                            type: 'GET',
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                            success:function(data){
+                                success2=true;
+                                if(success1&&success2&&success3&&success4&&success5){
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                                var data = JSON.parse(data);
+                                for(var i=0;i<data['gphotoslist'].length;i++){
+                                    var img = $('<img src="'+data['gphotoslist'][i]['path']+'">')
+                                    var imgC = $('<div class="imgCC"></div>');
+                                    imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                    $('#report1').prepend(imgC);
+                                }
+                                for(var j=0;j<data['identitylist'].length;j++){
+                                    var img = $('<img src="'+data['identitylist'][j]['path']+'">')
+                                    var imgC = $('<div class="imgCC"></div>');
+                                    imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                    $('#report2').prepend(imgC);
+                                }
+                                for(var k=0;k<data['houseprolist'].length;k++){
+                                    var img = $('<img src="'+data['houseprolist'][k]['path']+'">')
+//                            var imgC = $('<div class="imgCC"></div>');
+                                    var imgC = $('<div class="imgCC"></div>');
+                                    imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                    $('#report3').prepend(imgC);
+                                }
+                                for(var k=0;k<data['marriagelist'].length;k++){
+                                    var img = $('<img src="'+data['marriagelist'][k]['path']+'">')
+//                            var imgC = $('<div class="imgCC"></div>');
+                                    var imgC = $('<div class="imgCC"></div>');
+                                    imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                    $('#report4').prepend(imgC);
+                                }
+                                for(var k=0;k<data['relationinfolist'].length;k++){
+                                    var img = $('<img src="'+data['relationinfolist'][k]['path']+'">')
+//                            var imgC = $('<div class="imgCC"></div>');
+                                    var imgC = $('<div class="imgCC"></div>');
+                                    imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                    $('#report5').prepend(imgC);
+                                }
+                                for(var k=0;k<data['relationcardlist'].length;k++){
+                                    var img = $('<img src="'+data['relationcardlist'][k]['path']+'">')
+//                            var imgC = $('<div class="imgCC"></div>');
+                                    var imgC = $('<div class="imgCC"></div>');
+                                    imgC.append(img);
+//                            var imgClose = $('<div class="ImgClose"></div>');
+//                            imgC.append(imgClose);
+                                    $('#report6').prepend(imgC);
+                                }
+                                $('#report1,#report2,#report3,#report4,#report5,#report6').find("img").click(function(){
+                                    $('#imgfd').find('img').attr('src',$(this).attr('src').substr(0,$(this).attr('src').length-4));
+                                    // $('#imgfd').css('padding-top',($('#imgfd').height()-$('#imgfd').find('img:eq(0)').height())/2);
+                                    $('#imgfd').css('display','block');
+                                    $('#imgfd').click(function(){
+                                        $('#imgfd').css('display','none');
+                                    })
+                                })
+                            }
+                        })
+                    }
+                }
+            })
+            //交接单数据的回显
+            mui.ajax(host+"/app/loadcntdeliveryofGuaranty?contractnum="+contractnumber,{
+                data:contractnumber,
+                dataType: 'JSON',
+                type: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success:function(data){
+                    if(data){
+                        success3=true;
+                        data = $.parseJSON(data);
+                        console.log("交接单");
+                        console.log(data);
+                        if(success1&&success2&&success3&&success4&&success5){
+                            $('.main').hide();
+                            mask.close();
+                        }
+                        $("#receipt").setForm(document.getElementById("receipt"),data.diya);
+                        //交接单角色签字
+                        $("#receipt input[name='managersign']").val(uname);
+                        //审批意见签字
+                        $("#approve input[name='approvePerson']").val(uname);
+                        //字段不存在时input值置空
+                        ziduan("receipt");
+                        //借款人材料初始化
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='borrowermaterial']").val().split(",").length;i++){
+                            arr.push($("input[name='borrowermaterial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr1d=arr.join(",");
+                        $(".loan-person").append(str);
+                        //借款人配偶材料初始化
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='borrowerspousematerial']").val().split(",").length;i++){
+                            arr.push($("input[name='borrowerspousematerial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr2d=arr.join(",");
+                        $(".loan-mate").append(str);
+                        //共同借款人材料
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='commonborrowermaterial']").val().split(",").length;i++){
+                            arr.push($("input[name='commonborrowermaterial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr3d=arr.join(",");
+                        $(".common-loan").append(str);
+                        //共同借款人配偶材料
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='commonborrowerspousematerial']").val().split(",").length;i++){
+                            arr.push($("input[name='commonborrowerspousematerial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr4d=arr.join(",");
+                        $(".common-loan-mate").append(str);
+                        //抵押人材料
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='mortgagormaterial']").val().split(",").length;i++){
+                            arr.push($("input[name='mortgagormaterial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr5d=arr.join(",");
+                        $(".pledge").append(str);
+                        //抵押人配偶材料
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='mortgagorspousematerial']").val().split(",").length;i++){
+                            arr.push($("input[name='mortgagorspousematerial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr6d=arr.join(",");
+                        $(".pledge-mate").append(str);
+                        //公司材料
+                        var arr=new Array;
+                        for(var i=0;i<$("input[name='companymaterial']").val().split(",").length;i++){
+                            arr.push($("input[name='companymaterial']").val().split(",")[i]);
+                        }
+                        var str="";
+                        for(var i=0;i<arr.length;i++){
+                            str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                        }
+                        caiLiaoStr7d=arr.join(",");
+                        $(".commpany").append(str);
+                        //贷款类型单选框赋值
+                        $(".daikuan1").val("个人消费");
+                        $(".daikuan2").val("个人经营");
+                        $(".daikuan3").val("公司经营");
+                        $(".daikuan4").val("信用");
+                        //面前单选框赋值
+                        if($("input[name='banksigned']").val()=="0"){
+                            $(".mianqian").val("否");
+                        }else if($("input[name='banksigned']").val()=="1"){
+                            $(".mianqian").val("是");
+                        }
+                        $(".mianqianyes").val("1");
+                        $(".mianqianno").val("0");
+                        //评估单选框赋值
+                        if($("input[name='evaluated']").val()=="0"){
+                            $(".pinggu").val("否");
+                        }else if($("input[name='evaluated']").val()=="1"){
+                            $(".pinggu").val("是");
+                        }
+                        $(".pingguyes").val("1");
+                        $(".pingguno").val("0");
+                        //收费时段
+                        if($("input[name='chargeperiod']").val()=="1"){
+                            $(".shoufei").val("已收");
+                        }else if($("input[name='chargeperiod']").val()=="2"){
+                            $(".shoufei").val("批贷");
+                        }else if($("input[name='chargeperiod']").val()=="3"){
+                            $(".shoufei").val("放款");
+                        }
+                        $(".shoufei1").val("1");
+                        $(".shoufei2").val("2");
+                        $(".shoufei3").val("3");
+                        var d = new Date();
+                        var month="";
+                        var day="";
+                        if((d.getMonth()+1)>=10){
+                            month = (d.getMonth()+1);
+                        }else{
+                            month = ("0"+(d.getMonth()+1));
+                        }
+                        if(d.getDate()>=10){
+                            day = d.getDate();
+                        }else{
+                            day = "0"+d.getDate();
+                        }
+                        str = d.getFullYear()+"-"+month+"-"+day;
+//                        console.log(str);
+                        $('#receipt input[name="managersigndate"]').val(str);
+                    }
+                }
+            });
+            //承诺函数据回显
+            mui.ajax(host+"/app/loadcntpromissoryGuaranty?contractnum="+contractnumber,{
+                data:contractnumber,
+                dataType: 'JSON',
+                type: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success:function(data){
+                    if(data){
+                        success4=true;
+                        if(success1&&success2&&success3&&success4&&success5){
+                            $('.main').hide();
+                            mask.close();
+                        }
+                        data = $.parseJSON(data);
+                        console.log("承诺函");
+                        console.log(data);
+                        //时间格式
+                        var date = new Date(data.data.commitdate);
+                        Y = date.getFullYear()+"-";
+                        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                        D = date.getDate()<10?'0'+date.getDate():date.getDate();
+                        data.data.commitdate=(Y+M+D);
+                        console.log(data.data.commitdate);
+                        $("#promise").setForm(document.getElementById("promise"),data.data);
+                        //字段不存在时input值置空
+                        ziduan("promise");
+                    }
+                }
+            });
+            //点位说明回显
+            mui.ajax(host+"/app/loadcntpointmark?contractnum="+contractnumber,{
+                data:contractnumber,
+                dataType: 'JSON',
+                type: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success:function(data){
+                    if(data){
+                        success5=true;
+                        if(success1&&success2&&success3&&success4&&success5){
+                            $('.main').hide();
+                            mask.close();
+                        }
+                        data = $.parseJSON(data);
+                        console.log("点位说明");
+                        console.log(data);
+                        $("#point").setForm(document.getElementById("point"),data.data);
+                        //字段不存在时input值置空
+                        ziduan("point");
+                        $("textarea[name='reason']").each(function(){
+                            if($(this).val()=="undefined"){
+                                $(this).val("");
+                            }
+                        })
+                        if(step==2){
+//                            $("#jingli input").val(uname);
+                            $('#zongjian input').val(uname);
+                        }else if(step==1){
+                            $("#jingli input").val(uname);
+                        }
+                    }
+                }
+            });
+//            document.getElementById("form-submit").addEventListener("tap",function(){
+//                var rex=/^\d+(\.\d{1,2})?$/;
+//                var rex1=/^\d+$/;
+//                var rex2=/^1[34578]\d{9}$/;
+//                tjverifyNum("receipt","loanamount","贷款额金额格式不正确",rex);
+//                tjverifyNum("receipt","evaluationvalue","评估值金额格式不正确",rex);
+//                tjverifyNum("receipt","evaluationvalue","定金金额格式不正确",rex1);
+//                tjverifyNum("receipt","servicecharge","服务费金额格式不正确",rex1);
+//                tjverifyNum("receipt","shopownerphone","电话格式不正确",rex2);
+//                tjverifyNum("receipt","clerkphone","电话格式不正确",rex2);
+//                tjverifyNum("receipt","custphone","电话格式不正确",rex2);
+//                state1=false;
+//                state2=false;
+//                state3=false;
+//                state5=false;
+//                state6=false;
+//                state7=false;
+//                var receiptXulie=$("#receipt").serialize();
+//                var receipt=$("#receipt").serializeObject();
+//                var promise=$("#promise").serializeObject();
+//                var point=$("#point").serializeObject();
+//                receipt.contractid=$("input[name='contractId']").val();
+//                receipt.contractnum=$("input[name='contractnum']").val();
+//                point.contractid=$("input[name='contractId']").val();
+//                promise.contractid=$("input[name='contractId']").val();
+//                //保存成功之后页面的跳转
+//                //必填校验
+//                var fg = validation.checkData(
+//                        'loanamount:贷款额,bankname:申请银行,loantype:贷款类型',
+//                        receiptXulie);
+//                state5=false;
+//                state6=false;
+//                state7=false;
+//                mui.confirm("是否确认提交",function(e){
+//                    $('.main').show();
+//                    mask.show();
+//                    if(e.index==1){
+//                        if($('#report1').find('img').length<1){
+//                            mui.alert("合影照片必须上传");
+//                            return false;
+//                        }
+//                        state7=true;
+//                        if(state7){
+//                            if(!$("#custnum").val()){
+//                                state5=true;
+//                            }else{
+//                                if(checkCardID($("#custnum").val())==true){
+//                                    state5=true;
+//                                }else{
+//                                    state5=false;
+//                                    mui.alert( checkCardID($("#custnum").val()));
+//                                }
+//                            }
+//                            if(!$("#formPoint").val()){
+//                                state6=true;
+//                            }else{
+//                                if(checkNumber($("#formPoint").val())==true){
+//                                    state6=true;
+//                                }else{
+//                                    state6=false;
+////                                mui.alert( checkNumber($("#formPoint").val()));
+//                                    mui.alert("点位格式错误");
+//                                }
+//                            }
+//                            if (fg.statuscode&&state5&&state6&&state7) {
+//                                $("#form-submit").attr("disabled", true);
+//                                // 交接单的提交
+//                                mui.ajax(host+"/app/savecntdeliveryCredit",{
+//                                    data:receipt,
+//                                    dataType: 'JSON',
+//                                    type: 'POST',
+//                                    headers: {'Content-Type': 'application/json'},
+//                                    success:function(data){
+//                                        if(data){
+//                                            data = $.parseJSON(data);
+//                                            if(data.data.code==200){
+////                                   mui.alert(data.data.message);
+//                                                state1=true;
+//                                                if(state1&&state2&&state3&&state4&&state5&&state6){
+//                                                    mui.ajax(host+"/app/loadReportXD?contractid="+contaracthetongid+"&userid="+userid,{
+//                                                        dataType: 'JSON',
+//                                                        type: 'POST',
+//                                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+//                                                        success:function(data){
+//                                                            if(data){
+//                                                                $("#form-submit").removeAttr("disabled");
+//                                                                if(step==0){
+//                                                                    window.location.href="contractListP.html";
+//                                                                }
+//                                                            }
+//                                                        },
+//                                                        error: function (xhr, type, errorThrown) {
+//                                                            mui.alert('路上堵车，停车休息一会儿吧！');
+//                                                            $("#form-submit").removeAttr("disabled");
+//                                                        }
+//                                                    })
+////                                                    if(step==1){
+////                                                        window.location.href="contractListP.html";
+////                                                    }else if(step==2||step==3){
+////                                                        window.location.href="returnContractApprovalP.html";
+////                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                })
+//                                // 承诺函的提交
+//                                mui.ajax(host+"/app/savecntpromissoryCredit",{
+//                                    data:promise,
+//                                    dataType: 'JSON',
+//                                    type: 'POST',
+//                                    headers: {'Content-Type': 'application/json'},
+//                                    success:function(data){
+//                                        if(data){
+//                                            data = $.parseJSON(data);
+//                                            if(data.data.code==200){
+////                                    mui.alert(data.data.message);
+//                                                state2=true;
+//                                                if(state1&&state2&&state3&&state4&&state5&&state6){
+//                                                    mui.ajax(host+"/app/loadReportXD?contractid="+contaracthetongid+"&userid="+userid,{
+//                                                        dataType: 'JSON',
+//                                                        type: 'POST',
+//                                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+//                                                        success:function(data){
+//                                                            $('.main').hide();
+//                                                            mask.close();
+//                                                            $("#form-submit").removeAttr("disabled");
+//                                                            if(data){
+//                                                                if(step==0){
+//                                                                    window.location.href="contractListP.html";
+//                                                                }
+//                                                            }
+//                                                        },
+//                                                        error: function (xhr, type, errorThrown) {
+//                                                            mui.alert('路上堵车，停车休息一会儿吧！');
+//                                                            $("#form-submit").removeAttr("disabled");
+//                                                            $('.main').hide();
+//                                                            mask.close();
+//                                                        }
+//                                                    })
+////                                                    if(step==1){
+////                                                        window.location.href="contractListP.html";
+////                                                    }else if(step==2||step==3){
+////                                                        window.location.href="returnContractApprovalP.html";
+////                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                })
+//                                // 点位说明的提交
+//                                mui.ajax(host+"/app/savecntpointmark",{
+//                                    data:point,
+//                                    dataType: 'JSON',
+//                                    type: 'POST',
+//                                    headers: {'Content-Type': 'application/json'},
+//                                    success:function(data){
+//                                        if(data){
+//                                            data = $.parseJSON(data);
+//                                            if(data.data.code==200){
+////                                    mui.alert(data.data.message);
+//                                                state3=true;
+//                                                if(state1&&state2&&state3&&state4&&state5&&state6){
+//                                                    mui.ajax(host+"/app/loadReportXD?contractid="+contaracthetongid+"&userid="+userid,{
+//                                                        dataType: 'JSON',
+//                                                        type: 'POST',
+//                                                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+//                                                        success:function(data){
+//                                                            $('.main').hide();
+//                                                            mask.close();
+//                                                            $("#form-submit").removeAttr("disabled");
+//                                                            if(data){
+//                                                                if(step==0){
+//                                                                    window.location.href="contractListP.html";
+//                                                                }
+//                                                            }
+//                                                        },
+//                                                        error: function (xhr, type, errorThrown) {
+//                                                            mui.alert('路上堵车，停车休息一会儿吧！');
+//                                                            $("#form-submit").removeAttr("disabled");
+//                                                            $('.main').hide();
+//                                                            mask.close();
+//                                                        }
+//                                                    })
+////                                                    if(step==1){
+////                                                        window.location.href="contractListP.html";
+////                                                    }else if(step==2||step==3){
+////                                                        window.location.href="returnContractApprovalP.html";
+////                                                    }
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                });
+//                                formtijiao();
+//                            } else {
+//                                mui.alert(fg.msg, '参数错误');
+//                            }
+//                        }
+//                    }
+//                })
+//            })
+            //调取交接单提交接口
+            document.getElementById("formReceipt-submit").addEventListener("tap",function(){
+                var rex=/^\d+(\.\d{1,2})?$/;
+                var rex1=/^\d+$/;
+                var rex2=/^1[34578]\d{9}$/;
+                var fllag=true;
+                fllag=fllag&&tjverifyNum("receipt","loanamount","贷款额金额格式不正确",rex);
+                fllag=fllag&&tjverifyNum("receipt","evaluationvalue","评估值金额格式不正确",rex);
+                fllag=fllag&&tjverifyNum("receipt","depositamount","定金金额格式不正确",rex1);
+                fllag=fllag&&tjverifyNum("receipt","servicecharge","服务费金额格式不正确",rex1);
+                fllag=fllag&&tjverifyNum("receipt","shopownerphone","电话格式不正确",rex2);
+                fllag=fllag&&tjverifyNum("receipt","accountmanagerphone","电话格式不正确",rex2);
+                fllag=fllag&&tjverifyNum("receipt","clerkphone","电话格式不正确",rex2);
+                fllag=fllag&&tjverifyNum("receipt","custphone","电话格式不正确",rex2);
+                if(!fllag){
+                    return false;
+                }
+                var receiptXulie=$("#receipt").serialize();
+                var receipt = $("#receipt").serializeObject();
+                receipt.contractid=$("input[name='contractId']").val();
+                receipt.contractnum=$("input[name='contractnum']").val();
+                //必填校验
+                var fg = validation.checkData(
+                        'loanamount:贷款额,bankname:申请银行,loantype:贷款类型',
+                        receiptXulie);
+                if(!fg.statuscode){
+                    mui.alert(fg.msg);
+                }
+                if(fg.statuscode){
+                    $('.main').show();
+                    mask.show();
+                    $("#formReceipt-submit").attr("disabled", true);
+                    mui.ajax(host+"/app/savecntdeliveryCredit?uuid="+uuid,{
+                        data:receipt,
+                        dataType: 'JSON',
+                        type: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        success:function(data){
+                            if(data){
+                                data = $.parseJSON(data);
+                                if(data.data.code==200){
+                                    $("#formReceipt-submit").removeAttr("disabled");
+                                    state1=true;
+                                    mui.alert(data.data.message);
+                                    $('.main').hide();
+                                    mask.close();
+                                }else if(data.data.code==400){
+                                    mui.alert('保存失败');
+                                    $('.main').hide();
+                                    mask.close();
+                                }else{
+                                    mui.alert('用户已下线');
+                                    $('.main').hide();
+                                    mask.close();
+                                }
+                            }
+                        },
+                        error: function (xhr, type, errorThrown) {
+                            mui.alert('路上堵车，停车休息一会儿吧！');
+                            $("#formReceipt-submit").removeAttr("disabled");
+                            $('.main').hide();
+                            mask.close();
+                        }
+                    })
+                }
+            });
+            //调取承诺函的提交
+            document.getElementById("formPromise-submit").addEventListener("tap",function(){
+                if(!$("#custnum").val()){
+                    state5=true;
+                }else{
+                    if(checkCardID($("#custnum").val())==true){
+                        state5=true;
+                    }else{
+                        state5=false;
+                        mui.alert( checkCardID($("#custnum").val()));
+                        return false;
+                    }
+                }
+                $("#formPromise-submit").attr("disabled", true);
+                var promise = $("#promise").serializeObject();
+                promise.contractid=$("input[name='contractId']").val();
+                promise.contractnum=$("input[name='contractnum']").val();
+                $('.main').show();
+                mask.show();
+                mui.ajax(host+"/app/savecntpromissoryCredit?uuid="+uuid,{
+                    data:promise,
+                    dataType: 'JSON',
+                    type: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    success:function(data){
+                        if(data){
+                            data = $.parseJSON(data);
+                            if(data.data.code==200){
+                                $("#formPromise-submit").removeAttr("disabled");
+                                mui.alert(data.data.message);
+                                state2=true;
+                                $('.main').hide();
+                                mask.close();
+                            }else if(data.data.code==400){
+                                mui.alert('保存失败');
+                                $('.main').hide();
+                                mask.close();
+                            }else{
+                                mui.alert('用户已下线');
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        mui.alert('路上堵车，停车休息一会儿吧！');
+                        $("#formPromise-submit").removeAttr("disabled");
+                        $('.main').hide();
+                        mask.close();
+                    }
+                })
+            });
+            // 点位说明的提交
+            document.getElementById("formPoint-submit").addEventListener("tap",function(){
+                if(!$("#formPoint").val()){
+                    state6=true;
+                }else{
+                    if(checkNumber($("#formPoint").val())==true){
+                        state6=true;
+                    }else{
+                        state6=false;
+                        mui.alert("点位格式错误");
+                        return false;
+                    }
+                }
+                $("#formPoint-submit").attr("disabled", true);
+                var point = $("#point").serializeObject();
+                point.contractid=$("input[name='contractId']").val();
+                point.contractnum=$("input[name='contractnum']").val();
+                $('.main').show();
+                mask.show();
+                mui.ajax(host+"/app/savecntpointmark?uuid="+uuid,{
+                    data:point,
+                    dataType: 'JSON',
+                    type: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    success:function(data){
+                        if(data){
+                            data = $.parseJSON(data);
+                            if(data.data.code==200){
+                                $("#formPoint-submit").removeAttr("disabled");
+                                mui.alert(data.data.message);
+                                state3=true;
+                                $('.main').hide();
+                                mask.close();
+                            }else if(data.data.code==400){
+                                mui.alert('保存失败');
+                                $('.main').hide();
+                                mask.close();
+                            }else{
+                                mui.alert('用户已下线');
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        mui.alert('路上堵车，停车休息一会儿吧！');
+                        $("#formPoint-submit").removeAttr("disabled");
+                        $('.main').hide();
+                        mask.close();
+                    }
+                });
+            })
+            //调取总的提交接口
+            document.getElementById("formzong-submit").addEventListener("tap",function(){
+                if(!state1){
+                    mui.alert("交接单尚未保存");
+                    return false;
+                }
+                if(!state2){
+                    mui.alert("承诺函尚未保存");
+                    return false;
+                }
+                if(!state3){
+                    mui.alert("点位说明尚未保存");
+                    return false;
+                }
+                if(!state4){
+                    mui.alert("流程附件尚未保存");
+                    return false;
+                }
+                if(state1&&state2&&state3&&state4&&state5&&state6){
+                    $('.main').show();
+                    mask.show();
+                    $("#formzong-submit").attr("disabled", true);
+                        mui.confirm("是否确认提交",function(e){
+                            if(e.index==1){
+                                mui.ajax(host+"/app/loadReportXD?contractid="+contaracthetongid+"&userid="+userid+"&uuid="+uuid,{
+                                    dataType: 'json',
+                                    type: 'POST',
+                                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                    success:function(data){
+                                        $('.main').hide();
+                                        mask.close();
+                                        if("200"==data.data.code){
+                                            $("#formzong-submit").removeAttr("disabled");
+                                            if(step==0){
+                                                window.location.href="contractListP.html";
+                                            }
+                                        }else if(data.data.code=="400"){
+                                            mui.alert('保存失败');
+                                        }else{
+                                            mui.alert('用户已下线');
+                                            $('.main').hide();
+                                            mask.close();
+                                        }
+                                    },
+                                    error: function (xhr, type, errorThrown) {
+                                        window.location.href="contractListP.html";
+                                        $("#formzong-submit").removeAttr("disabled");
+                                        $('.main').hide();
+                                        mask.close();
+                                    }
+                                })
+                            }else{
+                                $("#formzong-submit").removeAttr("disabled");
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        })
+                    }
+            })
+            //调取意见提交接口
+            document.getElementById("approve-save").addEventListener("tap",function(){
+                $('.main').show();
+                mask.show();
+                $("#approve-save").attr("disabled", true);
+                mui.ajax(host+"/app/approve?userid="+userid+"&nodeType=0&typeid="+typeid+"&step="+step+"&processinstanceid="+processinstanceid+"&num=0"+"&contractid="+contaracthetongid+"&auditoropinion="+$("textarea[name='approveIdea']").val()+"&uuid="+uuid,{
+                    dataType: 'JSON',
+                    type: 'get',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success:function(data){
+                        if(data){
+                            data = $.parseJSON(data);
+                            if(data.code==200){
+                                 if(step==1){
+                                     //成功后补录 门店经理签字
+                                     var approve=$('#approve').serializeObject();
+                                     approve.contractnum=$('#contract input[name="contractnum"]').val();
+                                     approve.managersign=uname;
+                                     mui.ajax(host+"/app/savecntdeliveryCredit?uuid="+uuid,{
+                                         dataType:'JSON',
+                                         type:'post',
+                                         data:approve,
+                                         headers: {'Content-Type': 'application/json'},
+                                         success:function(msg){
+                                             $('.main').hide();
+                                             mask.close();
+                                             $("#approve-save").removeAttr("disabled");
+                                             if(msg){
+                                                 msg=$.parseJSON(msg);
+                                                 if(msg['data'].code==200){
+                                                     window.location.href="returnContractApprovalP.html";
+                                                 }else if(msg['data'].code==400){
+                                                     mui.alert('保存失败');
+                                                     $('.main').hide();
+                                                     mask.close();
+                                                 }else{
+                                                     mui.alert('用户已下线');
+                                                     $('.main').hide();
+                                                     mask.close();
+                                                 }
+                                             }
+                                         },
+                                         error: function (xhr, type, errorThrown) {
+                                             if(step==1){
+                                                 window.location.href="returnContractApprovalP.html";
+                                             }else if(step==2){
+                                                 window.location.href="ChiefReturnContractApprovalP.html";
+                                             }
+                                             $("#approve-save").removeAttr("disabled");
+                                             $('.main').hide();
+                                             mask.close();
+                                         }
+                                     })
+                                }else if(step==2){
+                                    window.location.href="ChiefReturnContractApprovalP.html";
+                                }
+                            }else if(data.code==400){
+                                mui.alert('保存失败');
+                                $('.main').hide();
+                                mask.close();
+                            }else{
+                                mui.alert('用户已下线');
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        if(step==1){
+                            window.location.href="returnContractApprovalP.html";
+                        }else if(step==2){
+                            window.location.href="ChiefReturnContractApprovalP.html";
+                        }
+                        $("#approve-save").removeAttr("disabled");
+                        $('.main').hide();
+                        mask.close();
+                    }
+                })
+            })
+            //调取不同意的接口
+            document.getElementById("cancel").addEventListener("tap",function(){
+                $('.main').show();
+                mask.show();
+                $("#cancel").attr("disabled", true);
+                mui.ajax(host+"/app/reject?userid="+userid+"&nodeType=0&typeid="+typeid+"&step="+step+"&processinstanceid="+processinstanceid+"&contractid="+contaracthetongid+"&auditoropinion="+$("textarea[name='approveIdea']").val()+"&uuid="+uuid,{
+                    dataType: 'JSON',
+                    type: 'get',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success:function(data){
+                        $('.main').hide();
+                        mask.close();
+                        $("#cancel").removeAttr("disabled");
+                        if(data){
+                            data = $.parseJSON(data);
+                            if(data.code==200){
+                                if(step==1){
+                                    window.location.href="returnContractApprovalP.html";
+                                }else if(step==2){
+                                    window.location.href="ChiefReturnContractApprovalP.html";
+                                }
+                            }else if(data.code==400){
+                                mui.alert('保存失败');
+                                $('.main').hide();
+                                mask.close();
+                            }else{
+                                mui.alert('用户已下线');
+                                $('.main').hide();
+                                mask.close();
+                            }
+                        }
+                    },
+                    error: function (xhr, type, errorThrown) {
+                        if(step==1){
+                            window.location.href="returnContractApprovalP.html";
+                        }else if(step==2){
+                            window.location.href="ChiefReturnContractApprovalP.html";
+                        }
+                        $("#cancel").removeAttr("disabled");
+                        $('.main').hide();
+                        mask.close();
+                    }
+
+                })
+            })
+        });
+    </script>
+</head>
+<body>
+<!--加载页面-->
+<div id="loadPage"  class=" main">
+    <div class="loadEffect">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<div style="display: none;position:fixed;background:rgba(0,0,0,0.6);z-index: 2147483646;width: 100%;height:100%;text-align: center;line-height: 100%;" id="imgfd">
+    <img src='' style="max-width: 100%;max-height: 90%;position: relative;top:50%;transform:translateY(-50%);">
+</div>
+<header class="mui-bar mui-bar-nav" style="box-shadow:none;background:#fff;border-bottom:1px solid #ddd;position:fixed;top:0px;">
+    <a href="javascript:history.go(-1)"  class="mui-icon mui-icon-left-nav ret" style="color:#333;"></a>
+    <h1 id="title" class="mui-title">签单</h1>
+    <span style="position:absolute;right:10px;top:10px;font-size:16px;" id="formzong-submit">提交</span>
+</header>
+<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="background:#fff;top:44px;border-bottom:1px solid #f5f5f5;height:39px;position:fixed;top:44px;">
+    <div class="mui-scroll">
+        <a class="mui-control-item mui-active"  id="xinyong-tab">
+            抵押贷合同
+        </a>
+        <a class="mui-control-item" id="liucheng-tab">
+            流程附件
+        </a>
+        <a class="mui-control-item" id="receipt-tab">
+            交接单
+        </a>
+        <a class="mui-control-item" id="promise-tab">
+            承诺函
+        </a>
+        <a class="mui-control-item" id="point-tab">
+            点位说明
+        </a>
+        <a class="mui-control-item" id="approve-tab">
+            审批意见
+        </a>
+    </div>
+</div>
+<div id="veriftyscroll" style="margin-bottom: 20px;overflow-y: scroll;position:absolute;width:100%;">
+<form id="contract" action="" >
+    <input type="hidden"  name="contractId" />
+    <div class="iterm">
+        <label for="" style="width:115px;">委托方（甲方）：</label>
+        <input type="text" name="custName" class="word6" id="clientName"/>
+    </div>
+    <div class="iterm">
+        <label for="">身份证号码：</label>
+        <input type="text" name="custNum" class="word5" id="cardId"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="custPhone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">紧急联系人：</label>
+        <input type="text"  name="emergencyContact" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="emergencyContactPhone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">家庭住址：</label>
+        <input type="text" name="custAddress" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">电子邮箱：</label>
+        <input type="text" name="custEmail" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="" style="width:115px;">受托方（乙方）：</label>
+        <input type="text"  class="word6" value="北京鸿诚祥兆投资担保有限公司"/>
+    </div>
+    <div class="iterm">
+        <label for="">注册地址：</label>
+        <input type="text" class="word5" value="北京市朝阳区延静西里2号华商大厦1311"/>
+    </div>
+    <div class="iterm">
+        <label for="">经办人：</label>
+        <input type="text" name="clerkName" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="clerkPhone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">业务邮箱：</label>
+        <input type="text" name="clerkEmail" class="word5"/>
+    </div>
+    <div class="iterm">
+        <!--甲方需向放款银行申请用于 <input type="text" style="width:50%;"/>的房屋抵押贷款<br/>-->
+        抵押标的物的表述：<input type="text" name="mortgageDescription" style="width:100%;"/><br/>
+        房屋所有权证号：<input type="text" name="propertyCertificateNum" style="width:60%;"/><br/>
+        土地所有权证号：<input type="text" name="landCertificateNum" style="width:60%;"/><br/>
+        甲方保证对此抵押标的物拥有合法处置权, <input type="radio"  name="mortgagesituation" disabled  class="mortgagesituation1"/>无抵押 <input type="radio" name="mortgagesituation" disabled class="mortgagesituation2"/>有抵押（<input type="text" name="mortgageBank" style="width:50%;"/>
+        银行抵押人民币 <input name="mortgageAmount" type="text" style="width:50%;"/>万元）
+       。<br/>
+        甲方按照批贷额百分之 <input type="text" name="point" style="width:20%;text-align: center;"/>向乙方支付服务费，
+        甲方向乙方支付委托定金：<input type="text" name="depositAmount" style="width:33%;"/>元。 <br/>
+        通过银行内部审批程序后<input type="text" name="paymentTime" style="width:16%;text-align: center;"/>日內，甲方一次性支付剩余服务费。<br/>
+    </div>
+    <div class="iterm">
+        <label for="" style="vertical-align: top;">甲方：</label>
+        <!--<input type="text" name="custSignature1" class="word5"/>-->
+        <img src="" id="custSignature1" style="width:40%;height:50px;" alt=""/>
+    </div>
+    <div class="iterm" style="margin-bottom:15px;">
+        <label for="">签约时间：</label>
+        <input type="date" name="contractDate1" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">乙方：</label>
+        <input type="text" class="word5" value="北京鸿诚祥兆投资担保有限公司"/>
+    </div>
+    <div class="iterm" style="margin-bottom:15px;">
+        <label for="">签约时间：</label>
+        <input type="date" name="custSignatureDate1" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="" style="vertical-align: top;">委托方签字：</label>
+        <img src="" id="custSignature2" style="width:40%;height:50px;" alt=""/>
+    </div>
+    <div class="iterm" style="margin-bottom:15px;">
+        <label for="">日期：</label>
+        <input type="date" name="remindsuredate" class="word5"/>
+    </div>
+    <div style="background:#efefef;height:10px;"></div>
+    <div class="iterm" style="color:#333;font-size:16px;margin-top:10px;">
+        授权委托书
+    </div>
+    <div class="iterm">
+        <label for="">委托人：</label>
+        <input type="text" name="custName" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">身份证号：</label>
+        <input type="text" name="custNum" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">住址：</label>
+        <input type="text" name="custAddress" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">联系电话：</label>
+        <input type="text" name="custPhone" class="word5"/>
+    </div>
+    <!--<div class="iterm">-->
+        <!--<label for="">委托人：</label>-->
+        <!--<input type="text" class="word5"/>-->
+    <!--</div>-->
+    <!--<div class="iterm">-->
+        <!--<label for="">日期：</label>-->
+        <!--<input type="date" class="word5"/>-->
+    <!--</div>-->
+    <div class="iterm">
+        委托人于 <input type="date" name="delegateTime" style="width:50%;"/>与受托人签订《房屋抵押贷款委托协议》
+    </div>
+    <div class="iterm">
+        <label for="">合同编号：</label>
+        <input type="text" name="contractnum" class="word5"/>
+    </div>
+    <div class="iterm">
+        委托期限：自 <input type="date" name="delegateTime2" style="width:40%;"/>始至通过银行内部审批手续之日止
+    </div>
+    <div class="iterm">
+        <label for="" style="vertical-align: top;">受权人：</label>
+        <!--<input type="text" class="word5"/>-->
+        <img src="" id="custSignature3" alt="" style="width:40%;height:50px;"/>
+    </div>
+    <div class="iterm">
+        <label for="">日期：</label>
+        <input type="date" name="delegateTime3" class="word5"/>
+    </div>
+</form>
+<form style="display:none;" id="formdataDemo" enctype ="multipart/form-data">
+    <input type="file" id="file" multiple>
+</form>
+<form style="display:none;" id="formdataDemo1" enctype ="multipart/form-data">
+    <input type="file" id="file1" multiple>
+</form>
+<form style="display:none;" id="formdataDemo2" enctype ="multipart/form-data">
+    <input type="file" id="file2" multiple>
+</form>
+    <form style="display:none;" id="formdataDemo3" enctype ="multipart/form-data">
+        <input type="file" id="file3" multiple>
+    </form>
+    <form style="display:none;" id="formdataDemo4" enctype ="multipart/form-data">
+        <input type="file" id="file4" multiple>
+    </form>
+    <form style="display:none;" id="formdataDemo5" enctype ="multipart/form-data">
+        <input type="file" id="file5" multiple>
+    </form>
+<form id="liucheng" action="">
+    <div class="iterm">
+        <!--流程 模块：附件上传 彭传博-->
+        <div class="imgUpload">
+
+            <div class="groupPhoto">
+                <div class="groupPhotoC">
+                    <p class="Phototit">上传合影照片</p>
+                    <!--照片上传div-->
+                    <div id='box' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report1" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input1" info="gphotos" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="IDPhoto">
+                <div class="IDPhotoC">
+                    <p class="Phototit">上传身份证</p>
+                    <!--身份证上传div-->
+                    <div id='box1' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report2" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input2"  info="identcard" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="itPhoto">
+                <div class="itPhotoC">
+
+                    <p class="Phototit">房产证</p>
+                    <!--其他上传div-->
+                    <div id='box2' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report3" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input3" info="house" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="itPhoto">
+                <div class="itPhotoC">
+
+                    <p class="Phototit">婚姻证明</p>
+                    <!--其他上传div-->
+                    <div id='box3' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report4" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input4" info="marriageinfo" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="itPhoto">
+                <div class="itPhotoC">
+
+                    <p class="Phototit">共有人关系证明</p>
+                    <!--其他上传div-->
+                    <div id='box4' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report5" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input5" info="relationinfo" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="itPhoto">
+                <div class="itPhotoC">
+
+                    <p class="Phototit">共有人身份证</p>
+                    <!--其他上传div-->
+                    <div id='box5' class="imgupBox">
+                        <!-- 上传按钮 -->
+                        <ul id="report6" class="rep report">
+                            <div style="border: 1px solid #dadada;background: url('../img/imgadd.png') no-repeat center center;">
+                                <input type="file"  id="file_input6" info="relationcard" class='file_input' style="opacity:0;
+                                  filter:alpha(opacity=0);
+                                  height: 100%;
+                                  width: 100%;
+                                  /*position: absolute;*/
+                                  top: 0;
+                                  left: 0;
+                                  z-index: 9;"/>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--流程结束-->
+    </div>
+    <div class="big-save" id="formLiuCheng-submit">
+        保存
+    </div>
+</form>
+<script>
+    $(function(){
+        var screnheight = window.innerHeight-20;
+        $('#veriftyscroll').css({'height':screnheight+'px'});
+        $('#formLiuCheng-submit').click(function(){
+            if($('#report1').find('img').length<1){
+                mui.alert("合影照片必须上传");
+                return false;
+            }
+            $('.main').show();
+            mask.show();
+            formtijiao();
+        })
+    })
+</script>
+<form id="receipt" action="">
+    <div class="iterm">
+        <label for="">客源编号：</label>
+        <input type="text" name="touristnum" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">合同编号：</label>
+        <input type="text" name="contractnum" class="word5" />
+    </div>
+    <div class="iterm" style="display:none;">
+        <label for="">台账号：</label>
+        <input type="text" name="ledgernum" class="word5" disabled="disabled"/>
+    </div>
+    <div class="iterm">
+        <label for="">店长姓名：</label>
+        <input type="text" name="shopownername" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">电话：</label>
+        <input type="text" name="shopownerphone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">业务姓名：</label>
+        <input type="text" name="clerkname" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">电话：</label>
+        <input type="text" name="clerkphone" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">客户姓名：</label>
+        <input type="text" name="custname" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">电话：</label>
+        <input type="text" name="custphone" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">贷款额：</label>
+        <input type="text" name="loanamount" class="word5" id="loanamount" style="width:57% !important;"/>万元
+    </div>
+    <div class="iterm">
+        <label for="">申请银行：</label>
+        <input type="text" name="bankname" class="word5" id="bankname" />
+    </div>
+    <div class="iterm">
+        <label for="">支行：</label>
+        <input type="text" name="bankbranch" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">客户经理：</label>
+        <input type="text" name="accountmanagername" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">电话：</label>
+        <input type="text" name="accountmanagerphone" class="word5"/>
+    </div>
+    <div class="iterm">
+        <label for="">物业地址：</label>
+        <input type="text" name="propertyaddr" class="word5"/>
+    </div>
+    <div class="iterm" style="position: relative;">
+        <label for="">贷款类型：</label>
+        <input type="text"  name="loantype" class="word5  daikuan" id="loantype" readonly disabled="disabled"/>
+        <div style="position:absolute;right:10%;width:35px;top:0;text-align:center;" class="tog1">></div>
+        <div style="display:none;" class="tog1-content">
+            <span class="single">个人消费<input type="radio" daikuaninfo="个人消费" name="daikuan" class="single-value daikuan1" value="个人消费"/></span>
+            <span class="single">个人经营<input type="radio" daikuaninfo="个人经营" name="daikuan" class="single-value daikuan2" value="个人经营"/></span>
+            <span class="single">公司经营 <input type="radio" daikuaninfo="公司经营" name="daikuan" class="single-value daikuan3" value="公司经营"/></span>
+            <span class="single">信用 <input type="radio" daikuaninfo="信用" name="daikuan" class="single-value daikuan4" value="信用"/></span>
+        </div>
+    </div>
+    <div class="iterm" style="position: relative;">
+        <label for="" style="width:115px;">是否银行面签：</label>
+        <input type="hidden" name="banksigned"/>
+        <input type="text"  class="word6 mianqian" readonly disabled="disabled"/>
+        <div style="position:absolute;right:10%;width:35px;top:0;text-align:center;" class="tog2">></div>
+        <div style="display:none;" class="tog2-content">
+            <span class="single">是<input type="radio" mianinfo="1" name="mianqian" class="single-value mianqianyes" /></span>
+            <span class="single">否<input type="radio" mianinfo="0" name="mianqian" class="single-value mianqianno"/></span>
+        </div>
+    </div>
+    <div class="iterm">
+        <label for="">面签时间：</label>
+        <input type="date" name="banksignedtime" class="word5"/>
+    </div>
+    <div class="iterm" style="position: relative;">
+        <label for="" style="width:115px;">是否已报评估：</label>
+        <input type="hidden" name="evaluated"/>
+        <input type="text"  class="word6 pinggu" readonly disabled="disabled"/>
+        <div style="position:absolute;right:10%;width:35px;top:0;text-align:center;" class="tog3">></div>
+        <div style="display:none;" class="tog3-content">
+            <span class="single">是<input type="radio" info="1" name="pinggu" class="single-value pingguyes" /></span>
+            <span class="single">否<input type="radio" info="0" name="pinggu" class="single-value pingguno" /></span>
+        </div>
+    </div>
+    <div class="iterm">
+        <label for="">评估值：</label>
+        <input type="text" name="evaluationvalue" class="word5" style="width:57% !important;"/>万元
+    </div>
+    <div class="iterm">
+        <label for="">定金金额：</label>
+        <input type="text" name="depositamount" class="word5" style="width:59% !important;"/>元
+    </div>
+    <div class="iterm">
+        <label for="">服务费金额：</label>
+        <input type="text" name="servicecharge" class="word5" style="width:59% !important;"/>元
+    </div>
+    <div class="iterm" style="margin-bottom:15px;position: relative;">
+        <label for="">收费时段：</label>
+        <input type="hidden" name="chargeperiod"/>
+        <input type="text"  class="word5 shoufei" readonly disabled="disabled"/>
+        <div style="position:absolute;right:10%;width:35px;top:0;text-align:center;" class="tog4">></div>
+        <div style="display:none;" class="tog4-content">
+            <span class="single">已收<input type="radio"  shoufeiinfo="1" name="shoufei" class="single-value shoufei1" /></span>
+            <span class="single">批贷<input type="radio"  shoufeiinfo="2" name="shoufei" class="single-value shoufei2" /></span>
+            <span class="single">放款<input type="radio"  shoufeiinfo="3" name="shoufei" class="single-value shoufei3" /></span>
+        </div>
+    </div>
+    <div style="background:#efefef;height:10px;"></div>
+    <div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="">借款人姓名：</label>
+            <input type="text" name="borrowername" style="width:65%;"/>
+        </div>
+        <div class="iterm">
+            <label for=""  style="width:140px;">借款人所需材料清单：</label>
+            <div class="choose" id="loan-person">选择</div>
+        </div>
+        <div class="iterm">
+            <div class="material-box">
+                <div class="material-detail loan-person">
+                    <input type="hidden" name="borrowermaterial" />
+                </div>
+                <label for="">其他：</label>
+                <input type="text" name="borrowerothermaterial" style="width:70%;"/>
+            </div>
+        </div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="">配偶姓名：</label>
+            <input type="text" name="borrowerspousename" style="width:65%;"/>
+        </div>
+        <div class="iterm">
+            <label for="" style="width:130px;">配偶所需材料清单：</label>
+            <div class="choose" id="loan-mate">选择</div>
+        </div>
+        <div class="iterm">
+            <div class="material-box">
+                <div class="material-detail loan-mate">
+                    <input type="hidden" name="borrowerspousematerial"/>
+                </div>
+                <label for="">其他：</label>
+                <input type="text" name="borrowerspouseothermaterial" style="width:70%;"/>
+            </div>
+        </div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="" style="width:115px;">共同借款人姓名：</label>
+            <input type="text" name="commonborrowername" style="width:56%;"/>
+        </div>
+        <div class="iterm">
+            <label for="" style="width:170px;">共同借款人所需材料清单：</label>
+            <div class="choose" id="common-loan">选择</div>
+        </div>
+        <div class="iterm">
+            <div class="material-box">
+                <div class="material-detail common-loan">
+                    <input type="hidden" name="commonborrowermaterial"/>
+                </div>
+                <label for="">其他：</label>
+                <input type="text" name="commonborrowerothermaterial" style="width:70%;"/>
+            </div>
+        </div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="">配偶姓名：</label>
+            <input type="text" name="commonborrowerspousename" style="width:65%;"/>
+        </div>
+        <div class="iterm">
+            <label for="" style="width:130px;">配偶所需材料清单：</label>
+            <div class="choose" id="common-loan-mate">选择</div>
+        </div>
+        <div class="iterm">
+            <div class="material-box">
+                <div class="material-detail common-loan-mate">
+                    <input type="hidden" name="commonborrowerspousematerial"/>
+                </div>
+                <label for="">其他：</label>
+                <input type="text" name="commonborrowerspouseothermaterial" style="width:70%;"/>
+            </div>
+        </div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="">抵押人姓名：</label>
+            <input type="text" name="mortgagorname" style="width:65%;"/>
+        </div>
+        <div class="iterm">
+            <label for="" style="width:140px;">抵押人所需材料清单：</label>
+            <div class="choose" id="pledge">选择</div>
+        </div>
+        <div class="iterm">
+            <div class="material-box">
+                <div class="material-detail pledge">
+                    <input type="hidden" name="mortgagormaterial"/>
+                </div>
+                <label for="">其他：</label>
+                <input type="text" name="mortgagorothermaterial" style="width:70%;"/>
+            </div>
+        </div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="">配偶姓名：</label>
+            <input type="text" name="mortgagorspousename" style="width:65%;"/>
+        </div>
+        <div class="iterm">
+            <label for="" style="width:130px;">配偶所需材料清单：</label>
+            <div class="choose" id="pledge-mate">选择</div>
+        </div>
+        <div class="iterm" style="margin-bottom:15px;">
+            <div class="material-box">
+                <div class="material-detail pledge-mate">
+                    <input type="hidden" name="mortgagorspousematerial"/>
+                </div>
+                <label for="">其他：</label>
+                <input type="text" name="mortgagorspouseothermaterial" style="width:70%;"/>
+            </div>
+        </div>
+    </div>
+    <div style="background:#efefef;height:10px;"></div>
+    <div>
+        <div class="iterm" style="margin-top:10px;">
+            <label for="" style="width:130px;">公司所需材料清单：</label>
+            <div class="choose" id="commpany">选择</div>
+        </div>
+        <div class="iterm">
+            <div class="material-box">
+                <div class="material-detail commpany">
+                    <input type="hidden" name="companymaterial" />
+                </div>
+                <label for="">备注：</label>
+                <input type="text" name="remarks" style="width:70%;"/>
+            </div>
+        </div>
+    </div>
+    <div class="iterm" id="qianzi" style="display:none;">
+        <label for="" style="width:100px;" class="qianZiRole">业务经理签字：</label>
+        <input type="text" name="managersign" style="width:61%;" disabled/>
+    </div>
+    <div class="iterm">
+        <label for="">日期：</label>
+        <input type="date" name="managersigndate" style="width:66%;"/>
+    </div>
+    <div class="big-save" id="formReceipt-submit">
+        保存
+    </div>
+</form>
+<form id="promise" action="" >
+    <div class="iterm">
+        <label for="">客户姓名：</label>
+        <input type="text" name="custname" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">身份证号：</label>
+        <input type="text" name="custnum" id="custnum" class="word5"  alt="i18d"/>
+    </div>
+    <div class="iterm">
+        <label for="">办理业务：</label>
+        <input type="text" name="typename" class="word5"/>
+    </div>
+    <div class="iterm" style="display:none;">
+        <label for="" style="width:115px;">对应的台账号：</label>
+        <input type="text" name="ledgernum" class="word6" disabled="disabled"/>
+    </div>
+    <div class="iterm">
+        <label for="">承诺人：</label>
+        <input type="text" name="committedperson" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">日期：</label>
+        <input type="date" name="commitdate" class="word5" />
+    </div>
+    <div class="big-save" id="formPromise-submit">
+        保存
+    </div>
+</form>
+<form id="point" action="" >
+    <div class="iterm" style="display:none;">
+        <label for="">台账号：</label>
+        <input type="text" name="ledgernum" class="word5" disabled="disabled"/>
+    </div>
+    <div class="iterm">
+        <label for="">客户姓名：</label>
+        <input type="text" name="custname" class="word5" />
+    </div>
+    <div class="iterm">
+        <label for="">贷款点位：</label>
+        <input type="text" name="point" class="word5" />
+    </div>
+    <div class="iterm" style="margin-top:10px;">
+        <table style="width:100%;">
+            <tr>
+                <td style="vertical-align: top;"> <span style="vertical-align: top;">原因说明：</span></td>
+                <td><textarea  id="" name="reason" rows="4" style="width:90%;font-size:14px;"></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="iterm">
+        <label for="">日期：</label>
+        <input type="date" name="signdate"  class="word5" />
+    </div>
+    <div class="iterm" id="jingli" style="display:none;">
+        <label for="" style="width:115px;"></label>
+        <input type="text" class="word6" name="shopownername" disabled/>
+    </div>
+    <div class="iterm" id="zongjian" style="display:none;">
+        <label for="" style="width:115px;"></label>
+        <input type="text" class="word6" name="businessdirectorname" disabled/>
+    </div>
+    <div class="big-save" id="formPoint-submit">
+        保存
+    </div>
+</form>
+<form id="approve" action="">
+    <div class="iterm">
+        <label for="">审批人：</label>
+        <input type="text" name="approvePerson" class="word5" readonly/>
+    </div>
+    <div class="iterm"  style="margin-top:10px;">
+        <table style="width:100%;">
+            <tr>
+                <td style="vertical-align: top;"><span style="vertical-align: top;width:70px;">审批意见：</span></td>
+                <td> <textarea  rows="4" name="approveIdea" style="width:90%;font-size:14px;"  ></textarea></td>
+            </tr>
+        </table>
+    </div>
+    <div class="iterm" style="margin-left:70px;">
+        <div class="cancel" id="cancel" >不同意</div>
+        <div class="save" id="approve-save" style="float:right;margin-right:7%;">同意</div>
+    </div>
+</form>
+</div>
+<!--<div class="big-save" id="form-submit">-->
+    <!--提交-->
+<!--</div>-->
+<div class="dialog1">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content1">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete1">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog2">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content2">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete2">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog3">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content3">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete3">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog4">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content4">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete4">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog5">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content5">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete5">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog6">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content6">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete6">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog7">
+    <div class="dialog-box">
+        <div class="dialog-title">
+            <span>材料清单</span>
+            <div class="close">
+                &times;
+            </div>
+        </div>
+        <div class="dialog-content7">
+
+        </div>
+        <div class="complete-box">
+            <div class="complete7">
+                完成
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /*遮罩蒙版*/
+    var mask = mui.createMask(function () {
+//					$('.modleChane').hide();
+//					$('.modleWait').hide();
+//					$('#msgResoult').hide();
+
+    })
+    var caiLiaoStr1;
+    var caiLiaoStr2;
+    var caiLiaoStr3;
+    var caiLiaoStr4;
+    var caiLiaoStr5;
+    var caiLiaoStr6;
+    var caiLiaoStr7;
+    $(function(){
+        //借款人材料
+        $("#loan-person").click(function(){
+            $(".dialog-content1").html("");
+            $(".dialog1").css("display","block");
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">身份证</label> <input type="checkbox" name="data1" value="身份证" /> </div>'+
+                    '<div class="dialog-iterm"><label for="">户口本</label> <input type="checkbox" name="data1" value="户口本"/></div>'+
+                    '<div class="dialog-iterm"> <label for="">结婚证</label> <input type="checkbox" name="data1" value="结婚证" /></div>'+
+                    '<div class="dialog-iterm"> <label for="">离婚证</label> <input type="checkbox" name="data1" value="离婚证" /> </div>'+
+                    ' <div class="dialog-iterm"><label for="">离婚协议书</label> <input type="checkbox" name="data1" value="离婚协议书"/></div>'+
+                    '<div class="dialog-iterm"><label for="">法院判决书</label><input type="checkbox" name="data1" value="法院判决书"/></div>'+
+                    '<div class="dialog-iterm"><label for="">离婚证明</label><input type="checkbox" name="data1" value="离婚证明" /></div>'+
+                    '<div class="dialog-iterm"><label for="">死亡证明</label><input type="checkbox" name="data1" value="死亡证明"/></div>'+
+                    '<div class="dialog-iterm"><label for="">从业证明</label><input type="checkbox" name="data1" value="从业证明"/></div>'+
+                    '<div class="dialog-iterm"><label for="">收入证明</label><input type="checkbox" name="data1" value="收入证明"/></div>'+
+                    '<div class="dialog-iterm"><label for="">非恶意证明</label><input type="checkbox" name="data1" value="非恶意证明"/></div>'+
+                    '<div class="dialog-iterm"><label for="">个人银行流水</label><input type="checkbox" name="data1" value="个人银行流水"/></div>'+
+                    '<div class="dialog-iterm"><label for="">个人征信报告</label><input type="checkbox" name="data1" value="个人征信报告"/></div>'+
+                    '<div class="dialog-iterm"><label for="">原贷款合同</label><input type="checkbox" name="data1" value="原贷款合同"/></div>'+
+                    '<div class="dialog-iterm"><label for="">委托公证</label><input type="checkbox" name="data1" value="委托公证"/></div>'+
+                    '<div class="dialog-iterm"><label for="">单身证明</label><input type="checkbox" name="data1" value="单身证明"/></div>'+
+                    ' <div class="dialog-iterm"><label for="">抵贷不一公正</label><input type="checkbox" name="data1" value="抵贷不一公正"/></div>'+
+                    '<div class="dialog-iterm"><label for="">用款合同</label><input type="checkbox" name="data1" value="用款合同"/></div>'
+            $(".dialog-content1").append(html);
+            AlertDemo("dialog1");
+            $(".dialog-content1").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr1d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete1").click(function(){
+                //清除主页面中的选中资料项
+                $(".loan-person").find("span").remove();
+                var arr=new Array;
+                $(".dialog1").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content1 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr1=arr.join(",");
+                $(".loan-person").append(str);
+                //复选框的值存到一个input中
+                $("input[name='borrowermaterial']").val(arr.join(","));
+            })
+            function show(){
+                if(caiLiaoStr1!=null&&caiLiaoStr1!=""){
+                    var huiarr=caiLiaoStr1.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+        //借款人配偶材料
+        $("#loan-mate").click(function(){
+            $(".dialog-content2").html("");
+            $(".dialog2").css("display","block")
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">身份证</label> <input type="checkbox" name="data1" value="身份证"/> </div>'+
+                    '<div class="dialog-iterm"><label for="">户口本</label> <input type="checkbox" name="data1"value="户口本" /></div>'+
+                    '<div class="dialog-iterm"> <label for="">结婚证</label> <input type="checkbox" name="data1" value="结婚证"/></div>'+
+                    '<div class="dialog-iterm"><label for="">收入证明</label><input type="checkbox" name="data1" value="收入证明"/></div>'+
+                    '<div class="dialog-iterm"><label for="">个人银行流水</label><input type="checkbox" name="data1" value="个人银行流水"/></div>'+
+                     '<div class="dialog-iterm"><label for="">非恶意证明</label><input type="checkbox" name="data1" value="非恶意证明"/></div>'
+            $(".dialog-content2").append(html);
+            AlertDemo("dialog2");
+            $(".dialog-content2").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr2d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete2").click(function(){
+                //清除主页面中的选中资料项
+                $(".loan-mate").find("span").remove();
+                var arr=new Array;
+                $(".dialog2").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content2 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr2=arr.join(",");
+                $(".loan-mate").append(str);
+                //复选框的值存到一个input中
+                $("input[name='borrowerspousematerial']").val(arr.join(","))
+            })
+            //弹出框中选中的回显
+            function show(){
+                if(caiLiaoStr2!=null&&caiLiaoStr2!=""){
+                    var huiarr=caiLiaoStr2.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+        //共同借款人材料
+        $("#common-loan").click(function(){
+            $(".dialog-content3").html("");
+            $(".dialog3").css("display","block");
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">身份证</label> <input type="checkbox"  name="data1" value="身份证"/> </div>'+
+            '<div class="dialog-iterm"><label for="">户口本</label> <input type="checkbox" name="data1" value="户口本"/></div>'+
+            '<div class="dialog-iterm"> <label for="">结婚证</label> <input type="checkbox" name="data1" value="结婚证"/></div>'+
+            '<div class="dialog-iterm"> <label for="">离婚证</label> <input type="checkbox" name="data1" value="离婚证"/> </div>'+
+            ' <div class="dialog-iterm"><label for="">离婚协议书</label> <input type="checkbox" name="data1" value="离婚协议书"/></div>'+
+            '<div class="dialog-iterm"><label for="">法院判决书</label><input type="checkbox" name="data1" value="法院判决书"/></div>'+
+            '<div class="dialog-iterm"><label for="">离婚证明</label><input type="checkbox" name="data1" value="离婚证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">死亡证明</label><input type="checkbox" name="data1" value="死亡证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">放弃遗产公证</label><input type="checkbox" name="data1" value="放弃遗产公证" /></div>'+
+            '<div class="dialog-iterm"><label for="">从业证明</label><input type="checkbox" name="data1" value="从业证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">收入证明</label><input type="checkbox" name="data1" value="收入证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">非恶意证明</label><input type="checkbox" name="data1" value="非恶意证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">个人银行流水</label><input type="checkbox" name="data1" value="个人银行流水"/></div>'+
+            '<div class="dialog-iterm"><label for="">个人征信报告</label><input type="checkbox" name="data1" value="个人征信报告"/></div>'+
+            '<div class="dialog-iterm"><label for="">原贷款合同</label><input type="checkbox" name="data1" value="原贷款合同"/></div>'+
+            '<div class="dialog-iterm"><label for="">委托公证</label><input type="checkbox" name="data1" value="委托公证"/></div>'+
+            '<div class="dialog-iterm"><label for="">单身证明</label><input type="checkbox" name="data1" value="单身证明"/></div>'+
+            ' <div class="dialog-iterm"><label for="">抵贷不一公正</label><input type="checkbox" name="data1" value="抵贷不一公正" /></div>'+
+            '<div class="dialog-iterm"><label for="">用款合同</label><input type="checkbox" name="data1" value="用款合同"/></div>'
+            $(".dialog-content3").append(html);
+            AlertDemo("dialog3");
+            $(".dialog-content3").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr3d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete3").click(function(){
+                //清除主页面中的选中资料项
+                $(".common-loan").find("span").remove();
+                var arr=new Array;
+                $(".dialog3").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content3 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr3=arr.join(",");
+                $(".common-loan").append(str);
+                //复选框的值存到一个input中
+                $("input[name='commonborrowermaterial']").val(arr.join(","));
+            })
+            //弹出框中选中的回显
+            function show(){
+                if(caiLiaoStr3!=null&&caiLiaoStr3!=""){
+                    var huiarr=caiLiaoStr3.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+        //共同借款人配偶材料
+        $("#common-loan-mate").click(function(){
+            $(".dialog-content4").html("");
+            $(".dialog4").css("display","block")
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">身份证</label> <input type="checkbox" name="data1"value="身份证" /> </div>'+
+            '<div class="dialog-iterm"><label for="">户口本</label> <input type="checkbox" name="data1"value="户口本" /></div>'+
+            '<div class="dialog-iterm"> <label for="">结婚证</label> <input type="checkbox" name="data1"value="结婚证" /></div>'+
+            '<div class="dialog-iterm"><label for="">收入证明</label><input type="checkbox" name="data1" value="收入证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">个人银行流水</label><input type="checkbox" name="data1" value="个人银行流水"/></div>'+
+            '<div class="dialog-iterm"><label for="">非恶意证明</label><input type="checkbox" name="data1"value="非恶意证明" /></div>'
+            $(".dialog-content4").append(html);
+            AlertDemo("dialog4");
+            $(".dialog-content4").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr4d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete4").click(function(){
+                //清除主页面中的选中资料项
+                $(".common-loan-mate").find("span").remove();
+                var arr=new Array;
+                $(".dialog4").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content4 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr4=arr.join(",");
+                $(".common-loan-mate").append(str);
+                //复选框的值存到一个input中
+                $("input[name='commonborrowerspousematerial']").val(arr.join(","));
+            })
+            //弹出框中选中的回显
+            function show(){
+                if(caiLiaoStr4!=null&&caiLiaoStr4!=""){
+                    var huiarr=caiLiaoStr4.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+        //抵押人材料
+        $("#pledge").click(function(){
+            $(".dialog-content5").html("");
+            $(".dialog5").css("display","block")
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">身份证</label> <input type="checkbox" name="data1" value="身份证"/> </div>'+
+            '<div class="dialog-iterm"><label for="">户口本</label> <input type="checkbox" name="data1" value="户口本"/></div>'+
+            '<div class="dialog-iterm"> <label for="">结婚证</label> <input type="checkbox" name="data1" value="结婚证"/></div>'+
+            '<div class="dialog-iterm"> <label for="">离婚证</label> <input type="checkbox" name="data1" value="离婚证"/> </div>'+
+            ' <div class="dialog-iterm"><label for="">离婚协议书</label> <input type="checkbox" name="data1" value="离婚协议书"/></div>'+
+            '<div class="dialog-iterm"><label for="">法院判决书</label><input type="checkbox" name="data1" value="法院判决书"/></div>'+
+            '<div class="dialog-iterm"><label for="">单身证明</label><input type="checkbox" name="data1" value="单身证明"/></div>'+
+            '<div class="dialog-iterm"><label for="">原贷款合同</label><input type="checkbox" name="data1" value="原贷款合同"/></div>'+
+            '<div class="dialog-iterm"><label for="">委托公证</label><input type="checkbox" name="data1" value="委托公证"/></div>'+
+            '<div class="dialog-iterm"><label for="">产权类公证</label><input type="checkbox" name="data1" value="产权类公证"/></div>'+
+            '<div class="dialog-iterm"><label for="">强执公证</label><input type="checkbox" name="data1" value="强执公证"/></div>'+
+            '<div class="dialog-iterm"><label for="">放弃优先购买权</label><input type="checkbox" name="data1" value="放弃优先购买权"/></div>'+
+            '<div class="dialog-iterm"><label for="">房产证</label><input type="checkbox" name="data1" value="房产证"/></div>'+
+            '<div class="dialog-iterm"><label for="">原购房合同</label><input type="checkbox" name="data1" value="原购房合同"/></div>'+
+            '<div class="dialog-iterm"><label for="">原购房发票</label><input type="checkbox" name="data1" value="原购房发票"/></div>'+
+            '<div class="dialog-iterm"><label for="">房屋出租情况证明</label><input type="checkbox" name="data1" value="房屋出租情况证明"/></div>'
+            $(".dialog-content5").append(html);
+            AlertDemo("dialog5");
+            $(".dialog-content5").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr5d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete5").click(function(){
+                //清除主页面中的选中资料项
+                $(".pledge").find("span").remove();
+                var arr=new Array;
+                $(".dialog5").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content5 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr5=arr.join(",");
+                $(".pledge").append(str);
+                //复选框的值存到一个input中
+                $("input[name='mortgagormaterial']").val(arr.join(","));
+            })
+            //弹出框中选中的回显
+            function show(){
+                if(caiLiaoStr5!=null&&caiLiaoStr5!=""){
+                    var huiarr=caiLiaoStr5.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+        //抵押人配偶材料
+        $("#pledge-mate").click(function(){
+            $(".dialog-content6").html("");
+            $(".dialog6").css("display","block")
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">身份证</label> <input type="checkbox" name="data1" value="身份证"/> </div>'+
+            '<div class="dialog-iterm"><label for="">户口本</label> <input type="checkbox" name="data1" value="户口本"/></div>'+
+            '<div class="dialog-iterm"> <label for="">结婚证</label> <input type="checkbox" name="data1" value="结婚证"/></div>'
+            $(".dialog-content6").append(html);
+            AlertDemo("dialog6");
+            $(".dialog-content6").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr6d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete6").click(function(){
+                //清除主页面中的选中资料项
+                $(".pledge-mate").find("span").remove();
+                var arr=new Array;
+                $(".dialog6").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content6 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr6=arr.join(",");
+                $(".pledge-mate").append(str);
+                //复选框的值存到一个input中
+                $("input[name='mortgagorspousematerial']").val(arr.join(","));
+            })
+            //弹出框中选中的回显
+            function show(){
+                if(caiLiaoStr6!=null&&caiLiaoStr6!=""){
+                    var huiarr=caiLiaoStr6.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+        //公司材料
+        $("#commpany").click(function(){
+            $(".dialog-content7").html("");
+            $(".dialog7").css("display","block");
+            var html="";
+            html+='<div class="dialog-iterm"><label for="">营业执照</label> <input type="checkbox" name="data1" value="营业执照"/> </div>'+
+            '<div class="dialog-iterm"><label for="">组织机构代码证</label> <input type="checkbox" name="data1" value="组织机构代码证"/></div>'+
+            '<div class="dialog-iterm"> <label for="">税务登记证</label> <input type="checkbox" name="data1" value="税务登记证"/></div>'+
+            '<div class="dialog-iterm"> <label for="">公司章程</label> <input type="checkbox" name="data1" value="公司章程"/></div>'+
+            '<div class="dialog-iterm"> <label for="">财务报表</label> <input type="checkbox" name="data1" value="财务报表"/></div>'+
+            '<div class="dialog-iterm"> <label for="">对公账务流水</label> <input type="checkbox" name="data1" value="对公账务流水"/></div>'+
+            '<div class="dialog-iterm"> <label for="">审计报告</label> <input type="checkbox" name="data1" value="审计报告"/></div>'+
+            '<div class="dialog-iterm"> <label for="">历史往来合同</label> <input type="checkbox" name="data1" value="历史往来合同"/></div>'+
+            '<div class="dialog-iterm"> <label for="">营业场地照片</label> <input type="checkbox" name="data1" value="营业场地照片"/></div>'+
+            '<div class="dialog-iterm"> <label for="">水电发票</label> <input type="checkbox" name="data1" value="水电发票"/></div>'+
+            '<div class="dialog-iterm"> <label for="">纳税凭证</label> <input type="checkbox" name="data1" value="纳税凭证"/></div>'+
+            '<div class="dialog-iterm"> <label for="">场地证明</label> <input type="checkbox" name="data1" value="场地证明"/></div>'+
+            '<div class="dialog-iterm"> <label for="">开户许可证</label> <input type="checkbox" name="data1" value="开户许可证"/></div>'
+            $(".dialog-content7").append(html);
+            AlertDemo("dialog7");
+            $(".dialog-content7").find("input").each(function(){
+                for(var i=0;i<caiLiaoStr1d.split(",").length;i++){
+                    if($(this).val()==caiLiaoStr7d.split(",")[i]){
+                        $(this).attr("checked",true);
+                    }
+                }
+            });
+            $(".complete7").click(function(){
+                //清除主页面中的选中资料项
+                $(".commpany").find("span").remove();
+                var arr=new Array;
+                $(".dialog7").css("display","none");
+                //弹窗选中项再次显示到主页面上
+                $(".dialog-content7 input[type='checkbox']:checked").each(function () {
+                    arr.push($(this).val());
+                });
+                //主页面上选中项的显示
+                var str="";
+                for(var i=0;i<arr.length;i++){
+                    str+='<span  class="material-iterm">'+arr[i]+'</span>'
+                }
+                caiLiaoStr7=arr.join(",");
+                $(".commpany").append(str);
+                //复选框的值存到一个input中
+                $("input[name='companymaterial']").val(arr.join(","));
+            })
+            //弹出框中选中的回显
+            function show(){
+                if(caiLiaoStr7!=null&&caiLiaoStr7!=""){
+                    var huiarr=caiLiaoStr7.split(",");
+                    for(var i=0;i<huiarr.length;i++){
+                        $("input[value="+huiarr[i]+"]").attr("checked",true);
+                    }
+                }
+            }
+            show();
+        })
+    })
+    function AlertDemo(doc){
+        $(".close").click(function(){
+            $("."+doc).css("display","none")
+        })
+    }
+</script>
+<script>
+    cut("xinyong-tab","contract");
+    cut("liucheng-tab","liucheng");
+    cut("receipt-tab","receipt");
+    cut("promise-tab","promise");
+    cut("point-tab","point");
+    cut("approve-tab","approve");
+    function cut(tab,cont){
+        document.getElementById(tab).addEventListener("tap",function(){
+            $("form").hide();
+            $("#"+cont).show();
+        })
+    }
+    //折叠效果
+    $(".tog1").click(function(){
+        $(".tog1-content").toggle();
+    });
+    $(".tog2").click(function(){
+        $(".tog2-content").toggle();
+    });
+    $(".tog3").click(function(){
+        $(".tog3-content").toggle();
+    });
+    $(".tog4").click(function(){
+        $(".tog4-content").toggle();
+    });
+    //主页面单选框的选中
+    $("input[name='daikuan']").each(function(){
+        $(this).click(function(){
+            $(".daikuan").val($(this).attr("daikuaninfo"));
+        })
+    })
+
+    $("input[name='mianqian']").each(function(){
+        $(this).click(function(){
+            if($(this).attr("mianinfo")==0){
+                $(".mianqian").val("否");
+                $("input[name='banksigned']").val("0");
+            }else if($(this).attr("mianinfo")==1){
+                $(".mianqian").val("是");
+                $("input[name='banksigned']").val("1");
+            }
+        })
+    })
+    $("input[name='pinggu']").each(function(){
+        $(this).click(function(){
+//            alert($(this).val());
+//            alert($(this).attr('info'));
+            if($(this).attr('info')==0){
+                if($(this).prop('checked')){
+                    $(".pinggu").val("否");
+                    $("input[name='evaluated']").val("0");
+                }
+            }else if($(this).attr('info')==1){
+                if($(this).prop('checked')){
+                    $(".pinggu").val("是");
+                    $("input[name='evaluated']").val("1");
+                }
+            }
+        })
+    });
+    $("input[name='shoufei']").each(function(){
+        $(this).click(function(){
+            if($(this).attr("shoufeiinfo")==1){
+                $(".shoufei").val("已收");
+                $("input[name='chargeperiod']").val("1");
+            }else if($(this).attr("shoufeiinfo")==2){
+                $(".shoufei").val("批贷");
+                $("input[name='chargeperiod']").val("2");
+            }else if($(this).attr("shoufeiinfo")){
+                $(".shoufei").val("放款");
+                $("input[name='chargeperiod']").val("3");
+            }
+        })
+    })
+    //字段不存在时input值置空
+    function ziduan(str){
+        $("#"+str).find("input").each(function(){
+            if($(this).val()=="undefined"){
+                $(this).val("");
+            }
+        })
+    }
+</script>
+<script type="text/javascript" src="../js/index3.js"></script>
+<script type="text/javascript" src="../js/mobileFix.mini.js"></script>
+<script type="text/javascript" src="../js/exif.js"></script>
+<script type="text/javascript" src="../js/lrz.js"></script>
+<script type="text/javascript" src="../js/pengfujian3.js"></script>
+<script>
+    $('.main').show();
+    mask.show();
+</script>
+<script>
+    $(function(){
+        var rex=/^\d+(\.\d{1,2})?$/;
+        var rex1=/^\d+$/;
+        var rex2=/^1[34578]\d{9}$/;
+        verifyNum("receipt","loanamount","贷款额金额格式不正确",rex);
+        verifyNum("receipt","evaluationvalue","评估值金额格式不正确",rex);
+        verifyNum("receipt","depositamount","定金金额格式不正确",rex1);
+        verifyNum("receipt","servicecharge","服务费金额格式不正确",rex1);
+        verifyNum("receipt","shopownerphone","电话格式不正确",rex2);
+        verifyNum("receipt","clerkphone","电话格式不正确",rex2);
+        verifyNum("receipt","custphone","电话格式不正确",rex2);
+        verifyNum("receipt",'accountmanagerphone','电话格式不正确',rex2);
+    })
+</script>
+</body>
+</html>

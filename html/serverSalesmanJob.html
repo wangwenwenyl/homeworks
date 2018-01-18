@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<!--编辑者：宋亚男
+	模块：信用贷业务员-工作模块
+-->
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="../css/syn.css"/>
+	<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+	<style type="text/css">
+		
+		#box {
+			display: block;
+		}
+
+		.mui-title {
+			font-size: 18px;
+			font-family: "微软雅黑";
+			font-weight: bold;
+			color: #333333;
+		}
+
+		.top_hetongguanli {
+			display: block;
+			height: 43px;
+			background: white;
+			align-content: center;
+			font-family: "微软雅黑";
+			font-size: 18px;
+			padding-left: 24px;
+		}
+
+		.top_hetongguanli_name {
+			line-height: 43px;
+			display: inline-block;
+		}
+
+		.mui-bar {
+			position: relative;
+			background: white;
+		}
+
+		.button_hetong_block {
+			height: 89px;
+			background: white;
+			margin-top: 9px;
+			padding: 0 42px;
+		}
+
+		.button_hetong {
+			height: 36px;
+			width: 44%;
+			background: #fbaf37;
+			font-family: "微软雅黑";
+			font-size: 16px;
+			display: inline-block;
+			line-height: 36px;
+			text-align: center;
+			color: white;
+			vertical-align: middle;
+		}
+
+		.margin-left-14px {
+			margin-left: 0.4%;
+			
+		}
+
+		#bannerTop{
+			width: 100%;
+			height: 156px;
+		}
+		.salesmanTitle{
+			position: absolute;
+			z-index: 10;
+			/*margin-top: 0px;*/
+			height: 43px;
+			width: 100%;
+			padding: 0 20px;
+			/*background: url(../img/bannerbac.jpg);*/
+			font-size: 16px;
+			color: white;
+			font-family: "微软雅黑";
+			line-height: 43px;
+			
+		}
+		.salesmanTitle>div{
+			display: inline-block;
+			height: 43px;
+			line-height: 43px;
+			border-bottom: solid 4px #FABF37
+		}
+		.salesmanTitleLi{
+			height: 43px;
+			width: 100%;
+		}
+		.salesmanTitleLi>img{
+			height: 43px;
+			width: 100%;
+			position: absolute;
+			z-index: -10;
+		}
+		.titleBackImg{
+			height: 43px;
+			width: 100%;
+			position: absolute;
+			z-index: -5;
+		}
+		.salesmanOperation{
+			height: 128px;
+			box-sizing: none	
+		}
+		.salesmanOperation>div{
+			display: inline-block;
+			width: 50%;
+			height: 100%;
+			background: white;
+			margin: 0;
+		}
+		.operationImg{
+			text-align: center;
+			padding-top: 25px;
+		}
+		.operationImg>img{
+			
+			width: 39px;
+			height: 43px;
+		}
+		.operationText{
+			margin-top: 8px;
+			text-align: center;
+			color: #333333;
+			font-size: 16px;
+			font-family: "微软雅黑";
+		}
+		.managerTitle{
+			height: 43px;
+			width: 100%;
+			
+		}
+		.managerTitle>div>li{
+			display: inline-block;
+			width: 50%;
+			height: 43px;
+			line-height: 43px;
+			text-align: center;			
+		}
+		.managerTitle>div{
+			height: 43px;
+			width: 100%;
+			position: absolute;
+			z-index: 1;
+		}
+		.managerTitle>img{
+			height: 43px;
+			width: 100%;
+			position: absolute;
+			z-index: -1;
+		}
+		.managerTitle>div>li>div{
+			display: inline-block;
+			height: 43px;
+			line-height: 43px;
+			color: white;
+			font-family: "微软雅黑";
+			font-size: 16px;
+			
+		}
+		.titleDai{
+			border-bottom: solid 4px #FABF37;
+		}
+		.majordomoOperation{
+			
+			width: 100%;
+			height: 128px;
+			background: white;
+			padding-top: 25px;
+			text-align: center;
+			
+			
+		}
+		
+		.majordomoOperation div>img{
+			display: inline;
+			width: 39px;
+			height: 43px;
+		}
+		.majordemoText{
+			margin-top: 8px;
+			
+			color: #333333;
+			font-family: "微软雅黑";
+			font-size: 16px;
+		}
+		.toolsTitle{
+			margin-top: 9px;
+			height: 51px;
+			background: white;
+			line-height: 51px;
+			padding: 0 20px;
+			font-size: 16px;
+			color: #333333;
+			font-family: "微软雅黑";
+			font-weight: bold;
+			
+		}
+		.toolsUl{
+			
+			
+			width: 100%;
+			height: 90px;
+		}
+		.toolsUl>li{
+			display: inline-block;
+			width: 33.3333%;
+			background: white;
+			height: 90px;
+		}
+		.toolsImg{
+			border-top: solid 1px #dfdfdf; 
+			padding-top: 14px;
+			
+			text-align: center;
+		}
+		.toolsImg>img{
+			
+			width: 31px;
+			height: 31px;
+		}
+		.toolsText{
+			text-align: center;
+			margin-top: 9px;
+			color: #333333;
+			font-size: 9px;
+			font-family: "微软雅黑";
+			
+		}
+		
+
+		.message {
+			padding: 0 15px;
+			background: white;
+			margin-top: 9px;
+		}
+
+		.message-title {
+			height: 49px;
+		}
+
+		.message-title-name {
+			font-size: 16px;
+			height: 100%;
+			line-height: 49px;
+			display: inline-block;
+		}
+
+		.message-title-more {
+			font-size: 12px;
+			color: #999;
+			display: inline-block;
+			float: right;
+			line-height: 49px;
+		}
+
+		.mui-media-body {}
+
+		.message-list {
+			padding: 0 0 0 16px;
+			background: white;
+		}
+
+		.mui-pull-left {
+			margin-left: 3px;
+		}
+
+		.height-88 {
+			height: 44px;
+		}
+
+		.message-logo {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.message-content {
+			font-size: 14px;
+			margin-left: 3.2%;
+		}
+
+		.message-content-name {
+			color: #fe8970;
+			font-weight: bold;
+		}
+
+		.message-content-date {
+			float: right;
+			color: #999999;
+			font-size: 12px;
+			margin-right: 16px;
+
+			line-height: 44px;
+			text-align: center;
+		}
+
+		.industry-content {
+			padding: 0 15px;
+		}
+
+		.industry-content-title {
+			font-size: 14px;
+			margin-top: 14px;
+		}
+
+		.industry-content-date {
+			float: right;
+		}
+
+		.industry-content-logo {
+			display: inline-block;
+			margin-top: 10px;
+		}
+
+		.industry-content-body {
+			height: 100%;
+			margin-left: 16px;
+			float: right;
+		}
+		.industry-content-normal{
+			margin-top: 3px;
+		}
+		/* new */
+
+		.itemContainer {
+			display: flex;
+		}
+		.flexImg{
+			
+		}
+		.flexUl {
+			flex-grow: 1;
+		}
+		/* end */
+		.modle_xibao{
+		    width: 85.33%;
+		    height: 270px;
+		    position: fixed;
+		    
+		    
+		    background-color: white;
+		    border-radius: 0.3rem;
+		    overflow: auto;
+		    display: none;  
+		    z-index: 10;
+		    margin-left: 7.35%;
+		}
+		.mui-backdrop {
+			z-index: 2;
+		}
+		.xibaoTopBar{
+			width: 100%;
+			height: 42.04%;
+			background: #fefddf;
+			line-height: 55px;
+			font-size: 15px;
+			color: #666666;
+			padding-left: 25px;
+			padding-right: 15px;
+			text-align: center;
+		}
+		.imgConcle{
+			width: 24px;
+			height: 24px;
+			float: right;
+			margin-top: 9px;
+		}
+		.xibaoContent{
+			padding-left: 13.6%;
+			padding-top: 22px;
+			background: white;
+		}
+		.xibaoContent>ul>li{
+			font-family: "微软雅黑";
+			color: #666666;
+			font-size: 14px;
+			margin-bottom: 3px;
+		}
+		
+		.dialogImg{
+			display: inline-block;
+			width: 192px;
+			height: 107px;
+			margin-top: 2px;
+		}
+		#message>li{
+			border-bottom: 0.5px solid #efefef;
+			
+		}
+		.xibaoContent li{
+			color: #666666;
+			font-family: "微软雅黑";
+			font-size: 14px;
+			
+		}
+		.xibaoContent>ul>li>span{
+			margin-left: 15.63%;
+		}
+		.modleWait{
+			width: 85.3%;
+		    position: fixed;
+		    
+		    left: 7.35%;
+		    background-color: white;
+		    border-radius: 0.3rem;
+		    overflow: auto;
+		    display: none;  
+		    z-index: 10;
+		    font-family: "微软雅黑";
+		}
+		.waitTopBar{
+			width: 100%;
+			height:112.25px;
+			background: #fefddf;			
+			padding-left: 25px;
+			padding-right: 15px;
+			text-align: center;
+		}
+		.waitMessage{
+			text-align: center;
+			margin-top: 29.5px;
+			padding-bottom: 39px;
+		}
+		.waitMessage>span{
+			color: #999999;
+			font-size: 14px;
+			font-family: "微软雅黑";
+			margin-top: 2px;
+			
+		}
+		.waitBtn{
+			/*padding: 0 45px;*/
+			float: inherit;
+			margin-top: 20px;	
+			text-align: center;	
+		}
+		.waitBtn>div{
+			width: 36.1%;
+			height: 40px;
+			text-align: center;
+			display: inline-block;
+			font-size: 16px;
+			margin-left: 29.5px;
+			border-radius: 0.3rem;
+			background: #fabf37;
+			line-height: 40px;
+			border: 0.5px solid #e5e5e5;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+		.mui-slider-progress-bar{
+			background:none !important;
+		}
+		.daibanUl{
+			background: white;
+			height: 108px;
+			
+			padding: 0 11.2%;
+		}
+		.daibanUl>li{
+			overflow: hidden;
+		}
+		.daibanyiban{
+			display: none;
+		}
+		.mui-active{
+			color: #FBAF37 !important;
+		}
+	</style>
+</head>
+
+<body style="overflow: scroll;">
+	<!--细报详情-->
+	
+	<div class='modle_xibao'>	
+		<div class="xibaoTopBar font-family-black">
+			<img class="dialogImg" src="../img/喜报详情.png"/>
+			<img id="xibaoConcle" class="imgConcle" src="../img/cancel.png" alt="" />
+		</div>
+		<div  class="xibaoContent">
+			<ul>
+				<li>业务员&nbsp;&nbsp;      <span id="xibaoName">王磊</span></li>
+				<li>所属门店<span id="xibaoDep">信贷二十六部</span></li>
+				<li>合同编号<span id="xibaoNum">WC1234567889</span></li>
+				<li>合同类型<span id="xibaoType">质押贷</span></li>
+				<li>签订日期<span id="xibaoTime">2017-05-26</span></li>
+			</ul>
+		</div>
+	</div>
+	<!--待办事项-->
+	<div class="modleWait">
+		<div  class="waitTopBar">
+			<img class="dialogImg" src="../img/待办.png"/>
+			<img id="waitConcle" class="imgConcle" src="../img/cancel.png" alt="" />
+		</div>
+		<div class="waitMessage">
+			<ul class="msgUl">
+				
+				
+			</ul>
+		</div>
+		<!--<div class="waitBtn">
+			<div id="alertConsole"  class="bck-primary color-white float-left">取消</div>
+			<div id="alertConsole"  class="bck-primary color-white float-left">确认</div>
+			
+		</div>-->
+	</div>
+
+	<div id="box">
+		
+		<header class="mui-bar mui-bar-nav display-block">
+			<h1 id="indMore" class="mui-title">工作</h1>
+		</header>
+		<!--顶部分割线-->
+		<div class="line"></div>
+		<div>
+			<img id="bannerTop" src="../img/bannertop.jpg" alt="" />
+		</div>
+		<!--业务员-->
+		<div id="yewuyuan"  style=" display: none;">
+			<ul>
+				<li  class=" salesmanTitleLi" ><div class="salesmanTitle"><div>合同管理</div></div><img src="../img/bannerbac.jpg" alt="" />
+					<img class="titleBackImg" src="../img/透明度.png" alt="" />
+				</li>
+				<li class="salesmanOperation">
+					<div  class="operation" style="border-right: solid  0.25px #dfdfdf">
+						<a id="staffDingdan"><div class="operationImg" ><img src="../img/合同申领.png" /></div>
+						<div class="operationText">合同申领</div></a>
+					</div><!--
+					--><div >
+						<a id="staffQiandan"><div class="operationImg" ><img src="../img/合同数据.png" /></div>
+						<div class="operationText">合同签单</div></a>
+						
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--业务经理-->
+		<div id="jingli" style="display: none;">
+			<!--标题-->
+			<ul class="managerTitle">
+				<div><li><div class="title titleDai">待办事项</div></li><!--
+				--><li><div class="title titleYi">已办事项</div></li></div>
+				<img src="../img/bannerbac.jpg"/>
+				<img class="titleBackImg" src="../img/透明度.png" alt="" />
+			</ul>
+			<!--待办事项-->
+			<ul id="managerDai " class="operation operationDai">
+				<li class="salesmanOperation " style="border-bottom: solid 0.25px #dfdfdf;">
+					<div  style="border-right: solid 0.25px #dfdfdf">
+						<a id="managerHTdai"><div class="operationImg" ><img src="../img/合同审批.png" /></div>
+						<div class="operationText">合同审批</div></a>
+					</div><!--
+					--><div >
+						<a id="managerFHTdai"><div class="operationImg" ><img src="../img/返合同审批.png" /></div>
+						<div class="operationText">返合同审批</div></a>						
+					</div>
+				</li>
+				<li class="salesmanOperation" >
+					<div   style="border-right: solid 0.25px #dfdfdf">
+						<a id="managerBBdai"><div class="operationImg" ><img src="../img/报备审批.png" /></div>
+						<div class="operationText">报备审批</div></a>
+					</div><!--
+					--><div >
+						<a id="managerZFdai"><div class="operationImg" ><img src="../img/作废审批.png" /></div>
+						<div class="operationText">作废/撤单审批</div></a>						
+					</div>
+				</li>
+			</ul>
+			<!--已办事项-->
+			<ul id="managerYi" style="display: none;" class="operation operationYi" >
+				<li class="salesmanOperation" style="border-bottom: solid 0.25px #dfdfdf;">
+					<div   style="border-right: solid 0.25px #dfdfdf" >
+						<a id="managerHTyi"><div class="operationImg" ><img src="../img/合同审批.png" /></div>
+						<div class="operationText">合同审批</div></a>
+					</div><!--
+					--><div >
+						<a id="managerFHTyi"><div class="operationImg" ><img src="../img/返合同审批.png" /></div>
+						<div class="operationText">返合同审批</div></a>						
+					</div>
+				</li>
+				<li class="salesmanOperation" >
+					<div  style="border-right: solid 0.25px #dfdfdf;">
+						<a id="managerBByi"><div class="operationImg" ><img src="../img/报备审批.png" /></div>
+						<div class="operationText">报备审批</div></a>
+					</div><!--
+					--><div >
+						<a id="managerZFyi"><div class="operationImg"  ><img  src="../img/作废审批.png" /></div>
+						<div class="operationText">作废/撤单审批</div></a>						
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--业务总监-->
+		<div id="zongjian" style="display: none;" >
+			<!--标题-->
+			<ul class="managerTitle">
+				<div><li><div class="title titleDai">待办事项</div></li><!--
+				--><li><div class="title titleYi">已办事项</div></li></div>
+				<img src="../img/bannerbac.jpg"/>
+				<img class="titleBackImg" src="../img/透明度.png" alt="" />
+			</ul>
+			<!--待办事项-->
+			<div  style=" padding: 29px 50% 0 0 ;" class="majordomoOperation  operation operationDai">
+				<a id="majordomoFHTdai"><div class=""><img src="../img/返合同审批.png" /></div>
+				<div class="majordemoText">返合同审批</div></a>
+			</div>
+			<!--已办事项-->
+			<div  class="majordomoOperation operation operationYi" style="display: none; padding: 29px 50% 0 0 ;">
+				<a id="majordemoFHTyi" ><div class=""><img src="../img/返合同审批.png" /></div>
+				<div class="majordemoText">返合同审批</div></a>
+			</div>
+		</div>
+		<!--实用工具-->
+		<div>
+			<!--标题-->
+			<div class="toolsTitle">
+				实用工具
+			</div>
+			<!--上层工具栏-->
+			<ul class="toolsUl" style="">
+				<li>
+					<a href="http://ts.hcxzdanbao.com/html/map1.html"><div class="toolsImg"><img src="../img/建委.png" alt="" /></div>
+					<div class="toolsText">建委查询</div></a>
+				</li><!--
+				--><li style="border-left: solid 1px #dfdfdf;border-right: solid 1px #dfdfdf;">
+					<a href="http://ts.hcxzdanbao.com/html/map2.html"><div class="toolsImg"><img src="../img/征信.png" alt=""  /></div>
+					<div class="toolsText">征信查询</div></a>
+				</li><!--
+				--><li>
+					<a href="http://ts.hcxzdanbao.com/html/map3.html"><div class="toolsImg"><img src="../img/公证-.png" alt="" /></div>
+					<div class="toolsText">公证处查询</div></a>
+				</li>
+			</ul>
+			<!--下层工具栏-->
+			<ul class="toolsUl" style="" >
+				<li>
+					<a href="http://ts.hcxzdanbao.com/html/map4.html"><div class="toolsImg"><img src="../img/公积金.png" alt="" /></div>
+					<div class="toolsText">公积金查询</div></a>
+				</li><!--
+				--><li style="border-left: solid 1px #dfdfdf;border-right: solid 1px #dfdfdf;">
+					<a href="http://ts.hcxzdanbao.com/html/map5.html"><div class="toolsImg"><img src="../img/抵押.png" alt="" /></div>
+					<div class="toolsText">抵押登记查询</div></a>
+				</li><!--
+				--><li>
+					<a href="http://ts.hcxzdanbao.com/html/fang1.html"><div class="toolsImg"><img src="../img/计算器.png" alt="" /></div>
+					<div class="toolsText">计算器</div></a>
+				</li>
+			</ul>
+		</div>
+		<!--通知-->
+		<div  class="message">
+			<!--通知标题-->
+			<div class="message-title">
+				<div class="message-title-name font-family-black color-black font-family-bold">通知</div>
+				<a href="http://ts.hcxzdanbao.com/html/serverNotification.html"><div id="msgMore" class="message-title-more font-family-black">更多</div></a>
+			</div>
+			<!--通知list内容-->
+			<div id="message">
+				
+			</div>
+		</div>
+		<!--通知list-->
+		<div class="message-list">
+			<ul id="message" class="mui-table-view">
+				
+			</ul>
+		</div>
+
+		<!--行业资讯-->
+		<!--<div class="message">
+			
+			<div class="message-title">
+				<div class="message-title-name font-family-black color-black font-family-bold">行业资讯</div>
+				<div id="indMore" class="message-title-more font-family-black">更多</div>
+			</div>
+		</div>-->
+		<!--行业资讯list-->
+		<!--<ul class="mui-table-view">
+			<li class=" industry-content height-190 ">
+				<a class="display-block" style="height: 100%;" href="javascript:;">
+					<div class="itemContainer">
+						<img class="industry-content-logo display-inlineblock icon-204-150 flexImg" src="http://placehold.it/40x30" />
+						<ul class="display-inlineblock industry-content-body flexUl">
+							<li class="display-block industry-content-title">
+								<span class="color-black font-family-black">幸福</span>
+								<span class="float-right font-size-12 color-gray">2015-01-03</span>
+							</li>
+							<li class=" font-family-black industry-content-normal color-gray font-size-12 display-inlineblock">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</li>
+						</ul>
+					</div>
+				</a>
+			</li>
+
+		</ul>-->
+		
+	</div>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/jquery-3.2.1.min.js"></script>
+	<script src="../js/mui.jsonp.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script src="../js/checkht.js"></script>
+	<script type="text/javascript">
+		var hrefUrl=host+'/html/';
+		var baseUrl = host+'/app/';
+		var userType = '';
+		var userid = '';
+		var userName = '';
+		var mJson='';
+		var uuid='';
+		var account='';
+			/*遮罩蒙版*/
+	 	var mask = mui.createMask(function () {
+				$('.modle_xibao').hide();
+				$('.modleWait').hide();
+			})
+		
+		$('a').click(function(){
+			if(checkYh($(this))){
+				return true;
+			}else{
+				mui.alert('用户已经离线，请重新登录');
+				return false;
+			}
+		})
+		//待办事项绑定事件
+		$('.titleDai').bind('click',function(){
+			$('.title').css({'borderBottom':'none'})
+			$('.titleDai').css({'borderBottom':'solid 4px #fabf37' })
+			$('.operation').css({'display':'none'})
+			$('.operationDai').css({'display':'block'})
+		})
+		//已办事项绑定事件
+		$('.titleYi').bind('click',function(){
+			$('.title').css({'borderBottom':'none'})
+			$('.titleYi').css({'borderBottom':'solid 4px #fabf37' })
+			$('.operation').css({'display':'none'})
+			$('.operationYi').css({'display':'block'})
+		})
+		//窗口居中
+		function setCenter(){
+			
+			var winHeight=$(window).height();
+			var waitHeight=$('.modleWait').height();
+			var xibaoHeight=$('.modle_xibao').height();
+			var waittop = (winHeight-waitHeight)/3;
+			var xibaotop=(winHeight-xibaoHeight)/2;
+			$('.modleWait').css({'top':waittop});
+			$('.modle_xibao').css({'top':xibaotop});
+		}
+		
+		function initHref(url){
+			//业务员订单
+			$("#staffDingdan").attr('href',url+'serverHetong.html')
+//			$("#staffDingdan").attr('href','serverHetong.html')
+			//业务员签单
+			$("#staffQiandan").attr('href',url+'contractListP.html')
+			//经理合同审批待办
+			$("#managerHTdai").attr('href',url+'contractApprovalP.html')
+			//经理反合同审批待办
+			$("#managerFHTdai").attr('href',url+'returnContractApprovalP.html')
+			//经理报备审批待办
+			$("#managerBBdai").attr('href',url+'ManagerReportP.html')
+			//经理作废审批待办
+			$("#managerZFdai").attr('href',url+'ManagerCancelContractP.html')
+			//经理合同审批已办
+			$("#managerHTyi").attr('href',url+'contractApprovalYBP.html')
+			//经理反合同审批已办
+			$("#managerFHTyi").attr('href',url+'returnContractYBP.html')
+			//经理报备审批已办
+			$("#managerBByi").attr('href',url+'ManagerReportYBP.html')
+			//经理作废审批已办
+			$("#managerZFyi").attr('href',url+'CancelContractYBP.html')
+			//总监反合同审批待办
+			$("#majordomoFHTdai").attr('href',url+'ChiefReturnContractApprovalP.html')
+			//总监反合同审批已办
+			$("#majordemoFHTyi").attr('href',url+'returnContractYBP.html')
+		}
+		/*获取登录用户信息*/
+		var getInfo = function(){
+			var searchURL = window.location.search;
+
+				if(searchURL.length==0){
+					userid=$.cookie('uid');
+					userType=$.cookie('utype')
+				}else{
+					searchURL = searchURL.substring(1, searchURL.length);
+					searchURL=searchURL.split("&");
+					userid = searchURL[0].split("=")[1];
+					userType=searchURL[1].split("=")[1];
+					userName = searchURL[2].split("=")[1];
+					uuid = searchURL[3].split("=")[1];
+					account=searchURL[4].split("=")[1];
+					$.cookie('uid',userid,{ expires: 365});
+					$.cookie('utype',userType,{ expires: 365 });
+					$.cookie('uname',userName,{expires: 365});
+					$.cookie('uuid',uuid,{expires:365});
+					$.cookie('uaccount',account,{expires:365});
+					
+					userid=$.cookie('uid');
+					userType=$.cookie('utype')
+					uuid=$.cookie('uuid')
+					
+				}
+//				console.log(userid);
+										
+		}
+		/*获取待办事项接口*/
+		var getWaitMsg = function(){
+			mui.get(baseUrl+'taskremind',{userid:userid},function(data){
+				$.each(data, function(indexInfo,info) {
+					if(info.length!=0){
+						var str='';
+						$.each(info, function(index,item) {
+							str= '<li><span>'+item.content+'</span></li>'
+							$(str).appendTo('.msgUl');					
+						});
+						$('.modleWait').show();
+						mask.show();
+					}					
+				});
+			})
+		}
+		
+		/*获取用户角色加载界面*/
+	 	var getUrl = function(){
+	 			
+              var type = userType;
+              if(type==1){
+              	$('#yewuyuan').show();
+              }else if(type==2){
+				$('#jingli').show();
+              }else if(type==3){
+              	$('#zongjian').show();
+              }
+	 	}
+	 	/*获取通知*/
+	 	var getMsg = function(){
+	 		mui.get(baseUrl+'getbillboard',{},function(data){
+					$('message').empty();
+					mJson=data;
+					$.each(data, function(infoIndex,info) {
+						strHtml='';
+						
+						$.each(info,function(index,item){
+							strHtml='<li id="'+item.number+'" class="height-88">'+
+										'<a href="javascript:;">'+
+									            '<img src="../img/通知.png" alt="" class="icon-32 message-logo" />'+
+									            '<div class="center-line"></div>'+
+									            '<div class="message-content display-inlineblock color-black font-family-black">'+
+									            	'恭喜<span id="messageName" class="message-content-name">'+item.name+'</span>签单成功'+
+									            '</div>'+
+									            '<div id="messageDate" class="message-content-date font-family-black">'+item.time+'</div>'+
+									        '</a>'+
+									'</li>';
+							$(strHtml).appendTo('#message');	
+						});
+					});
+				},'json'
+			);
+	 	}
+		
+		
+		mui.init({
+			/*初始化预加载*/
+			preloadPages:[
+				
+				$('.initTop').hide(),
+				initHref(hrefUrl),
+				getInfo(),
+				getUrl(),
+				getMsg(),
+				getWaitMsg(),
+				setCenter(),
+		 	 ]		 	
+		});
+		
+		/*通知点击事件*/
+		mui('#message').on('tap','.height-88',function(){
+			var id = this.getAttribute('id');
+			
+			$.each(mJson, function(index,info) {
+				
+				$.each(info,function(infoIndex,item){
+					
+					if(id==item.number){
+						$('#xibaoNum').html(item.number);
+						$('#xibaoTime').html(item.time);
+						$('#xibaoDep').html(item.department);
+						$('#xibaoType').html(item.type);
+						$('#xibaoName').html(item.name);
+					}
+				});
+			});
+		    $('.modle_xibao').show();
+			
+			mask.show()
+		}); 
+		
+		/*通知更多点击事件*/
+		var msgMore = document.getElementById('msgMore');
+		msgMore.addEventListener("tap",function(){
+			
+		});
+		/*待办事项弹框*/
+		var waitMsg = function(){
+			$('.modleWait').show();
+			mask.show();
+		}
+		
+		//消息退出按钮
+		$('#xibaoConcle').bind('click',function(){
+			$('.modle_xibao').hide();
+			
+			mask.close();
+		});
+		$('#waitConcle').bind('click',function(){
+			$('.modleWait').hide();
+			mask.close();
+		});
+		/*取消按钮点击事件*/
+		$('#alertConsole').click(function(){
+			$('.modleWait').hide();
+			mask.close();
+		});
+		
+		
+		/*合同数据*/
+//		var htData = document.getElementById('htData');
+//		htData.addEventListener('tap',function(){
+//			mui.alert('合同数据','进入合同数据','确认','','');
+//		});
+		
+	</script>
+</body>
+
+</html>

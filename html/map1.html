@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html style="font-size:100px;height: 100%;">
+<head>
+<meta charset="utf-8">
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="apple-touch-fullscreen"/>
+<meta content="telephone=no,email=no" name="format-detection"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>地图</title>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=geGLGXIUuWM0lGsGGy5tBX06QOie4FIf"></script>
+<style type="text/css">
+    body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+    #allmap {height: 500px;width:100%;overflow: hidden;}
+    #result {width:100%;font-size:14px;}
+    dl,dt,dd,ul,li{
+        margin:0;
+        padding:0;
+        list-style:none;
+    }
+    .BMapLib_sendToPhone{display:none;}
+    dt{
+        font-size:16px;
+        font-family:"微软雅黑";
+        font-weight:bold;
+        border-bottom:1px dotted #000;
+        padding:5px 0 5px 5px;
+        margin:5px 0;
+    }
+    dd{
+        padding:5px 0 0 5px;
+    }
+    li{
+        line-height:28px;
+    }
+     #licontain a{text-decoration:none;color:#6ce;font-size:14px !important;}
+    #licontain a:hover{text-decoration:underline;}
+    #licontain *{box-sizing:border-box;margin:0px;padding:0px;}
+    //font-size:0.34rem;
+    #licontain div{padding:0.2rem;}
+
+
+	ul>.lit{
+	padding-left:0.18rem !important;
+	;padding-top:0.08rem !important;
+	padding-bottom:0.08rem !important;
+	border-bottom:1px solid #efefef;
+	width:100%;
+	}
+	.litp1{
+	color:#333;
+	line-height:0.35rem;
+	font-size:0.16rem !important;
+	width: 98%;
+	}
+	.litp2{
+		color:#676767;
+//		line-height:0.3rem;
+		font-size: 0.14rem !important;
+	}
+	.litp2>span{
+		display:inline-block;
+
+//      vertical-align: super;
+	}
+	.lit .litp2m,.lit .litp2d{
+
+//        line-height:0.7rem;
+        background-size:100% 100%;
+	}
+	.litp2m{
+		background:url('../img/lmo.png') no-repeat;
+		width:0.15rem;
+        height:0.15rem;
+        margin-right:0.15rem !important;
+        vertical-align: middle;
+	}
+	.litp2d{
+    	background:url('../img/ldi.png') no-repeat;
+//      line-height: 0.7rem;
+        width:0.13rem;
+        height:0.17rem;
+        margin-left:0.01rem !important;
+        margin-right:0.17rem !important;
+        vertical-align: top;
+//		margin-top:0.1rem !important;
+        margin-top: 0.05rem !important;
+    }
+    .litp2p{
+        width: 85%;
+
+    }
+	ul>.lit p{
+    	width:100%;
+    	}
+</style>
+	<link rel="stylesheet" href="../css/index1.css"/>
+<script>
+//	var autoScreen=function(){
+//		var w= document.getElementsByTagName("window");
+//    	var x=w.width();
+//    	var h= document.getElementsByTagName("html");
+//    	h.css("font-size",20*(x/320)+"px");
+//    }
+//    autoScreen();
+</script>
+
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=geGLGXIUuWM0lGsGGy5tBX06QOie4FIf"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+
+<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+</head>
+<body style="height: 100%;border: none !important;">
+<div class="header" style="width:100%;height: 5%;background-color: #f6f6f6;font-size: 0.16rem;color: #0c0d0e; height: 0.44rem;line-height: 0.44rem;padding-left: 3%;">
+	<a href="javascript:;" onclick="window.history.go(-1);"><img src="../img/left-arrow.png" alt="" style="height: 15px;"/></a>
+	<!--<a href="http://ts.hcxzdanbao.com/html/serverSalesmanJob.html"><img src="../img/left-arrow.png" alt="" style="height: 15px;"/></a>-->
+	<span style="position: relative;left: 35%;">建委查询</span>
+</div>
+<div style="width:100%;height:40%;border:1px solid gray" id="container"></div>
+<div style="width:100%;height:54%;border:1px solid gray; overflow-y:scroll;line-height:1.8em;" id="licontain">
+
+	<ul style='width:100%'>
+	   <li class='lit'>
+	      <a onmouseover="openMyWin(infoWindow1,marker1)" href="#">
+				<p class='litp1' >大兴区住建委房屋登记大厅</p>
+				<p class='litp2' ><span class='litp2m'></span><span>电话：010-69261324</span></p>
+				<p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市大兴区兴政街29号建设大厦</span></p>
+	      </a>
+	   </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow2,marker2)" href="#">
+	         <p class='litp1' >昌平区住建委房屋登记中心</p>
+			 <p class='litp2' ><span class='litp2m'></span><span>电话：010-89703954</span></p>
+			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市昌平区回龙观东大街5号</span></p>
+	         </a>
+	      </li>
+
+
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow3,marker3)" href="#">
+	         <p class='litp1' >顺义区房屋交易市场管理科</p>
+			 <p class='litp2' ><span class='litp2m'></span><span>电话：010-69425703</span></p>
+             <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市顺义区顺义光明北街7号</span></p>
+	         </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow4,marker4)" href="#">
+	         <p class='litp1' >通州区住建委房地产交易中心</p>
+			 <p class='litp2' ><span class='litp2m'></span><span>电话：010-52118506/52118572</span></p>
+             <p class='litp2' ><span class='litp2d' ></span><span class='litp2p'>地址：北京市通州区新华南路196号(蓝山国际小区西)</span></p>
+	         </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow5,marker5)" href="#">
+	        <p class='litp1' >北京市房屋权属登记事务中心</p>
+		    <p class='litp2' ><span class='litp2m'></span><span>电话：010-59958562</span></p>
+			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市海淀区西四环中路16号院3号楼5层</span></p>
+	        </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow6,marker6)" href="#">
+	        <p class='litp1' >海淀区房管局登记中心</p>
+			 <p class='litp2' ><span class='litp2m'></span><span>电话：010-82708600</span></p>
+			 <p class='litp2' style=''><span class='litp2d' style=''></span><span class='litp2p'>地址：北京市海淀区东北旺南路27号办公中心A座2楼</span></p>
+	        </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow7,marker7)" href="#">
+	        <p class='litp1' >石景山区行政服务中心</p>
+		    <p class='litp2' ><span class='litp2m'></span><span>电话：010-68838208</span></p>
+			<p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市八角西街66号方地大厦B座三层</span></p>
+	        </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow8,marker8)" href="#">
+	         <p class='litp1' >丰台区房管局房地产交易权属发证中心</p>
+             <p class='litp2' ><span class='litp2m'></span><span>电话：010-69261324</span></p>
+			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市丰台区丰体南路1号院8号楼丰体时代大厦</span></p>
+	        </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow9,marker9)" href="#">
+	         <p class='litp1' >朝阳区房管局房屋登记大厅</p>
+			 <p class='litp2' ><span class='litp2m'></span><span>电话：010-85839922</span></p>
+			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市朝阳区石佛营东里128号院3号楼</span></p>
+	        </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow10,marker10)" href="#">
+	        <p class='litp1' >西城区房管局服务大厅</p>
+			<p class='litp2' ><span class='litp2m'></span><span>电话：010-63557288</span></p>
+			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市西城区南菜园街7号院51号楼</span></p>
+	        </a>
+	      </li>
+	     <li class='lit'><a onmouseover="openMyWin(infoWindow0,marker0)" href="#">
+	        <p class='litp1' >东城区房管局东城区房屋权属登记中心</p>
+			<p class='litp2' ><span class='litp2m'></span><span>电话：010-84014947</span></p>
+			 <p class='litp2' ><span class='litp2d'></span><span class='litp2p'>地址：北京市东城区地安门东大街88号</span></p>
+	        </a>
+	      </li>
+	 </ul>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+var map = new BMap.Map("container");
+//map.centerAndZoom(point, 16);
+map.addControl(new BMap.NavigationControl());        // 添加平移缩放控件
+map.addControl(new BMap.ScaleControl());             // 添加比例尺控件
+map.addControl(new BMap.OverviewMapControl());       //添加缩略地图控件
+map.enableScrollWheelZoom();                         //启用滚轮放大缩小
+map.centerAndZoom(new BMap.Point(116.282512,39.922014), 11);
+
+var myIcon = new BMap.Icon("../img/baiduico.png", new BMap.Size(40,40), {
+    imageOffset: new BMap.Size(15,5)
+});
+//map.centerAndZoom(new BMap.Point(116.403963,39.915119), 11);
+//alert("当前坐标：" + map.getCenter().lng + "," + map.getCenter().lat);
+
+// 百度地图API功能
+
+function getLocation()
+{
+	if (navigator.geolocation)
+	{
+		navigator.geolocation.getCurrentPosition(showPosition);
+	}
+	else
+	{
+		x.innerHTML="该浏览器不支持定位。";
+	}
+}
+getLocation();
+
+function showPosition(position){
+
+	// 加载地图显示区域
+	var point = new BMap.Point(position.coords.longitude,position.coords.latitude);
+	// var point = new BMap.Point(0,0);
+	map.centerAndZoom(point,10);
+
+	// 加载红色左边
+	var myposition;
+    var myposition_lng;
+    var myposition_lat;
+ var geolocation = new BMap.Geolocation();
+  geolocation.getCurrentPosition(function(r){
+    if(this.getStatus() == BMAP_STATUS_SUCCESS){
+        var mk = new BMap.Marker(r.point);
+        map.addOverlay(mk);
+        map.panTo(r.point);
+        myposition_lat=r.point.lat;
+        myposition_lng=r.point.lng;
+        //alert('accuracy:'+r.accuracy);
+//        alert("经度："+myposition_lng +"和"+"纬度："+myposition_lat);
+        myposition=new BMap.Point(r.point.lng,r.point.lat);
+        if(r.accuracy==null){
+            alert('accuracy null:'+r.accuracy);
+            //用户决绝地理位置授权
+            return;
+        }
+        //用户允许地理位置授权
+    }else {
+        alert('failed'+this.getStatus());
+    }
+  },{enableHighAccuracy: true})
+
+
+}
+
+
+// 错误判断
+//function showError(error)
+//{
+//	switch(error.code)
+//	{
+//		case error.PERMISSION_DENIED:
+//			x.innerHTML="用户拒绝对获取地理位置的请求。 ";
+//			break;
+//		case error.POSITION_UNAVAILABLE:
+//			x.innerHTML="位置信息是不可用的。";
+//			break;
+//		case error.TIMEOUT:
+//			x.innerHTML="请求用户地理位置超时。";
+//			break;
+//		case error.UNKNOWN_ERROR:
+//			x.innerHTML="未知错误。";
+//			break;
+//	}
+//}
+
+
+
+
+
+//原js
+//var myIcon = new BMap.Icon("../img/baiduico.png", new BMap.Size(40,40), {
+//    imageOffset: new BMap.Size(15,5)
+//  });
+
+//var point = [
+//              new BMap.Point(116.342225,39.733628),
+//			  new BMap.Point(116.366259,40.08712),
+//			  new BMap.Point(116.662909,40.139259),
+//			  new BMap.Point(116.66341,39.901331),
+//			  new BMap.Point(116.282512,39.922014),
+//			  new BMap.Point(116.301019,40.04829),
+//			  new BMap.Point(116.205885,39.914794),
+//			  new BMap.Point(116.276842,39.87316),
+//			  new BMap.Point(116.512901,39.939908),
+//			  new BMap.Point(116.360216,39.881097),
+//			  new BMap.Point(116.403811,39.939635)
+//			];
+
+//var marker1 = new BMap.Marker(point[1],{icon:myIcon});
+//var marker2 = new BMap.Marker(point[2],{icon:myIcon});
+//var marker3 = new BMap.Marker(point[3],{icon:myIcon});
+//var marker4 = new BMap.Marker(point[4],{icon:myIcon});
+//var marker5 = new BMap.Marker(point[5],{icon:myIcon});
+//var marker6 = new BMap.Marker(point[6],{icon:myIcon});
+//var marker7 = new BMap.Marker(point[7],{icon:myIcon});
+//var marker8 = new BMap.Marker(point[8],{icon:myIcon});
+//var marker9 = new BMap.Marker(point[9],{icon:myIcon});
+//var marker10 = new BMap.Marker(point[10],{icon:myIcon});
+//var marker0 = new BMap.Marker(point[0],{icon:myIcon});
+
+//map.addOverlay(marker1);
+//map.addOverlay(marker2);
+//map.addOverlay(marker3);
+//map.addOverlay(marker4);
+//map.addOverlay(marker5);
+//map.addOverlay(marker6);
+//map.addOverlay(marker7);
+//map.addOverlay(marker8);
+//map.addOverlay(marker9);
+//map.addOverlay(marker10);
+//map.addOverlay(marker0);
+//
+//map.setViewport(point);
+
+
+
+
+
+
+
+//var myIcon = new BMap.Icon("../img/baiduico.png", new BMap.Size(40,40), {
+//    imageOffset: new BMap.Size(15,5)
+//  });
+var point = [
+              new BMap.Point(116.342225,39.733628),
+			  new BMap.Point(116.366259,40.08712),
+			  new BMap.Point(116.662909,40.139259),
+			  new BMap.Point(116.66341,39.901331),
+			  new BMap.Point(116.282512,39.922014),
+			  new BMap.Point(116.301019,40.04829),
+			  new BMap.Point(116.205885,39.914794),
+			  new BMap.Point(116.276842,39.87316),
+			  new BMap.Point(116.512901,39.939908),
+			  new BMap.Point(116.360216,39.881097),
+			  new BMap.Point(116.403811,39.939635)
+			];
+
+//var marker1 = new BMap.Marker(point[1],{icon:myIcon});
+//var marker2 = new BMap.Marker(point[2],{icon:myIcon});
+//var marker3 = new BMap.Marker(point[3],{icon:myIcon});
+//var marker4 = new BMap.Marker(point[4],{icon:myIcon});
+//var marker5 = new BMap.Marker(point[5],{icon:myIcon});
+//var marker6 = new BMap.Marker(point[6],{icon:myIcon});
+//var marker7 = new BMap.Marker(point[7],{icon:myIcon});
+//var marker8 = new BMap.Marker(point[8],{icon:myIcon});
+//var marker9 = new BMap.Marker(point[9],{icon:myIcon});
+//var marker10 = new BMap.Marker(point[10],{icon:myIcon});
+//var marker0 = new BMap.Marker(point[0],{icon:myIcon});
+var marker1 = new BMap.Marker(point[0],{icon:myIcon});
+var marker2 = new BMap.Marker(point[1],{icon:myIcon});
+var marker3 = new BMap.Marker(point[2],{icon:myIcon});
+var marker4 = new BMap.Marker(point[3],{icon:myIcon});
+var marker5 = new BMap.Marker(point[4],{icon:myIcon});
+var marker6 = new BMap.Marker(point[5],{icon:myIcon});
+var marker7 = new BMap.Marker(point[6],{icon:myIcon});
+var marker8 = new BMap.Marker(point[7],{icon:myIcon});
+var marker9 = new BMap.Marker(point[8],{icon:myIcon});
+var marker10 = new BMap.Marker(point[9],{icon:myIcon});
+var marker0 = new BMap.Marker(point[10],{icon:myIcon});
+map.addOverlay(marker1);
+map.addOverlay(marker2);
+map.addOverlay(marker3);
+map.addOverlay(marker4);
+map.addOverlay(marker5);
+map.addOverlay(marker6);
+map.addOverlay(marker7);
+map.addOverlay(marker8);
+map.addOverlay(marker9);
+map.addOverlay(marker10);
+map.addOverlay(marker0);
+
+map.setViewport(point);
+
+
+
+
+
+
+
+var content1 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市大兴区兴政街29号建设大厦</br>电话:010-69261324</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow1 = null;
+    infoWindow1 = new BMapLib.SearchInfoWindow(map, content1, {
+            title  : "大兴区住建委房屋登记大厅",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content2 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市昌平区回龙观东大街5号</br>电话:010-89703954</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow2 = null;
+    infoWindow2 = new BMapLib.SearchInfoWindow(map, content2, {
+            title  : "昌平区住建委房屋登记中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content3 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市顺义区顺义光明北街7号</br>电话:010-69425703</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow3 = null;
+    infoWindow3 = new BMapLib.SearchInfoWindow(map, content3, {
+            title  : "顺义区房屋交易市场管理科",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content4 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市通州区新华南路196号(蓝山国际小区西侧)</br>电话:010-52118506/52118572</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow4 = null;
+    infoWindow4 = new BMapLib.SearchInfoWindow(map, content4, {
+            title  : "通州区住建委房地产交易中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content5 ="<div style='line-height:1.8em;font-size:14px;'>地址:北京市海淀区西四环中路16号院3号楼5层</br>电话:010-59958562</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow5 = null;
+    infoWindow5 = new BMapLib.SearchInfoWindow(map, content5, {
+            title  : "北京市房屋权属登记事务中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content6 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市海淀区东北旺南路27号上地办公中心A座2楼西侧</br>电话:010-82708600</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow6 = null;
+    infoWindow6 = new BMapLib.SearchInfoWindow(map, content6, {
+            title  : "海淀区房管局登记中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content7 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市八角西街66号方地大厦B座三层</br>电话:010-68838208</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow7 = null;
+    infoWindow7 = new BMapLib.SearchInfoWindow(map, content7, {
+            title  : "石景山区行政服务中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content8 = "<div style='line-height:1.8em;font-size:14px;'>地址:北京市丰台区丰体南路1号院8号楼丰体时代大厦</br>电话:010-69261324</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow8 = null;
+    infoWindow8 = new BMapLib.SearchInfoWindow(map, content8, {
+            title  : "丰台区房管局房地产交易权属发证中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content9 ="<div style='line-height:1.8em;font-size:14px;'>地址:北京市朝阳区石佛营东里128号院3号楼</br>电话:010-85839922</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow9 = null;
+    infoWindow9 = new BMapLib.SearchInfoWindow(map, content9, {
+            title  : "朝阳区房管局房屋登记大厅",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content10 ="<div style='line-height:1.8em;font-size:14px;'>地址:北京市西城区南菜园街7号院51号楼</br>电话:010-63557288</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow10 = null;
+    infoWindow10 = new BMapLib.SearchInfoWindow(map, content10, {
+            title  : "西城区房管局服务大厅",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var content0 ="<div style='line-height:1.8em;font-size:14px;'>地址:北京市东城区地安门东大街88号</br>电话:010-84014947</br></div>";
+
+    //创建检索信息窗口对象
+    var infoWindow0 = null;
+    infoWindow0 = new BMapLib.SearchInfoWindow(map, content0, {
+            title  : "东城区房管局东城区房屋权属登记中心",      //标题
+            width  : 0.6,             //宽度
+            height : 105,              //高度
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                   //周边检索
+//                BMAPLIB_TAB_TO_HERE,  //到这里去
+//                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+
+
+marker1.addEventListener("mouseover", function(e){infoWindow1.open(marker1);});
+marker2.addEventListener("mouseover", function(e){infoWindow2.open(marker2);});
+marker3.addEventListener("mouseover", function(e){infoWindow3.open(marker3);});
+marker4.addEventListener("mouseover", function(e){infoWindow4.open(marker4);});
+marker5.addEventListener("mouseover", function(e){infoWindow5.open(marker5);});
+marker6.addEventListener("mouseover", function(e){infoWindow6.open(marker6);});
+marker7.addEventListener("mouseover", function(e){infoWindow7.open(marker7);});
+marker8.addEventListener("mouseover", function(e){infoWindow8.open(marker8);;});
+marker9.addEventListener("mouseover", function(e){infoWindow9.open(marker9);});
+marker10.addEventListener("mouseover", function(e){infoWindow10.open(marker10);});
+marker0.addEventListener("mouseover", function(e){infoWindow0.open(marker0);});
+
+
+marker1.addEventListener("click", function(e){infoWindow1.open(marker1);});
+marker2.addEventListener("click", function(e){infoWindow2.open(marker2);});
+marker3.addEventListener("click", function(e){infoWindow3.open(marker3);});
+marker4.addEventListener("click", function(e){infoWindow4.open(marker4);});
+marker5.addEventListener("click", function(e){infoWindow5.open(marker5);});
+marker6.addEventListener("click", function(e){infoWindow6.open(marker6);});
+marker7.addEventListener("click", function(e){infoWindow7.open(marker7);});
+marker8.addEventListener("click", function(e){infoWindow8.open(marker8);;});
+marker9.addEventListener("click", function(e){infoWindow9.open(marker9);});
+marker10.addEventListener("click", function(e){infoWindow10.open(marker10);});
+marker0.addEventListener("click", function(e){infoWindow0.open(marker0);});
+
+function openMyWin(id,p){
+    id.open(p);
+}
+
+
+
+//var autoScreen=function(){
+//    	var x=$(window).width();
+//    	$("html").css("font-size",20*(x/320)+"px");
+//    	// 375
+//    }
+//    autoScreen();
+//    $(function(){
+//    	// 固定底部
+//    	var fixft=function(){
+//    		var fth=$(".fix-ft").height();
+//    		if($(".fix-ft").length>0){
+//    			if($("body").height()>$(window).height()/2){
+//    				$("body").css("padding-bottom",(fth+24)+"px");
+//    			}
+//    		}
+//    	}
+//    	fixft();
+
+</script>

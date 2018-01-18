@@ -1,0 +1,28 @@
+{
+    "data": {
+        "pmsglist": [
+            {
+                "id": "001",
+                "title": "合同审批",
+                "content": "合同科同意了您的合同审批，合同编号xxxxxxxxxxxxx"
+            },
+            {
+                "id": "002",
+                "title": "待办件",
+                "content": "您有一个合同申请待审批"
+            }
+        ],
+        "readlist": [
+            {
+                "id": "001",
+                "title": "合同审批",
+                "content": "合同科同意了您的合同审批，合同编号xxxxxxxxxxxxx"
+            },
+            {
+                "id": "002",
+                "title": "待办件",
+                "content": "您有一个合同申请待审批"
+            }
+        ]
+    }
+}

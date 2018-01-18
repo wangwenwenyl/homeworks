@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="../css/mui.min.css"/>
+    <link rel="stylesheet" href="../css/contract.css"/>
+    <script src="../js/mui.min.js"></script>
+    <script src="../js/jquery.min-1.11.1.js"></script>
+    <script src="../js/serialize.js"></script>
+    <script src="../js/checkdata.js"></script>
+</head>
+<body style="padding:20px;">
+    <div>
+        <label for="">用户名</label>
+        <input type="text" style="width:50%;" id="uname"/>
+    </div>
+    <div>
+        <label for="">密码</label>
+        <input type="text" style="width:50%;" id="password"/>
+    </div>
+    <div style="text-align: center;background:#fabf37;color:#fff;border-radius:5px;height:30px;line-height:30px;margin-top:20px;" id="denglu">
+        登录
+    </div>
+    <script>
+        $("#denglu").click(function(){
+            uname=$("#uname").val();
+            password=$("#password").val();
+            mui.ajax(host+"/app/login?uname="+uname+"&upass="+password+"&uuid=123456",{
+                success:function(data){
+                    location.href="serverSalesmanJob.html?userid="+data.data.userid+"&userType="+data.data.type+"&uname="+data.data.username;
+                }
+            })
+        })
+    </script>
+</body>
+</html>

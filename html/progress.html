@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <!--标准mui.css-->
+    <link rel="stylesheet" href="../css/mui.min.css">
+
+    <link href="../css/index.css" rel="stylesheet"/>
+      <title>鸿诚祥兆|鸿诚担保——中国诚信担保企业，业务范围：房屋抵押，车辆抵押，短期担保，企业担保，银行信用担保</title>
+    <script src="../js/mui.min.js"></script>
+
+    <style>
+        body{background:#fff;font-size:14px;overflow: hidden;}
+        .box-title{padding-left:30px;padding-top:25px;}
+        .state{position: relative;margin-top:50px;margin-bottom:30px;}
+        .gradient{  background:-webkit-linear-gradient(top,rgb(255, 255,255), rgb(192,192, 192), rgb(255, 255,255));
+            width:3px;height:100%;position:absolute;left:50%;top:-5px;}
+        td{padding:0px 10px;position:relative;}
+        tr:nth-child(odd) td div{line-height:25px;padding-left:40%;}
+        tr:nth-child(even) td div{line-height:25px;padding-left:15%;}
+        /*.state-result{position: absolute;}*/
+        .hide{display:none;}
+        .mui-btn{
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        td{height:80px;width:50%;padding:0px;}
+        .box{margin:auto;}
+
+        .ret:before{
+            height: 16px;
+            width: 9px;
+            display: inline-block;
+            float: left;
+            vertical-align: middle;
+            /*background: url("../img/return.png") no-repeat;*/
+            /*background-size:100% 100% ;*/
+            /*margin-left: 4%;*/
+            position: absolute;
+            margin: auto 0;
+            left: 4%;
+            top:9px;
+        }
+        .box-head{
+            background-color: #fff;
+            color:#333;
+        }
+    </style>
+</head>
+<body>
+<script src="../js/jquery.min-1.11.1.js"></script>
+<div class="box">
+    <!--<div class="box-heads" style="position: fixed;top: 0px;">-->
+        <!--<div class="box-head">-->
+            <!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left ret" style="color:#333;" id="progressa"></a>-->
+            <!--合同进度-->
+            <!--&lt;!&ndash;<img src="../img/list.png" alt="" class="list-img" style="position:absolute;right:15px;bottom:10px;"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="list-box hide">&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="list-detail list-active">阿斯蒂芬</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="list-detail">阿斯蒂芬</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="list-detail">阿斯蒂芬</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="list-detail">阿斯蒂芬</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class="list-detail">阿斯蒂芬</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+    <!--</div>-->
+    <header class="mui-bar mui-bar-nav" style="box-shadow:none;background:#fff;border-bottom:1px solid #ddd;position:fixed;top:0px;">
+        <a href="contractListP.html" class="mui-icon mui-icon-left-nav mui-pull-left ret" style="color:#333;"></a>
+        <h1 id="title" class="mui-title">合同进度</h1>
+    </header>
+    <!--<div class="mui-content">-->
+    <!--</div>-->
+    <div class="website">
+            <div class="progress-box">
+                <div class="box-title">
+                   合同进度：
+                </div>
+                <div class="state" style="overflow-y: scroll;margin-bottom: 20px;margin-top:20px;">
+                    <table id="dataCtx" style="top:60px;width:100%;">
+                        <!--<tr>-->
+                            <!--<td>-->
+                                <!--<div class="state-result" >审批中</div>-->
+                                <!--<div style="margin-bottom:-10px;">马云</div>-->
+                                <!--<img src="../img/4.4.png" style="width:85%;margin-left:15%;"alt=""/>-->
+                                <!--<div style="margin-top:-10px;">审批部门:发生</div>-->
+                                <!--<div >审批意见：</div>-->
+                            <!--</td>-->
+                            <!--<td>-->
+
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td></td>-->
+                            <!--<td>-->
+                                <!--<div class="state-result" >审批中</div>-->
+                                <!--<div style="margin-bottom:-10px;">张三</div>-->
+                                <!--<img src="../img/4.3.png" style="transform:rotate(180deg);width:85%;"alt=""/>-->
+                                <!--<div style="margin-top:-10px;">审批部门：</div>-->
+                                <!--<div >审批意见</div>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>-->
+                                <!--<div class="state-result">审批中</div>-->
+                                <!--<div style="margin-bottom:-10px;">李白</div>-->
+                                <!--<img src="../img/4.2.png" style="width:85%;margin-left:15%;"alt=""/>-->
+                                <!--<div style="margin-top:-10px;">审批部门:</div>-->
+                                <!--<div >审批意见：</div>-->
+                            <!--</td>-->
+                            <!--<td>-->
+
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td></td>-->
+                            <!--<td>-->
+                                <!--<div class="state-result" >审批中</div>-->
+                                <!--<div style="margin-bottom:-10px;">王伟</div>-->
+                                <!--<img src="../img/4.1.png" style="transform:rotate(180deg);width:85%;"alt=""/>-->
+                                <!--<div style="margin-top:-10px;">审批部门：</div>-->
+                                <!--<div >审批意见：</div>-->
+                            <!--</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>-->
+                                <!--<div class="state-result">审批中</div>-->
+                                <!--<div style="margin-bottom:-10px;">李白</div>-->
+                                <!--<img src="../img/4.2.png" style="width:85%;margin-left:15%;"alt=""/>-->
+                                <!--<div style="margin-top:-10px;">审批部门:</div>-->
+                                <!--<div >审批意见：</div>-->
+                            <!--</td>-->
+                            <!--<td>-->
+
+                            <!--</td>-->
+                        <!--</tr>-->
+                    </table>
+                   <div class="gradient">
+                   </div>
+                </div>
+            </div>
+            <!--<div class="tool" style="height:970px; display:block;margin-top:0px;">-->
+                <!--<div class="company-title">-->
+                    <!--北京鸿诚祥兆投资担保有限公司-->
+                <!--</div>-->
+                <!--<div class="company">-->
+                    <!--<p><span>成立时间</span><span>2010-07-11</span></p>-->
+                    <!--<p><span>所在地</span><span>中国</span><span>北京</span></p>-->
+                    <!--<p><span>注册资本</span><span>10000万人民币</span></p>-->
+                    <!--<p><span>企业类型</span><span>有限责任公司（自然人独资）</span></p>-->
+                    <!--<p><img src="../img/company.png" alt=""/></p>-->
+                <!--</div>-->
+                <!--<div class="yewu">-->
+                    <!--主营业务-->
+                <!--</div>-->
+                <!--<div class="yewu-detail">-->
+                    <!--业务范围涉及投资、抵押消费、无抵押信用借款、个人经营性资金周转、企业经营 资金周转、汽车抵押、房屋抵押、短期过桥、典当等业务。-->
+                <!--</div>-->
+                <!--<div class="yewu">-->
+                    <!--所获荣誉-->
+                <!--</div>-->
+                <!--<div class="yewu-detail">-->
+                    <!--曾先后荣获“中国最具公信力担保企业”称号、“ 金典奖•全国服务业百强”奖项“ 全 国金融业先进诚信示范单位”、“ 中国经济改革突出贡献单位”、“ 中国经济新领军企业” “企业信用评价AAA级信用企业”等众多殊荣。-->
+                <!--</div>-->
+                <!--<div class="yewu">-->
+                    <!--文化理念-->
+                <!--</div>-->
+                <!--<div class="yewu-detail">-->
+                    <!--公司自成立以来，在金融领域进行积极探索和创新，恪守诚信之道，坚持阳光经营， 立足于完整的产业布局，以专业水平为支撑，为企业和个人提供“多对一、一条龙、一站-->
+                    <!--式一体化”的金融服务。企业凭借科学的管理结构，稳健的营业团队，强劲的渠道能力， 卓越的企业文化，打造更加完善的金融服务平台。-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    <!--<div onclick="test()">-->
+        <!--跳转-->
+    <!--</div>-->
+</div>
+<script>
+    $(function(){
+        var screnheight = window.innerHeight-80;
+        $('.state').css({'height':screnheight+'px'});
+        console.log(screnheight);
+    })
+    function getQueryString(name) {                                       //name为传入参数
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    var contractid=getQueryString('contractid');
+    var dt=getQueryString('dt');
+</script>
+    <script>
+        mui.init();
+        mui.ready(function () {
+            $.getJSON( hostone+"/hcxzapp/getProcessByConId/"+contractid+"/"+dt,function(data){
+                $(".list-box").toggleClass("hide");
+               $('#dataCtx').html('');
+                mui.each(data, function(index, item) {
+                    var lr = index%2;
+                    var trline = document.createElement('tr');
+//                    console.log(item);
+                    switch(item.n)
+                    {
+                        case 1: //当前11
+                            if(lr==0){//r
+                                trline.innerHTML = '<td>' +
+                                    '<div class="state-result"></div>'+
+                                    '<img src="../img/4.4.png" style="width:85%;margin-left:15%;"  alt=""/>'+
+                                    '<div>审批部门：'+item.g+'</div>'+
+                                    '<div ></div>'+
+                                    '<div>审批中</div>'+
+                                    '</td>'+
+                                    '<td></td></tr>';
+                            }else{//l
+                                trline.innerHTML = '<td></td>'+
+                                    '<td>'+
+                                    '<div class="state-result"></div>'+
+                                    '<img src="../img/4.4.png"style="transform:rotate(180deg);width:85%;"alt=""/>'+
+                                    '<div>审批部门：'+item.g+'</div>'+
+                                    '<div ></div>'+
+                                    '<div>审批中</div>'+
+                                    '</td></tr>';
+                            }
+                            break;
+                        default:
+                            switch(item.a)
+                            {
+                                case 2:
+                                    if(lr==0){//r
+                                        trline.innerHTML='<td>' +
+                                            '<div class="state-result">'+item.st+'</div>' +
+                                            '<img src="../img/4.2.png" style="width:85%;margin-left:15%;" alt=""/>' +
+                                            '<div >审批人：'+item.u+'</div>' +
+                                            '<div >审批意见：'+item.o+'</div>' +
+                                            '<div class="state-result" style="left:-121px;">未通过</div>' +
+                                            '</td>' +
+                                            '<td></td></tr>';
+                                    }else{//l
+                                        trline.innerHTML='<td></td>' +
+                                            '<td>' +
+                                            '<div class="state-result">'+item.st+'</div>' +
+                                            '<img src="../img/4.2.png"style="transform:rotate(180deg);width:85%;" alt=""/>' +
+                                            '<div >审批人：'+item.u+'</div>' +
+                                            '<div >审批意见：'+item.o+'</div>' +
+                                            '<div class="state-result" style="left:224px;">未通过</div>' +
+                                            '</td></tr>';
+                                    }
+                                    break;
+                                case 1:
+                                    if(lr==0){
+                                        trline.innerHTML = '<td>' +
+                                            '<div class="state-result">'+item.st+'</div>' +
+                                            '<img src="../img/4.3.png" style="width:85%;margin-left:15%;"alt=""/>' +
+                                            '<div >审批人：'+item.u+'</div>' +
+                                            '<div >审批意见：'+item.o+'</div>' +
+                                            '<div class="state-result" style="left:-116px;">通过</div>' +
+                                            '</td>' +
+                                            '<td></td></tr>';
+                                    }else{
+
+                                        trline.innerHTML = '<td></td>' +
+                                            '<td>' +
+                                            '<div class="state-result">'+item.st+'</div>' +
+                                            '<img src="../img/4.3.png"style="transform:rotate(180deg);width:85%;"alt=""/>' +
+                                            '<div >审批人：'+item.u+'</div>' +
+                                            '<div >审批意见：'+item.o+'</div>' +
+                                            '<div class="state-result" style="left:234px;">通过</div>' +
+                                            '</td></tr>';
+                                    }
+                                    break;
+                                default:
+                                    if(lr==0){
+                                        trline.innerHTML ='<td>' +
+                                            '<div class="state-result"></div>' +
+                                            '<img src="../img/4.1.png" style="width:85%;margin-left:15%;"alt=""/>' +
+                                            '<div >待审批部门：'+item.g+'</div>' +
+                                            '<div ></div>' +
+                                            '<div class="state-result" style="left:-121px;">未开始</div>' +
+                                            '</td>' +
+                                            '<td></td></tr>';
+                                    }else{
+                                        trline.innerHTML ='<td></td>' +
+                                            '<td>' +
+                                            '<div class="state-result"></div>' +
+                                            '<img src="../img/4.1.png"style="transform:rotate(180deg);width:85%;"alt=""/>' +
+                                            '<div >待审批部门：'+item.g+'</div>' +
+                                            '<div ></div>' +
+                                            '<div class="state-result" style="left:222px;">未开始</div>' +
+                                            ' </td></tr>';
+                                    }
+                                    break;
+                            }
+                            break;
+                    }
+                    $('#dataCtx').append(trline);
+                });
+
+            })
+        });
+
+
+//        function searchBtn(searchCode) {
+//            $(".tool").hide();
+//            $(".progress-box").show();
+//            var tableline = document.body.querySelector('#dataCtx');
+//
+//            mui.getJSON(localStorage.getItem("apiPath")+'/hcxzapp/getProcessByConId/'+searchCode+'/0', function(data){
+//
+//
+//            });
+//        }
+    </script>
+
+    <script>
+        $(".list-img").click(function(){
+            $(".list-box").toggleClass("hide");
+        })
+    </script>
+</body>
+</html>

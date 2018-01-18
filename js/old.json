@@ -1,0 +1,70 @@
+{
+               "data": [
+                   {
+                     "id": "dy1000",
+                     "applytype": "抵押贷",
+                     "applytime": "2017-02-00",
+                     "contractnum": "DY00000",
+                     "applycount": "0",
+                     "conpoint": "1.8",
+                     "username": "张零"
+                   },{
+                     "id": "xy1001",
+                     "applytype": "信用贷",
+                     "applytime": "2017-06-01",
+                     "contractnum": "DY00001",
+                     "applycount": "1",
+                      "conpoint": "1.5",
+                      "username": "张一"
+                   },{
+                   "id": "xy1002",
+                   "applytype": "信用贷",
+                   "applytime": "2017-06-02",
+                   "contractnum": "DY00002",
+                   "applycount": "2",
+                   "conpoint": "1.5",
+                   "username": "张二"
+                    },{
+                   "id": "xy1003",
+                   "applytype": "信用贷",
+                   "applytime": "2017-06-04",
+                   "contractnum": "DY00003",
+                   "applycount": "3",
+                   "conpoint": "1.5",
+                   "username": "张三"
+                 },{
+                   "id": "xy1004",
+                   "applytype": "信用贷",
+                   "applytime": "2017-06-04",
+                   "contractnum": "DY00004",
+                   "applycount": "4",
+                   "conpoint": "1.5",
+                   "username": "张四"
+                 },{
+                   "id": "xy1005",
+                   "applytype": "信用贷",
+                   "applytime": "2017-06-05",
+                   "contractnum": "DY00005",
+                   "applycount": "5",
+                   "conpoint": "1.5",
+                   "username": "张五"
+                 },{
+                   "id": "xy1006",
+                   "applytype": "信用贷",
+                   "applytime": "2017-06-06",
+                   "contractnum": "DY00006",
+                   "applycount": "6",
+                   "conpoint": "1.5",
+                   "username": "张六"
+                 },{
+                   "id": "xy1008",
+                   "applytype": "信用贷",
+                   "applytime": "2017-06-08",
+                   "contractnum": "DY00008",
+                   "applycount": "8",
+                   "conpoint": "1.5",
+                   "username": "张八"
+                 }
+
+                ]
+}
